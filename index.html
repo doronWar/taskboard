@@ -11,15 +11,15 @@
 <body>
 
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default ">
 
   <div class="container-fluid">
-    <div class="navbar-header">
+    <div class="navbar-header ">
       <a class="navbar-brand" href="#">
         <img alt="Brand" src="assets/taskboard%20logo.svg"">
       </a>
     </div>
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav navbar-right">
       <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
       <li><a href="#">Link2</a></li>
     </ul>
@@ -84,8 +84,11 @@
 <div id="cardHolders">
 
   <div class="lists" id="howBigItWillBe">
-    <span class="opener">tasks</span>
-    <ul class="ulS">
+    <span class="opener ">tasks
+      <span class="badge">3</span>
+    </span>
+
+    <ul class="ulS ">
       <li class="card">cards </li>
       <li class="card">cards </li>
       <li class="card">cards </li>
@@ -95,6 +98,7 @@
       <li class="card">cards </li>
       <li class="card">cards </li>
     </ul>
+
     <span class="closer">add card</span>
   </div>
 
@@ -153,10 +157,10 @@
   </ul>
     <span class="closer">add card</span>
 </div>
-
-  <button type="button" class="btn btn-default" aria-label="Left Align">
-    Add new task
-  </button>
+  <button type="button" class="btn btn-default navbar-btn">Add new task</button>
+  <!--<button type="button" class="btn btn-default" aria-label="Left Align">-->
+    <!--Add new task-->
+  <!--</button>-->
 
 </div>
 
