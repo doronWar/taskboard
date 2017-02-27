@@ -3,28 +3,42 @@
  */
 
 
-// creating ta list
+// creating the basic first three lists
 function createNewList(listsholder,title) {
 
   const nodereferece = document.querySelector('.btn')
-const numberOfTasks = 0;
-const listStringHtml =`
+  const numberOfTasks = 0;
+  const listStringHtml =`
 
 <span class="openerTag ">
 ${title}
 <span class="badge"> ${numberOfTasks} </span> </span>
 <ul class="ulForCards ">
+<li class="card">creat new cards </li>
 </ul>
-<span class="closerTag">Add Card</span>`;
+<span class="closerTag">Add Card</span>
+`;
 
 
 //creating the new list:
-const basicTemplete = document.createElement('div');
-basicTemplete.setAttribute("class", "oneLists" );
-basicTemplete.innerHTML +=listStringHtml;
-  listsholder.insertBefore(basicTemplete, nodereferece);
+  const basicTemplete = document.createElement('div');
 
-  basicTemplete.querySelector('.closerTag').addEventListener('click', createCard);
+  basicTemplete.setAttribute("class", "oneLists" );
+  basicTemplete.innerHTML +=listStringHtml;
+
+  listsholder.insertBefore(basicTemplete, nodereferece);
+  creatSpanListeners();
+
+
+  //
+  // const test = document.createElement('span');
+  // test.setAttribute("class", "closerTag");
+  //   test.textContent= 'add card';
+  //
+  //
+  //   basicTemplete.appendChild(test);
+
+
 }
 
 
@@ -32,7 +46,6 @@ basicTemplete.innerHTML +=listStringHtml;
 function createCard(e){
   const newCard = document.createElement('li');
   const parentNode = e.target.parentNode.childNodes[3]
-
   const referenceNode = parentNode.querySelector('ul > li:last-child')
 
   newCard.setAttribute("class", "card" );
@@ -43,6 +56,13 @@ function createCard(e){
 }
 
 
+function creatSpanListeners() {
+  const spans = document.querySelectorAll('.closerTag');
+
+  for (const oneSpan of spans) {
+    oneSpan.addEventListener('click', createCard);
+  }
+}
 
 function activeButton() {
   const button = document.querySelector('.btn')
@@ -60,7 +80,7 @@ createNewList(liholder, 'todo');
 createNewList(liholder, 'QNA');
 
 
-// creatSpanListeners();
+creatSpanListeners();
 activeButton();
 
 

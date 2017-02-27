@@ -33,7 +33,7 @@ a.navbar-brand {
 /*holding lists*/
 main{
   display: flex;
-  background-color: powderblue;
+  background-color: #ffffcc;
   height: 100%;
   overflow: auto;
   padding-top:20px;
@@ -83,7 +83,7 @@ main{
 /*}*/
 
 .oneLists{
-  width: 350px;
+  min-width: 350px;
 
   /*min-height: 60vh;*/
   margin-right: 3%;
@@ -100,19 +100,10 @@ main{
   background-color:  #F1F1F1;
 
 
-  /*height:65vh;   !*should be the size of the X amount of cards*!*/
-  /*overflow: auto;*/
-  /*max-height: 65vh;*/
+
   padding-left: 0;
   margin-bottom: 0;
-  /*margin-right:2px;*/
-  /*margin-left: 2px;*/
-  /*position: absolute;*/
-  /*top: 8vh;*/
-  /*left: 0;*/
-  /*width:100%;*/
-  /*should have a max height*/
-  /*should have a min height*/
+
 
 
 }
