@@ -13,24 +13,28 @@ ${title}
 <span class="badge"> ${numberOfTasks} </span> </span>
 <ul class="ulForCards ">
 <li class="card">creat new cards </li>
+<span class="closerTag">add card</span>
+</ul>
 `;
 
-const addButton = function addCardButtonAdder();
 const basicTemplete = document.createElement('div');
 basicTemplete.setAttribute("class", "oneLists" );
+basicTemplete.innerHTML +=listStringHtml;
+  listsholder.appendChild(basicTemplete);
 
-basicTemplete.innerHTML +=listStringHtml + addButton;
+  addCardButtonAdder(basicTemplete);
   // basicTemplete.innerHTML += '</ul>
-listsholder.appendChild(basicTemplete);
+
+  // const addButton = function addCardButtonAdder();
 }
 //stopt while creating listener to the span
 // i might also be able to catch the span after creating it and then just adding to it the listener!
-function addCardButtonAdder(){
-  const closerTag = document.createElement('span');
-  closerTag.textContent= '<span class="closerTag">add card</span>'
-  closerTag.addEventListener('click',createCard(e));
-
-  return closerTag;
+function addCardButtonAdder(element){
+  const closerTag = element.querySelector('.closerTag');
+  console.log(closerTag);
+  closerTag.addEventListener('click', createCard(e));
+  // closerTag.textContent= '<span class="closerTag">add card</span>'
+  // return closerTag;
 }
 
 
@@ -46,7 +50,7 @@ function createCard(listToAddTo){
   const newCard = document.createElement('li');
   newCard.setAttribute("class", "card" );
   newCard.textContent = 'card';
-  listToAddTo.appendChild(newCard);
+  listToAddTo.target.parentNode.appendChild(newCard);
 
   //              //    need to add a listener    //      //
 }
