@@ -24,6 +24,7 @@ basicTemplete.innerHTML +=listStringHtml + addButton;
 listsholder.appendChild(basicTemplete);
 }
 //stopt while creating listener to the span
+// i might also be able to catch the span after creating it and then just adding to it the listener!
 function addCardButtonAdder(){
   const closerTag = document.createElement('span');
   closerTag.textContent= '<span class="closerTag">add card</span>'
