@@ -1,86 +1,138 @@
 
+/*for scrolling right*/
 body{
   overflow: auto;
+  padding-top:51px;
+
 }
+body,
+html{
+height:100%;
+width:100%;
+}
+
+/*nav bar*/
 img {
   height:35px;
   width:35px;
-
 }
 
 a.navbar-brand {
   padding-top:10px;
 }
-nav{
-  /*align-items: flex-start;*/
-  /*height:60px;*/
-  /*display: flex;*/
-  /*flex-direction: row;*/
-  /*border: 1px solid red;*/
+.navbar-default{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: -1;
+
+
 }
+
+/*holding lists*/
 main{
   display: flex;
-  flex-wrap: wrap;
+  background-color: powderblue;
+  height: 100%;
+  overflow: auto;
+  padding-top:20px;
+
+  /*flex-wrap: nowrap;*/
 }
-#cardHolders {
+#mainCardHolders {
   display: flex;
   flex-direction: row;
-
-
-  /*justify-content: space-around;*/
+  /*position: relative;*/
 }
-.opener,
-.closer{
-  background-color: darkgray;
-  /*display: inline-block;*/
+
+.openerTag,
+.closerTag{
+  background-color: #F8F8F8;
   width:100%;
   height:40px;
   display: flex;
   justify-content: center;
-}
+  align-items: center;
 
-/*.opener{*/
+
+
+  }
+.closerTag {
+  margin-top: -4px;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 -1px 6px 0;
+  position: relative;
+}
+.openerTag{
+  box-shadow: 0 1px 6px 0;
+  margin-bottom: 1px;
+  position: relative;
+  border-radius: 5px 5px 0 0 ;
+}
+/*.openerTag{*/
   /*position: absolute;*/
-  /*top: -10vh;*/
+  /*top: 0;*/
   /*left: 0;*/
+
 /*}*/
-/*.closer {*/
+/*.closerTag {*/
   /*position: absolute;*/
   /*bottom: -10vh;*/
   /*left: 0;*/
 /*}*/
 
-
-.lists{
+.oneLists{
   width: 350px;
-  max-height: 70%;
-  margin-right: 3%;
-  position: relative;
-}
-.ulS{
 
-  height:65vh;   /*should be the size of the X amount of cards*/
+  /*min-height: 60vh;*/
+  margin-right: 3%;
+  margin-left:1%;
+
+  /*position: relative;*/
+  /*bottom:10px;*/
+}
+.ulForCards{
   overflow: auto;
+  /*max-height: 70vh;*/
+  max-height: calc(95vh - 150px);
+  min-height: 15vh;
+  background-color:  #F1F1F1;
+
+
+  /*height:65vh;   !*should be the size of the X amount of cards*!*/
+  /*overflow: auto;*/
+  /*max-height: 65vh;*/
+  padding-left: 0;
+  margin-bottom: 0;
+  /*margin-right:2px;*/
+  /*margin-left: 2px;*/
+  /*position: absolute;*/
+  /*top: 8vh;*/
+  /*left: 0;*/
+  /*width:100%;*/
   /*should have a max height*/
   /*should have a min height*/
 
 
 }
 .card{
-  height:10vh;
+  height: 100px;
   width:100%;
   background-color: aliceblue;
   list-style-type: none;
-  box-shadow: 1px 2px 5px 0 ;
+  box-shadow: 0 1px 2px 0 ;
   margin-bottom: 5px;
-  margin-top:5px;
+  margin-top:3px;
   display: flex;
   justify-content: center;
+
+
 }
 
-ul{
-  padding-left: 0;
-}
+/*ul{*/
+  /*padding-left: 0;*/
+/*}*/
 
 #howBigItWillBe{
   height: 400px;
@@ -89,13 +141,37 @@ ul{
 
 button{
   height:50px;
+  margin-right: 20px;
 }
 
 
 .badge {
-  padding: 3px 3px;
-  margin-left:30px;
-  height:20px;
-  border-radius: 10px;
-
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  width:19px;
+  border-radius: 30px;
+  /*background-color: white;*/
 }
+
+
+@media (max-width: 871px) {
+  .nav > li {
+    /*float: right;*/
+    display: inline-block;
+  }
+.navbar-header{
+  display: inline-block;
+}
+
+.navbar-nav{
+    float: right;
+    display: inline-block;
+  }
+}
+  /*add a ul sizing - cause that why it's fallinf*/
+  /*add size to main - so it' will be the size of rest of screen - nav*/
+  /*add 100% width and heigh to body + margin + padding 0*/
+
+
+

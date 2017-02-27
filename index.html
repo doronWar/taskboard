@@ -13,16 +13,15 @@
 
 
 <nav class="navbar navbar-default ">
-
   <div class="container-fluid">
     <div class="navbar-header ">
       <a class="navbar-brand" href="#">
         <img alt="Brand" src="assets/taskboard%20logo.svg"">
       </a>
     </div>
-    <ul class="nav navbar-nav navbar-right">
-      <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-      <li><a href="#">Link2</a></li>
+    <ul class="nav navbar-nav navbar-right ">
+      <li class="active"><a href="#" >Board <span class="sr-only">(current)</span></a></li>
+      <li ><a href="#" >Members</a></li>
     </ul>
 
   </div>
@@ -32,14 +31,16 @@
 
 <main>
 
-  <div id="cardHolders">
+  <div id="mainCardHolders">
 
-  <div class="lists" id="howBigItWillBe">
-    <span class="opener ">tasks
-      <span class="badge">3</span>
+  <div class="oneLists" id="howBigItWillBe">
+    <span class="openerTag ">
+      tasks
+      <span class="badge">8</span>
+
     </span>
 
-    <ul class="ulS ">
+    <ul class="ulForCards ">
       <li class="card">cards </li>
       <li class="card">cards </li>
       <li class="card">cards </li>
@@ -50,29 +51,59 @@
       <li class="card">cards </li>
     </ul>
 
-    <span class="closer">add card</span>
+    <span class="closerTag">add card</span>
   </div>
 
-  <div class="lists">
-    <span class="opener">todo</span>
-    <ul class="ulS">
+  <div class="oneLists">
+    <span class="openerTag">todo
+    <span class="badge">2</span>
+    </span>
+    <ul class="ulForCards">
       <li class="card">cards </li>
       <li class="card">cards </li>
-      <li class="card">cards </li>
-      <li class="card">cards </li>
+
     </ul>
-    <span class="closer">add card</span>
+    <span class="closerTag">add card</span>
   </div>
 
-  <div class="lists">
-    <span class="opener">QNA</span>
-    <ul class="ulS">
-      <li class="card">cards </li>
-      <li class="card">cards </li>
-      <li class="card">cards </li>
-      <li class="card">cards </li>
+
+    <div class="oneLists">
+    <span class="openerTag">todo
+    <span class="badge">2</span>
+    </span>
+      <ul class="ulForCards">
+        <li class="card">cards </li>
+        <li class="card">cards </li>
+
+      </ul>
+      <span class="closerTag">add card</span>
+    </div>
+
+
+
+    <div class="oneLists">
+    <span class="openerTag">todo
+    <span class="badge">2</span>
+    </span>
+      <ul class="ulForCards">
+        <li class="card">cards </li>
+        <li class="card">cards </li>
+
+      </ul>
+      <span class="closerTag">add card</span>
+    </div>
+
+
+
+
+    <div class="oneLists">
+    <span class="openerTag">QNA
+    <span class="badge">0</span>
+    </span>
+    <ul class="ulForCards">
+     <!--notice i've seleted all the Li's here-->
   </ul>
-    <span class="closer">add card</span>
+    <span class="closerTag">add card</span>
 </div>
   <button type="button" class="btn btn-default navbar-btn">Add new task</button>
   <!--<button type="button" class="btn btn-default" aria-label="Left Align">-->
