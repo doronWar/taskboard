@@ -9,7 +9,7 @@
 function createNewList(listsholder,title) {
 
   const nodereferece = document.querySelector('.btn')
-const numberOfTasks = 0;
+  const numberOfTasks = 0;
 
   const listStringHtml =`
 
@@ -25,9 +25,9 @@ const numberOfTasks = 0;
 
 
 //creating the new list:
-const basicTemplete = document.createElement('div');
-basicTemplete.setAttribute("class", "oneLists" );
-basicTemplete.innerHTML +=listStringHtml;
+  const basicTemplete = document.createElement('div');
+  basicTemplete.setAttribute("class", "oneLists" );
+  basicTemplete.innerHTML +=listStringHtml;
   listsholder.insertBefore(basicTemplete, nodereferece);
 
 
@@ -47,7 +47,7 @@ function upsdateListName(e) {
   const listName = nameHolder.textContent;
   const nameHolderParent=nameHolder.parentNode;
   const inputeFiled =nameHolderParent.querySelector('input');
-    // const inputeFiled = document.createElement('input');
+  // const inputeFiled = document.createElement('input');
   // inputeFiled.type = 'text'
 
   inputeFiled.value = listName;
@@ -144,5 +144,4 @@ createNewList(liholder, 'QNA');
 
 // creatSpanListeners();
 activeButton();
-
 
