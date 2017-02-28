@@ -10,11 +10,13 @@ function createNewList(listsholder,title) {
 
   const nodereferece = document.querySelector('.btn')
 const numberOfTasks = 0;
-const listStringHtml =`
+
+  const listStringHtml =`
 
 
 <span class="openerTag " tabindex="0">
-<span class="tagText" contenteditable="true"><strong>${title}</strong></span>
+<input type="text" style="display: none"></input>
+<span class="tagText">${title}</span>
 
 <span class="badge"> ${numberOfTasks} </span> </span>
 <ul class="ulForCards ">
@@ -32,29 +34,69 @@ basicTemplete.innerHTML +=listStringHtml;
 
   basicTemplete.querySelector('.closerTag').addEventListener('click', createCard);
 
-  //this are the listeners i've added
-  basicTemplete.querySelector('.openerTag').addEventListener('click', upsdateListName);
 
-  basicTemplete.querySelector('.openerTag').addEventListener('blur', upsdateListName);
+  //this are the listeners i've added
+  basicTemplete.querySelector('.tagText').addEventListener('click', upsdateListName);
 }
+
+
+
 //this is the  function i've build to listen
 function upsdateListName(e) {
   const nameHolder = e.target;
+  const listName = nameHolder.textContent;
+  const nameHolderParent=nameHolder.parentNode;
+  const inputeFiled =nameHolderParent.querySelector('input');
+    // const inputeFiled = document.createElement('input');
+  // inputeFiled.type = 'text'
 
-  //need to add here a code that changes the span into an inpute
-  //change the span inside the span back into just text - and then just do innerHTML too create there a inpute-  and then finnally turn it back to the span!
-  if(e.type === 'click') {
-    // nameHolder.querySelector('.tagText').textContent= '';
-    nameHolder.style.backgroundColor = 'green';
-    // nameHolder.querySelector('.tagText').style.backgroundColor = 'green'
-  }
-  if(e.type === 'blur') {
-    nameHolder.style.backgroundColor = 'white';
-    nameHolder.querySelector('.tagText').style.backgroundColor = 'white'
-  }
-// add what enter does and so on
-  console.log('hello');
+  inputeFiled.value = listName;
+  inputeFiled.style.display = "inline-block"
+  nameHolder.style.display = 'none';
+  nameHolder.parentNode.appendChild(inputeFiled)
+  inputeFiled.focus();
+
+  inputeFiled.addEventListener('keypress', (event)=>{
+    inputListener(event, nameHolder, inputeFiled, listName)
+  });
+  inputeFiled.addEventListener('blur', (event)=>{
+    inputListener(event, nameHolder, inputeFiled, listName)
+  });
+
+
+
 }
+
+
+function inputListener(event , nameHolder, inputeFiled, listName) {
+
+  const ENTER = 13;
+
+  if (event.keyCode === ENTER) {
+
+    //making sure that the name isn't empty
+    if(inputeFiled.value=== '' || inputeFiled.value=== ' '){
+      inputeFiled.value = listName;
+    }
+
+
+    nameHolder.innerHTML = inputeFiled.value;
+    inputeFiled.style.display = 'none';
+    nameHolder.style.display = 'block';
+  }
+
+  if(event.type === 'blur'){
+    if(inputeFiled.value=== '' || inputeFiled.value=== ' '){
+      inputeFiled.value = listName;
+    }
+
+    nameHolder.innerHTML = inputeFiled.value;
+    inputeFiled.style.display = 'none';
+    nameHolder.style.display = 'block';
+  }
+
+}
+
 //function to create a card
 function createCard(e){
   const newCard = document.createElement('li');
