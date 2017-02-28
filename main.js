@@ -73,23 +73,22 @@ function inputListener(event , nameHolder, inputeFiled, listName) {
   const ENTER = 13;
 
   if (event.keyCode === ENTER) {
-
     //making sure that the name isn't empty
     if(inputeFiled.value=== '' || inputeFiled.value=== ' '){
       inputeFiled.value = listName;
     }
-
-
-    nameHolder.innerHTML = inputeFiled.value;
-    inputeFiled.style.display = 'none';
-    nameHolder.style.display = 'block';
+    displayChanger();
   }
 
   if(event.type === 'blur'){
     if(inputeFiled.value=== '' || inputeFiled.value=== ' '){
       inputeFiled.value = listName;
     }
+    displayChanger();
 
+  }
+
+  function displayChanger() {
     nameHolder.innerHTML = inputeFiled.value;
     inputeFiled.style.display = 'none';
     nameHolder.style.display = 'block';
