@@ -83,7 +83,7 @@ main{
 /*}*/
 
 .oneLists{
-  min-width: 350px;
+  min-width: 300px;
 
   /*min-height: 60vh;*/
   margin-right: 3%;
@@ -100,10 +100,19 @@ main{
   background-color:  #F1F1F1;
 
 
-
+  /*height:65vh;   !*should be the size of the X amount of cards*!*/
+  /*overflow: auto;*/
+  /*max-height: 65vh;*/
   padding-left: 0;
   margin-bottom: 0;
-
+  /*margin-right:2px;*/
+  /*margin-left: 2px;*/
+  /*position: absolute;*/
+  /*top: 8vh;*/
+  /*left: 0;*/
+  /*width:100%;*/
+  /*should have a max height*/
+  /*should have a min height*/
 
 
 }
@@ -139,9 +148,10 @@ button{
 .badge {
   position: absolute;
   top: 10px;
-  right: 5px;
+  left: 5px;
   width:19px;
   border-radius: 30px;
+
   /*background-color: white;*/
 }
 
@@ -159,6 +169,24 @@ button{
     float: right;
     display: inline-block;
   }
+}
+
+.tagText{
+  width: 60%;
+  background-color: #F8F8F8;
+  display: inline-block;
+  padding: 0 auto;
+  /*display: flex;*/
+  /*justify-content: center;*/
+
+}
+.tagText:focus{
+  /*outline: none;*/
+
+}
+
+.tagText {
+  font-weight: 600;
 }
   /*add a ul sizing - cause that why it's fallinf*/
   /*add size to main - so it' will be the size of rest of screen - nav*/
