@@ -32,7 +32,6 @@ basicTemplete.innerHTML +=listStringHtml;
 function createCard(e){
   const newCard = document.createElement('li');
   const parentNode = e.target.parentNode.childNodes[3]
-
   const referenceNode = parentNode.querySelector('ul > li:last-child')
 
   newCard.setAttribute("class", "card" );
