@@ -97,18 +97,18 @@ function listDropDownMenuActions(event) {
 //if yes do nothing. else close menu
 //fix this into catching a not array also//
 function dropDownMenuFocusClose(event) {
-  console.log(event.target.parentNode.querySelectorAll('.dropdown-menu'));
-  const theMenu = event.target.parentNode.querySelectorAll('.dropdown-menu')
+  
+  const theMenu = event.currentTarget.querySelectorAll('.dropdown-menu')
 
   if (event.target.closest('.btn-group')) {
-    console.info('check2');
+
 //does nothing if button pressed
   }
   else {
 
     for (const oneMenu of theMenu) {
       oneMenu.style.display = 'none';
-      console.info('check');
+
     }
   }
 }
