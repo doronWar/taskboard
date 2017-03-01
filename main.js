@@ -1,11 +1,11 @@
 /**
  * Created by Doron Warzager on 26/02/2017.
  */
-// <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
 
 
-// creating ta list
-function createNewList(listsholder, title) {
+
+// creating a list
+function createNewList(title) {
 
   const nodereferece = document.querySelector('.btn-catcher')
   const numberOfTasks = 0;
@@ -13,7 +13,7 @@ function createNewList(listsholder, title) {
   const listStringHtml = `
 
 
-<span class="openerTag " tabindex="0">
+<span class="openerTag " >
 <!-- bootstrap dropdown menu burtton -->
 <div class="btn-group">
   <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,7 +24,7 @@ function createNewList(listsholder, title) {
   </ul>
 </div>
 <input class ="inputTag" type="text" style="display: none" maxlength="25"></input>
-<span class="tagText">${title}</span>
+<span class="tagText" tabindex="0">${title}</span>
 
 
 <span class="badge"> ${numberOfTasks} </span> </span>
@@ -49,19 +49,22 @@ function createNewList(listsholder, title) {
 function addEventListeners(basicTemplete) {
   //listener to create card
   basicTemplete.querySelector('.closerTag').addEventListener('click', createCard);
+  basicTemplete.querySelector('.closerTag').addEventListener('keydown', createCard);
   //listeners for changing list titles
   basicTemplete.querySelector('.tagText').addEventListener('click', upsdateListName);
+  setTimeout(basicTemplete.querySelector('.tagText').addEventListener('keydown', upsdateListName), 10);
   basicTemplete.querySelector('.inputTag').addEventListener('blur', inputLitener);
   basicTemplete.querySelector('.inputTag').addEventListener('keydown', inputLitener);
 
+
   basicTemplete.querySelector('.dropdown-toggle').addEventListener('click', listDropDownMenuActions);
-  document.addEventListener('click', dropDownMenuFocusClose);
+
   basicTemplete.querySelector('.listOption').addEventListener('click', deleteList);
 
 }
 
+
 function deleteList(event) {
-  //
   const listIAmIn = event.target.closest('.oneLists');
   // const listHolder =  event.target.closest('.mainCardHolders')
   const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
@@ -72,10 +75,11 @@ function deleteList(event) {
   }
   else {
     listIAmIn.remove();
-    // listHolder.removeChild(listIAmIn);
   }
 }
 
+
+//                //          dealing with list menu        //        ///       //
 
 //toggle for drop down menu
 function listDropDownMenuActions(event) {
@@ -83,50 +87,54 @@ function listDropDownMenuActions(event) {
 
 
   if (theMenu.style.display === 'none' || !theMenu.style.display) {
+    closingListMenu();
     theMenu.style.display = 'block'
   }
   else {
+
     theMenu.style.display = 'none'
 
   }
 }
 
-
-//listen to click on all document.
-//ask if element's parent are the button.
-//if yes do nothing. else close menu
-//fix this into catching a not array also//
+//closing list menu by clicking anyhere
 function dropDownMenuFocusClose(event) {
-  
-  const theMenu = event.currentTarget.querySelectorAll('.dropdown-menu')
 
   if (event.target.closest('.btn-group')) {
-
 //does nothing if button pressed
   }
   else {
+    closingListMenu()
+  }
 
-    for (const oneMenu of theMenu) {
-      oneMenu.style.display = 'none';
-
-    }
+}
+//usable modlar function to close all menus when needed
+function closingListMenu() {
+  const theMenu = listsholder.querySelectorAll('.dropdown-menu')
+  for (const oneMenu of theMenu) {
+    oneMenu.style.display = 'none';
   }
 }
 
-
+//                //          dealing with title        //        ///       //
 //chang from span to input in list title
 function upsdateListName(e) {
-  const nameHolder = e.target;
-  const listName = nameHolder.textContent;
-  const nameHolderParent = nameHolder.parentNode;
-  const inputeFiled = nameHolderParent.querySelector('input');
+
+  if (e.type === 'click' || e.keyCode !== 27) {
+    const nameHolder = e.target;
+    const listName = nameHolder.textContent;
+    const nameHolderParent = nameHolder.parentNode;
+    const inputeFiled = nameHolderParent.querySelector('input');
 
 
-  inputeFiled.value = listName;
-  inputeFiled.style.display = "inline-block"
-  nameHolder.style.display = 'none';
-  nameHolder.parentNode.appendChild(inputeFiled)
-  inputeFiled.focus();
+    inputeFiled.value = listName;
+    inputeFiled.style.display = "inline-block"
+    nameHolder.style.display = 'none';
+    nameHolder.parentNode.appendChild(inputeFiled)
+    inputeFiled.focus();
+
+  }
+
 
 }
 
@@ -136,18 +144,21 @@ function upsdateListName(e) {
 function inputLitener(event) {
   let newTitle = event.target.value;
 
+
   if (event.type === 'keydown') {
     if (event.keyCode === 13) {
       autoReplaceEmptyInputValue(event, newTitle)
     }
+    if (event.keyCode === 27) {
+      autoReplaceEmptyInputValue(event, '')
 
+    }
   }
-  if (event.type === 'blur') {
+  if (event.type === 'blur' && event.target.style.display !== 'none') {
+
     autoReplaceEmptyInputValue(event, newTitle)
   }
 
-
-//if key stronks are nore then X use prevent default
 
 }
 
@@ -161,28 +172,34 @@ function autoReplaceEmptyInputValue(event, newTitle) {
     displayChanger(event, newTitle);
   }
 }
-//shifting from input to span title
+
+//shifting back from input to span title
 function displayChanger(event, newTitle) {
   const finalTitle = event.target.parentNode.querySelector('.tagText')
 
   finalTitle.textContent = newTitle;
+
   event.target.style.display = 'none';
   finalTitle.style.display = 'inline-block'
 
 }
 
+//                //          dealing cards        //        ///       //
 
 //function to create a card
 function createCard(e) {
-  const newCard = document.createElement('li');
-  const parentNode = e.target.parentNode.childNodes[3]
-  const referenceNode = parentNode.querySelector('ul > li:last-child')
 
-  newCard.setAttribute("class", "card");
-  newCard.textContent = 'card';
+  if (e.keyCode === 13 || e.type === 'click') {
+    const newCard = document.createElement('li');
+    const parentNode = e.target.parentNode.childNodes[3]
+    const referenceNode = parentNode.querySelector('ul > li:last-child')
 
-  parentNode.insertBefore(newCard, referenceNode);
-  updateBagde(e, parentNode);
+    newCard.setAttribute("class", "card");
+    newCard.textContent = 'card';
+
+    parentNode.insertBefore(newCard, referenceNode);
+    updateBagde(e, parentNode);
+  }
 
 }
 
@@ -202,20 +219,24 @@ function updateBagde(badge, parentNode) {
 
 function activeButton() {
   const button = document.querySelector('.btn-catcher');
-  // createNewList(liholder, 'New List')
+
   button.addEventListener('click', () => {
-    createNewList(liholder, 'New List');
+    createNewList('New List');
   })
 }
 
+
 //        // creating page   //     //      //        / /
 
-const liholder = document.querySelector('#mainCardHolders');
+const listsholder = document.querySelector('#mainCardHolders');
+
+//to toggle menu by pressing anywhere in document
+document.addEventListener('click', dropDownMenuFocusClose);
 
 //action that happen when page is loaded
-createNewList(liholder, 'tasks');
-createNewList(liholder, 'todo');
-createNewList(liholder, 'QNA');
+createNewList('tasks');
+createNewList('todo');
+createNewList('QNA');
 
 // creatSpanListeners();
 activeButton();
