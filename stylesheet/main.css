@@ -156,21 +156,6 @@ button{
 }
 
 
-@media (max-width: 871px) {
-  .nav > li {
-    /*float: right;*/
-    display: inline-block;
-  }
-.navbar-header{
-  display: inline-block;
-}
-
-.navbar-nav{
-    float: right;
-    display: inline-block;
-  }
-}
-
 .tagText{
   width: 60%;
   background-color: #F8F8F8;
@@ -188,9 +173,53 @@ button{
 .tagText {
   font-weight: 600;
 }
-  /*add a ul sizing - cause that why it's fallinf*/
-  /*add size to main - so it' will be the size of rest of screen - nav*/
-  /*add 100% width and heigh to body + margin + padding 0*/
 
 
 
+/*.openerTag{*/
+  /*display: flex;*/
+  /*flex-direction: row-reverse;*/
+  /*justify-content: space-around;*/
+
+/*}*/
+
+
+.btn-xs{
+  width: 25px;
+  height:30px;
+
+}
+
+.btn-group{
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
+.inputTag{
+  width:60%;
+  height:71%;
+
+  /*position: absolute;*/
+  /*top: 6px;*/
+  /*right: 15%;*/
+}
+
+.dropdown-menu{
+  left:-130px;
+}
+
+@media (max-width: 871px) {
+  .nav > li {
+    /*float: right;*/
+    display: inline-block;
+  }
+.navbar-header{
+  display: inline-block;
+}
+
+.navbar-nav{
+    float: right;
+    display: inline-block;
+  }
+}
