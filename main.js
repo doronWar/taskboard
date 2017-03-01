@@ -4,7 +4,6 @@
 // <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
 
 
-
 // creating ta list
 function createNewList(listsholder,title) {
 
@@ -15,7 +14,7 @@ function createNewList(listsholder,title) {
 
 
 <span class="openerTag " tabindex="0">
-<input type="text" style="display: none"></input>
+<input class ="inputTag" type="text" style="display: none"></input>
 <span class="tagText">${title}</span>
 
 <span class="badge"> ${numberOfTasks} </span> </span>
@@ -37,11 +36,13 @@ function createNewList(listsholder,title) {
 
   //this are the listeners i've added
   basicTemplete.querySelector('.tagText').addEventListener('click', upsdateListName);
+  basicTemplete.querySelector('.inputTag').addEventListener('blur', inputLitener);
+  basicTemplete.querySelector('.inputTag').addEventListener('keydown', inputLitener);
 }
 
 
 
-//this is the  function i've build to listen
+//chang from span to input in list title
 function upsdateListName(e) {
   const nameHolder = e.target;
   const listName = nameHolder.textContent;
@@ -56,45 +57,45 @@ function upsdateListName(e) {
   nameHolder.parentNode.appendChild(inputeFiled)
   inputeFiled.focus();
 
-  inputeFiled.addEventListener('keypress', (event)=>{
-    inputListener(event, nameHolder, inputeFiled, listName)
-  });
-  inputeFiled.addEventListener('blur', (event)=>{
-    inputListener(event, nameHolder, inputeFiled, listName)
-  });
-
-
-
 }
 
 
-function inputListener(event , nameHolder, inputeFiled, listName) {
+//listening to the inpute when it appears
 
-  const ENTER = 13;
+function  inputLitener(event){
+  let newTitle = event.target.value;
 
-  if (event.keyCode === ENTER) {
-    //making sure that the name isn't empty
-    if(inputeFiled.value=== '' || inputeFiled.value=== ' '){
-      inputeFiled.value = listName;
-    }
-    displayChanger();
+  if(event.type === 'keydown'){
+  if(event.keyCode === 13) {
+    autoReplaceEmptyInputValue(event,newTitle )
   }
-
+  }
   if(event.type === 'blur'){
-    if(inputeFiled.value=== '' || inputeFiled.value=== ' '){
-      inputeFiled.value = listName;
-    }
-    displayChanger();
-
+    autoReplaceEmptyInputValue(event,newTitle )
   }
 
-  function displayChanger() {
-    nameHolder.innerHTML = inputeFiled.value;
-    inputeFiled.style.display = 'none';
-    nameHolder.style.display = 'block';
-  }
 
 }
+
+function autoReplaceEmptyInputValue(event,newTitle ) {
+  if(newTitle=== '' || newTitle=== ' ') {
+    newTitle = event.target.parentNode.querySelector('.tagText').textContent;
+    displayChanger(event, newTitle);
+  }
+  else{
+    displayChanger(event, newTitle);
+  }
+}
+
+function displayChanger(event, newTitle) {
+  const finalTitle = event.target.parentNode.querySelector('.tagText')
+
+  finalTitle.textContent = newTitle;
+  event.target.style.display = 'none';
+  finalTitle.style.display = 'inline-block'
+
+}
+
 
 //function to create a card
 function createCard(e){
@@ -121,8 +122,6 @@ function updateBagde(badge, parentNode) {
   if(numbeOfCards >= 10){
     badgenumberOfCards.style.paddingLeft = '3px';
   }
-
-  // badge.target.parentNode.querySelector('.badge').textContent =  parentNode.querySelectorAll('.card').length;
 }
 
 
@@ -137,10 +136,10 @@ function activeButton() {
 // creating page
 const liholder = document.querySelector('#mainCardHolders');
 
+//action that happen when page is loaded
 createNewList(liholder, 'tasks');
 createNewList(liholder, 'todo');
 createNewList(liholder, 'QNA');
-
 
 // creatSpanListeners();
 activeButton();
