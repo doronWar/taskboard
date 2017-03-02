@@ -25,8 +25,6 @@ function createNewList(title) {
 </div>
 <input class ="inputTag" type="text" style="display: none" maxlength="25"></input>
 <span class="tagText" tabindex="0">${title}</span>
-
-
 <span class="badge"> ${numberOfTasks} </span> </span>
   
 <ul class="ulForCards ">
@@ -48,8 +46,8 @@ function createNewList(title) {
 //lists of adding event listeners
 function addEventListeners(basicTemplete) {
   //listener to create card
-  basicTemplete.querySelector('.closerTag').addEventListener('click', createCard);
-  basicTemplete.querySelector('.closerTag').addEventListener('keydown', createCard);
+  basicTemplete.querySelector('.closerTag').addEventListener('click', createCardByclick);
+  basicTemplete.querySelector('.closerTag').addEventListener('keydown', createCardByclick);
   //listeners for changing list titles
   basicTemplete.querySelector('.tagText').addEventListener('click', upsdateListName);
   setTimeout(basicTemplete.querySelector('.tagText').addEventListener('keydown', upsdateListName), 10);
@@ -186,24 +184,47 @@ function displayChanger(event, newTitle) {
 
 //                //          dealing cards        //        ///       //
 
+function cardCreation(e) {
+  const newCard = document.createElement('li');
+  newCard.setAttribute("class", "card");
+  newCard.textContent = 'card';
+  // newCard.innerHTML += content;
+  const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
+  const referenceNode = parentNode.querySelector('ul > li:last-child')
+  parentNode.insertBefore(newCard, referenceNode);
+  updateBagde(e, parentNode);
+
+  //temporary member adding
+  // addNewMember('DW', 'doron warzagr', newCard);
+  // addNewMember('YA', 'Yuval Avnery' ,newCard);
+  // addNewMember('ET', 'einav Tenzer', newCard);
+  return newCard
+}
+
 //function to create a card
-function createCard(e) {
+function createCardByclick(e) {
 
   if (e.keyCode === 13 || e.type === 'click') {
-    const newCard = document.createElement('li');
-    const parentNode = e.target.parentNode.childNodes[3]
-    const referenceNode = parentNode.querySelector('ul > li:last-child')
-
-    newCard.setAttribute("class", "card");
-    newCard.textContent = 'card';
+//     const innerContent = `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
+// <div class="label-holder">
+// </div>`;
+    const newCard = cardCreation(e);
     newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
 <div class="label-holder">
 </div>`;
+    // const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
+    // const referenceNode = parentNode.querySelector('ul > li:last-child')
 
-    parentNode.insertBefore(newCard, referenceNode);
-    updateBagde(e, parentNode);
-
-    //temporary member adding
+//     newCard.setAttribute("class", "card");
+//     newCard.textContent = 'card';
+//     newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
+// <div class="label-holder">
+// </div>`;
+//
+//     parentNode.insertBefore(newCard, referenceNode);
+//     updateBagde(e, parentNode);
+//
+//     //temporary member adding
     addNewMember('DW', 'doron warzagr', newCard);
     addNewMember('YA', 'Yuval Avnery' ,newCard);
     addNewMember('ET', 'einav Tenzer', newCard);
@@ -255,7 +276,17 @@ function activeButton() {
   })
 }
 
+function gettingJasonObject(event) {
+  const savedLists = JSON.parse(event.target.responseText);
+  console.info(savedLists.board);
+  for (let list of savedLists.board) {
+    createNewList(list.title)
 
+  }
+
+
+
+}
 //        // creating page   //     //      //        / /
 
 const listsholder = document.querySelector('#mainCardHolders');
@@ -264,10 +295,19 @@ let lColorIndex =0;
 //to toggle menu by pressing anywhere in document
 document.addEventListener('click', dropDownMenuFocusClose);
 
+//getting a Jason
+const xhr = new XMLHttpRequest();
+xhr.addEventListener("load", gettingJasonObject);
+xhr.open("GET","assets/board.json");
+xhr.send();
+
+
+
+
 //action that happen when page is loaded
-createNewList('tasks');
-createNewList('todo');
-createNewList('QNA');
+// createNewList('tasks');
+// createNewList('todo');
+// createNewList('QNA');
 
 // creatSpanListeners();
 activeButton();
