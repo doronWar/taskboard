@@ -220,12 +220,12 @@ button{
   cursor: pointer;
 }
 
-.inputTag:focus{
-  outline: none;
-  border: 1px solid transparent;
-  background-color: #F8F8F8;
+/*.inputTag:focus{*/
+  /*outline: none;*/
+  /*border: 1px solid transparent;*/
+  /*background-color: #F8F8F8;*/
 
-}
+/*}*/
 
 
 
