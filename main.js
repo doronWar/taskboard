@@ -96,6 +96,7 @@ function listDropDownMenuActions(event) {
 //ask if element's parent are the button.
 //if yes do nothing. else close menu
 //fix this into catching a not array also//
+
 function dropDownMenuFocusClose(event) {
   console.log(event.target.parentNode.querySelectorAll('.dropdown-menu'));
   const theMenu = event.target.parentNode.querySelectorAll('.dropdown-menu')
