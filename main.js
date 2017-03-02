@@ -184,11 +184,12 @@ function displayChanger(event, newTitle) {
 
 //                //          dealing cards        //        ///       //
 
-function cardCreation(e) {
+// if i'm calling the creatino of the card from the list i'm in - then i can know where i am....
+function cardCreation(e, content) {
   const newCard = document.createElement('li');
   newCard.setAttribute("class", "card");
   newCard.textContent = 'card';
-  // newCard.innerHTML += content;
+  newCard.innerHTML += content;
   const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
   const referenceNode = parentNode.querySelector('ul > li:last-child')
   parentNode.insertBefore(newCard, referenceNode);
@@ -208,10 +209,11 @@ function createCardByclick(e) {
 //     const innerContent = `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
 // <div class="label-holder">
 // </div>`;
-    const newCard = cardCreation(e);
-    newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
+    const content =`<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
 <div class="label-holder">
 </div>`;
+    const newCard = cardCreation(e, content);
+    // newCard.innerHTML += content
     // const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
     // const referenceNode = parentNode.querySelector('ul > li:last-child')
 
@@ -278,9 +280,14 @@ function activeButton() {
 
 function gettingJasonObject(event) {
   const savedLists = JSON.parse(event.target.responseText);
-  console.info(savedLists.board);
+  // console.info(event);
   for (let list of savedLists.board) {
     createNewList(list.title)
+    console.info(list);
+    for (let obj of list.tasks) {
+      // cardCreation(list, obj.text);
+      // console.info(obj.text);
+    }
 
   }
 
