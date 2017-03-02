@@ -68,7 +68,7 @@ function deleteList(event) {
   const listIAmIn = event.target.closest('.oneLists');
   // const listHolder =  event.target.closest('.mainCardHolders')
   const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
-  const deleteCheck = confirm(`to delete ${nameOfList}? are you sure`);
+  const deleteCheck = confirm(`Deleting ${nameOfList} list. Are you sure?`);
 
   if (!deleteCheck) {
     event.target.parentNode.parentNode.style.display = 'none'
@@ -196,10 +196,40 @@ function createCard(e) {
 
     newCard.setAttribute("class", "card");
     newCard.textContent = 'card';
+    newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
+<div class="label-holder">
+</div>`;
 
     parentNode.insertBefore(newCard, referenceNode);
     updateBagde(e, parentNode);
+
+    //temporary member adding
+    addNewMember('DW', 'doron warzagr', newCard);
+    addNewMember('YA', 'Yuval Avnery' ,newCard);
+    addNewMember('ET', 'einav Tenzer', newCard);
+
   }
+
+}
+
+//add memebers to cards
+function addNewMember(memberName,fullName , newCard) {
+  const newLabel = document.createElement('span');
+
+
+
+  newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title=" ${fullName} ">${memberName}</span>`
+  newCard.querySelector('.label-holder').appendChild(newLabel);
+  if(lColorIndex >=5)
+    lColorIndex=0;
+
+  lColorIndex++;
+
+  //creating new span.
+  //giving it a color out of an array
+  //appending it
+  //writting the useres name in it
+
 
 }
 
@@ -229,7 +259,8 @@ function activeButton() {
 //        // creating page   //     //      //        / /
 
 const listsholder = document.querySelector('#mainCardHolders');
-
+const memberLableColors= ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
+let lColorIndex =0;
 //to toggle menu by pressing anywhere in document
 document.addEventListener('click', dropDownMenuFocusClose);
 
