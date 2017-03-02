@@ -27,3 +27,6 @@ if (window.Element && !Element.prototype.closest) {
 }/**
  * Created by Doron Warzager on 01/03/2017.
  */
+
+
+//on is for closeest the other is for remove()
