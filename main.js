@@ -97,11 +97,6 @@ function listDropDownMenuActions(event) {
   }
 }
 
-//listen to click on all document.
-//ask if element's parent are the button.
-//if yes do nothing. else close menu
-//fix this into catching a not array also//
-
 //closing list menu by clicking anyhere
 function dropDownMenuFocusClose(event) {
 
