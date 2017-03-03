@@ -127,6 +127,8 @@ main{
   display: flex;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+
 }
 .edit-Card-Button{
   position: absolute;
@@ -135,6 +137,14 @@ main{
   width:20%;
   height:25%;
   display: none;
+
+}
+
+.cardInnerText{
+  margin-bottom:35px;
+  overflow: hidden;
+  padding-right: 10px;
+  padding-left: 5px;
 }
 .label-holder{
   position: absolute;

@@ -41,6 +41,7 @@ function createNewList(title) {
 //adding event listeners
   addEventListeners(basicTemplete);
 
+  return basicTemplete;
 }
 
 //lists of adding event listeners
@@ -184,21 +185,20 @@ function displayChanger(event, newTitle) {
 
 //                //          dealing cards        //        ///       //
 
-// if i'm calling the creatino of the card from the list i'm in - then i can know where i am....
-function cardCreation(e, content) {
+
+function cardCreation(text) {
+  const cardContent = text || 'Add new task'
   const newCard = document.createElement('li');
   newCard.setAttribute("class", "card");
-  newCard.textContent = 'card';
-  newCard.innerHTML += content;
-  const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
-  const referenceNode = parentNode.querySelector('ul > li:last-child')
-  parentNode.insertBefore(newCard, referenceNode);
-  updateBagde(e, parentNode);
-
-  //temporary member adding
+  const cardsText = document.createElement('p');
+  cardsText.setAttribute("class", "cardInnerText");
+  newCard.appendChild(cardsText);
+  cardsText.textContent = cardContent;
+  newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
+<div class="label-holder">
+</div>`;
   // addNewMember('DW', 'doron warzagr', newCard);
-  // addNewMember('YA', 'Yuval Avnery' ,newCard);
-  // addNewMember('ET', 'einav Tenzer', newCard);
+
   return newCard
 }
 
@@ -206,53 +206,27 @@ function cardCreation(e, content) {
 function createCardByclick(e) {
 
   if (e.keyCode === 13 || e.type === 'click') {
-//     const innerContent = `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
-// <div class="label-holder">
-// </div>`;
-    const content =`<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
-<div class="label-holder">
-</div>`;
-    const newCard = cardCreation(e, content);
-    // newCard.innerHTML += content
-    // const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
-    // const referenceNode = parentNode.querySelector('ul > li:last-child')
 
-//     newCard.setAttribute("class", "card");
-//     newCard.textContent = 'card';
-//     newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
-// <div class="label-holder">
-// </div>`;
-//
-//     parentNode.insertBefore(newCard, referenceNode);
-//     updateBagde(e, parentNode);
-//
-//     //temporary member adding
-    addNewMember('DW', 'doron warzagr', newCard);
-    addNewMember('YA', 'Yuval Avnery' ,newCard);
-    addNewMember('ET', 'einav Tenzer', newCard);
-
+    const newCard = cardCreation();
+    const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
+    const referenceNode = parentNode.querySelector('ul > li:last-child')
+    parentNode.insertBefore(newCard, referenceNode);
+    updateBagde(e, parentNode);
   }
 
 }
 
 //add memebers to cards
-function addNewMember(memberName,fullName , newCard) {
+function addNewMember(memberName, fullName, newCard) {
   const newLabel = document.createElement('span');
-
 
 
   newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title=" ${fullName} ">${memberName}</span>`
   newCard.querySelector('.label-holder').appendChild(newLabel);
-  if(lColorIndex >=5)
-    lColorIndex=0;
+  if (lColorIndex >= 5)
+    lColorIndex = 0;
 
   lColorIndex++;
-
-  //creating new span.
-  //giving it a color out of an array
-  //appending it
-  //writting the useres name in it
-
 
 }
 
@@ -280,35 +254,49 @@ function activeButton() {
 
 function gettingJasonObject(event) {
   const savedLists = JSON.parse(event.target.responseText);
-  // console.info(event);
+
+  //creating the lists
   for (let list of savedLists.board) {
-    createNewList(list.title)
-    console.info(list);
+    const loadList = createNewList(list.title)
+//adding the cards
     for (let obj of list.tasks) {
-      // cardCreation(list, obj.text);
-      // console.info(obj.text);
+      cardCreation(list, obj.text);
+
+      const newCard = cardCreation(obj.text);
+      const parentNode = loadList.querySelector('.ulForCards')
+      parentNode.appendChild(newCard);
+      //adding members
+      for (let member of obj.members) {
+        // console.info(member);
+        const anitinals = anitialsCreator(member)
+        addNewMember(anitinals, member, newCard);
+      }
     }
 
   }
+}
+//this has to be a function that recives a name and returns thee two first lettes
 
-
+function anitialsCreator(fullname) {
+  const nameToArray =fullname.split(' ').map((n)=> n[0]);
+  return nameToArray.join('');
 
 }
+
+
 //        // creating page   //     //      //        / /
 
 const listsholder = document.querySelector('#mainCardHolders');
-const memberLableColors= ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
-let lColorIndex =0;
+const memberLableColors = ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
+let lColorIndex = 0;
 //to toggle menu by pressing anywhere in document
 document.addEventListener('click', dropDownMenuFocusClose);
 
 //getting a Jason
 const xhr = new XMLHttpRequest();
 xhr.addEventListener("load", gettingJasonObject);
-xhr.open("GET","assets/board.json");
+xhr.open("GET", "assets/board.json");
 xhr.send();
-
-
 
 
 //action that happen when page is loaded
