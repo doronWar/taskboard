@@ -151,6 +151,8 @@ main{
   bottom: 5%;
   right: 2%;
   display: inline-block;
+  /*cursor: context-menu;*/
+  cursor: help;
 }
 
 .label-holder .label{
