@@ -40,6 +40,38 @@ main{
 
   /*flex-wrap: nowrap;*/
 }
+
+.PopUpMenuHide{
+  /*position: absolute;*/
+  /*top: 0;*/
+  /*left:0;*/
+  /*display: inline-block;*/
+}
+
+/*.modal-content{*/
+  /*position: absolute;*/
+  /*top: 10%;*/
+/*}*/
+.members-input{
+  width:  50%;
+}
+.btn-delete-size{
+  height:40px;
+  /*width:50px; */
+  margin-top:20px;
+}
+.modal{
+  background-color: rgba(0, 0, 0, .5);
+  /*top: -5%;*/
+}
+
+.member-list{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height:100px;
+}
+
 #mainCardHolders {
   display: flex;
   flex-direction: row;
@@ -284,4 +316,47 @@ button{
     float: right;
     display: inline-block;
   }
+}
+
+.member-page{
+  position: absolute;
+  z-index: 10;
+  width:600px;
+
+
+}
+.member-page:hover{
+
+}
+
+.member-save-changes-btn{
+  display: none;
+  float: right;
+}
+
+.edit-member-btn{
+  display: none;
+  float: right;
+}
+.member-in-list:hover .seen{
+  display: block;
+}
+
+.member-in-list {
+  height:70px;
+
+  display: flex;
+  /*flex-direction: column;*/
+  justify-content: space-between;
+}
+.member-in-list > p {
+  line-height: 50px;
+  font-size: 18px;
+  display: inline-block;
+  /*border: 1px solid red;*/
+}
+
+/*todo: do not forget to move this when shit is working */
+#mainCardHolders{
+  display: none;
 }
