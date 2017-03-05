@@ -8,7 +8,8 @@ function createMemberList(memberName){
   const listOfMembers = document.querySelector('.list-group');
   // oneMember.textContent = ;
   oneMember.innerHTML +=`
-  <p>${memberName}</p>
+  <p class="memebr-name">${memberName}</p>
+  <input class ="new-member-name" type="text" style="display: none" maxlength="25"></input>
   <div>
   <button type="button" class="btn btn-danger edit-member-btn seen">Delet</button>
   <button type="button" class="btn btn-primary edit-member-btn edit-btn seen">Edit</button>
@@ -20,6 +21,8 @@ function createMemberList(memberName){
 
   oneMember.querySelector('.edit-btn').addEventListener('click', changMemberButtonsClasses)
   oneMember.querySelector('.cancel-btn').addEventListener('click', changMemberButtonsClasses)
+  // oneMember.querySelector('.edit-btn').addEventListener('click', editMemberName)
+
 
 }
 
@@ -45,12 +48,22 @@ function createEditListPopUp() {
 
 }
 
+// function editMemberName(e) {
+//   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name').style;
+//   const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name').style;
+//   inputFiled.display = "block";
+//   memberName.display = "none";
+//   console.info(memberName);
+// }
+
+
 //the input of the list options move to
 function addMoveToOptions(title) {
   const moveToOption = document.querySelector('.lists-holder');
   const newOption = document.createElement('option')
   newOption.innerHTML = title;
   moveToOption.appendChild(newOption);
+
 }
 
 // creating a list
@@ -324,6 +337,14 @@ function updateBagde(badge, parentNode) {
 }
 
 
+
+
+
+
+
+//loading from Jason functions
+
+
 function activeButton() {
   const button = document.querySelector('.btn-catcher');
 
@@ -356,16 +377,16 @@ function gettingJasonObject(event) {
 
   }
 
-  // createMemberList('Yoave');
-  // createMemberList('Doron');
-  // createMemberList('Michal');
 
 
 }
 
 //getting members Jason
 function gettingJasonMembersObj(event) {
-
+  const savedMembers = JSON.parse(event.target.responseText);
+  for (const member of savedMembers.members) {
+    createMemberList(member.name);
+  }
 }
 
 
@@ -387,9 +408,9 @@ xhr.send();
 
 //getting jonson for members
 const xhrMembers = new XMLHttpRequest();
-xhr.addEventListener("load", gettingJasonMembersObj);
-xhr.open("GET", "assets/board.json");
-xhr.send();
+xhrMembers.addEventListener("load", gettingJasonMembersObj);
+xhrMembers.open("GET", "assets/members.json");
+xhrMembers.send();
 
 
 
@@ -398,10 +419,10 @@ xhr.send();
 // createNewList('todo');
 // createNewList('QNA');
 
-createMemberList('Yoave');
-createMemberList('Doron');
-createMemberList('Michal');
-
+// createMemberList('Yoave');
+// createMemberList('Doron');
+// createMemberList('Michal');
+//
 
 // creatSpanListeners();
 activeButton();

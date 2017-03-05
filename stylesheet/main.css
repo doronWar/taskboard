@@ -91,14 +91,15 @@ main{
 
   }
 .closerTag {
-  margin-top: -4px;
   border-radius: 0 0 5px 5px;
-  box-shadow: 0 -1px 6px 0;
+  /*box-shadow: op: -4px;
+  border-r0 -1px 6px 0;*/
   position: relative;
+  /*margin-top:10px;*/
 }
 .openerTag{
-  box-shadow: 0 1px 6px 0;
-  margin-bottom: 1px;
+  /*box-shadow: 0 1px 6px 0;*/
+  /*margin-bottom: 10px;*/
   position: relative;
   border-radius: 5px 5px 0 0 ;
 }
@@ -129,8 +130,10 @@ main{
   /*max-height: 70vh;*/
   max-height: calc(95vh - 150px);
   min-height: 15vh;
-  background-color:  #F1F1F1;
-
+  /*background-color:  #F1F1F1;*/
+  background-color:  ghostwhite;
+  padding-bottom:10px;
+  padding-top:10px;
 
   /*height:65vh;   !*should be the size of the X amount of cards*!*/
   /*overflow: auto;*/
@@ -150,16 +153,20 @@ main{
 }
 .card{
   height: 150px;
-  width:100%;
-  background-color: aliceblue;
+  width:95%;
+  /*background-color: aliceblue;*/
+  background-color: white;
   list-style-type: none;
+  /*border: 1px solid blue;*/
   box-shadow: 0 1px 2px 0 ;
-  margin-bottom: 5px;
-  margin-top:3px;
+
   display: flex;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  margin:0 auto;
+  margin-bottom: 5px;
+  margin-top:3px;
 
 }
 .edit-Card-Button{
@@ -301,6 +308,17 @@ button{
 /*}*/
 
 
+.new-member-input{
+  width:50%;
+  margin-left:20px;
+  margin-right: 20px;
+  margin-bottom:20px;
+}
+.btn-add-member{
+  height:35px;
+  margin-bottom:10px;
+
+}
 
 @media (max-width: 871px) {
 
@@ -359,4 +377,7 @@ button{
 /*todo: do not forget to move this when shit is working */
 #mainCardHolders{
   display: none;
+}
+.member-page{
+  /*display: none;*/
 }
