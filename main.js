@@ -252,9 +252,19 @@ function activeButton() {
   })
 }
 
-function gettingJasonObject(event) {
-  const savedLists = JSON.parse(event.target.responseText);
+//this has to be a function that recives a name and returns thee two first lettes
 
+function anitialsCreator(fullname) {
+  const nameToArray =fullname.split(' ').map((n)=> n[0]);
+  return nameToArray.join('');
+
+}
+
+function gettingJasonObject(event) {
+  const savedLists = JSON.parse(event.target.response);
+
+
+  console.info(savedLists.total);
   //creating the lists
   for (let list of savedLists.board) {
     const loadList = createNewList(list.title)
@@ -274,13 +284,6 @@ function gettingJasonObject(event) {
     }
 
   }
-}
-//this has to be a function that recives a name and returns thee two first lettes
-
-function anitialsCreator(fullname) {
-  const nameToArray =fullname.split(' ').map((n)=> n[0]);
-  return nameToArray.join('');
-
 }
 
 
