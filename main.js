@@ -3,6 +3,20 @@
  */
 
 
+function createEditListPopUp() {
+
+  document.querySelector('.close').addEventListener('click',toggleEditPanle);
+  document.querySelector('.close-btn').addEventListener('click',toggleEditPanle);
+
+}
+
+//the input of the list options move to
+function addMoveToOptions(title) {
+  const moveToOption = document.querySelector('.lists-holder');
+  const newOption = document.createElement('option')
+  newOption.innerHTML = title;
+  moveToOption.appendChild(newOption);
+}
 
 // creating a list
 function createNewList(title) {
@@ -197,6 +211,8 @@ function cardCreation(text) {
   newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
 <div class="label-holder">
 </div>`;
+
+  newCard.querySelector('.edit-Card-Button').addEventListener('click', toggleEditPanle);
   // addNewMember('DW', 'doron warzagr', newCard);
 
   return newCard
@@ -212,6 +228,18 @@ function createCardByclick(e) {
     const referenceNode = parentNode.querySelector('ul > li:last-child')
     parentNode.insertBefore(newCard, referenceNode);
     updateBagde(e, parentNode);
+  }
+
+}
+
+
+function toggleEditPanle() {
+  const menuState = document.querySelector('.PopUpMenuHide').style;
+  if(menuState.display ==='none' || !menuState.display){
+    menuState.display = 'block'
+  }
+  else{
+    menuState.display = 'none'
   }
 
 }
@@ -258,6 +286,7 @@ function gettingJasonObject(event) {
   //creating the lists
   for (let list of savedLists.board) {
     const loadList = createNewList(list.title)
+    addMoveToOptions(list.title);
 //adding the cards
     for (let obj of list.tasks) {
       cardCreation(list, obj.text);
@@ -278,7 +307,7 @@ function gettingJasonObject(event) {
 //this has to be a function that recives a name and returns thee two first lettes
 
 function anitialsCreator(fullname) {
-  const nameToArray =fullname.split(' ').map((n)=> n[0]);
+  const nameToArray = fullname.split(' ').map((n) => n[0]);
   return nameToArray.join('');
 
 }
@@ -306,4 +335,5 @@ xhr.send();
 
 // creatSpanListeners();
 activeButton();
+createEditListPopUp();
 

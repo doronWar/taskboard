@@ -40,6 +40,38 @@ main{
 
   /*flex-wrap: nowrap;*/
 }
+
+.PopUpMenuHide{
+  /*position: absolute;*/
+  /*top: 0;*/
+  /*left:0;*/
+  /*display: inline-block;*/
+}
+
+/*.modal-content{*/
+  /*position: absolute;*/
+  /*top: 10%;*/
+/*}*/
+.members-input{
+  width:  50%;
+}
+.btn-delete-size{
+  height:40px;
+  /*width:50px; */
+  margin-top:20px;
+}
+.modal{
+  background-color: rgba(0, 0, 0, .5);
+  /*top: -5%;*/
+}
+
+.member-list{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height:100px;
+}
+
 #mainCardHolders {
   display: flex;
   flex-direction: row;
