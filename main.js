@@ -303,6 +303,12 @@ function gettingJasonObject(event) {
     }
 
   }
+
+  // createMemberList('Yoave');
+  // createMemberList('Doron');
+  // createMemberList('Michal');
+
+
 }
 //this has to be a function that recives a name and returns thee two first lettes
 
@@ -312,6 +318,84 @@ function anitialsCreator(fullname) {
 
 }
 
+
+
+function createMemberList(memberName){
+  const oneMember = document.createElement('li');
+  const listOfMembers = document.querySelector('.list-group');
+  // oneMember.textContent = ;
+  oneMember.innerHTML +=`
+  <p>${memberName}</p>
+  <div>
+  <button type="button" class="btn btn-danger edit-member-btn seen">Delet</button>
+  <button type="button" class="btn btn-primary edit-member-btn edit-btn seen">Edit</button>
+  <button type="button" class="btn btn-default member-save-changes-btn unseen">Cancel</button>
+  <button type="button" class="btn btn-success member-save-changes-btn unseen">Save</button>
+</div>`
+  oneMember.className ="list-group-item member-in-list";
+  listOfMembers.appendChild(oneMember);
+
+  oneMember.querySelector('.edit-btn').addEventListener('click', changMemberButtonsClasses)
+  //listeners member list
+  // oneMember.addEventListener('mouseover', toggleMemberBtn)
+  // oneMember.addEventListener('mouseout', toggleMemberBtn)
+  // //listeners for edit memebrs buttons
+  // oneMember.querySelector('.edit-btn').addEventListener('click', changMemberButtons)
+}
+
+function changMemberButtonsClasses(e) {
+  const originalButtons = e.target.closest('.member-page').querySelectorAll('.seen');
+  const newButtons = e.target.closest('.member-page').querySelectorAll('.seen');
+
+  originalButtons[0].classList.toggle("seen");
+  originalButtons[0].classList.toggle("seen");
+  originalButtons[1].classList.remove("seen");
+  console.info(originalButtons[0]);
+  // newButtons[0].classList.add('seen')
+  // newButtons[1].classList.add('seen')
+}
+
+//
+// function toggleMemberBtn(e) {
+//   const editButtons = e.currentTarget.querySelectorAll('.edit-member-btn');
+//   // const newButtons = e.target.closest('.member-page').querySelectorAll('.member-save-changes-btn');
+//   // console.info(newButtons.style.display);
+//  if(e.type === 'mouseover'){
+//    LoopTochangeDisplyBTNMemers(editButtons, 'block')
+//
+//  }
+//   if(e.type === 'mouseout'){
+//     LoopTochangeDisplyBTNMemers(editButtons, 'none')
+//     }
+//
+// }
+//
+// function changMemberButtons(e) {
+//   const editButtons = e.target.closest('.member-page').querySelectorAll('.edit-member-btn');
+//   const newButtons = e.target.closest('.member-page').querySelectorAll('.member-save-changes-btn');
+//
+//
+//   for(const button of editButtons){
+//     button.style.display = 'none'
+//     console.info(button.style.display);
+//   }
+//
+//   LoopTochangeDisplyBTNMemers(editButtons, 'none')
+//   // LoopTochangeDisplyBTNMemers(newButtons, 'block')
+//   // console.info(newButtons);
+//   // for(const button of editButtons){
+//   //   button.style.display = "none"
+//   // }
+//
+// }
+//
+// function LoopTochangeDisplyBTNMemers(objToChange, displayState) {
+//
+//   for(const button of objToChange){
+//     button.style.display = displayState
+//
+//   }
+// }
 
 //        // creating page   //     //      //        / /
 
@@ -332,6 +416,11 @@ xhr.send();
 // createNewList('tasks');
 // createNewList('todo');
 // createNewList('QNA');
+
+createMemberList('Yoave');
+createMemberList('Doron');
+createMemberList('Michal');
+
 
 // creatSpanListeners();
 activeButton();
