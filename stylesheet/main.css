@@ -374,6 +374,17 @@ button{
   /*border: 1px solid red;*/
 }
 
+
+.displayState {
+  /*visibility: hidden;*/
+  display: none;
+}
+
+.memebr-name {
+  font-size: 18px;
+
+  line-height: 70px;
+}
 /*todo: do not forget to move this when shit is working */
 #mainCardHolders{
   display: none;

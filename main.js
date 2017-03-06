@@ -8,27 +8,35 @@ function createMemberList(memberName){
   const listOfMembers = document.querySelector('.list-group');
   // oneMember.textContent = ;
   oneMember.innerHTML +=`
-  <p class="memebr-name">${memberName}</p>
-  <input class ="new-member-name" type="text" style="display: none" maxlength="25"></input>
+  <span class="memebr-name  ">${memberName}</span>
+  <input class ="new-member-name displayState " type="text"  maxlength="25"></input>
   <div>
-  <button type="button" class="btn btn-danger edit-member-btn seen">Delet</button>
-  <button type="button" class="btn btn-primary edit-member-btn edit-btn seen">Edit</button>
-  <button type="button" class="btn btn-default member-save-changes-btn cancel-btn">Cancel</button>
-  <button type="button" class="btn btn-success member-save-changes-btn ">Save</button>
+  <button type="button" class="btn btn-danger edit-member-btn seen delete">Delet</button>
+  <button type="button" class="btn btn-primary edit-member-btn edit-btn seen" id="check">Edit</button>
+  <button type="button" class="btn btn-default member-save-changes-btn cancel-btn" id="cancel">Cancel</button>
+  <button type="button" class="btn btn-success member-save-changes-btn save-btn" id="save">Save</button>
 </div>`
   oneMember.className ="list-group-item member-in-list";
   listOfMembers.appendChild(oneMember);
 
   oneMember.querySelector('.edit-btn').addEventListener('click', changMemberButtonsClasses)
   oneMember.querySelector('.cancel-btn').addEventListener('click', changMemberButtonsClasses)
-  // oneMember.querySelector('.edit-btn').addEventListener('click', editMemberName)
-
+  oneMember.querySelector('.edit-btn').addEventListener('click', editMemberName)
+  oneMember.querySelector('.save-btn').addEventListener('click', editMemberName)
+  oneMember.querySelector('.cancel-btn').addEventListener('click', editMemberName)
+  // oneMember.querySelector('.delete').addEventListener('click', editMemberName)
 
 }
 
+function addMember(e) {
+  const newMember = document.querySelector('#add-member-input')
+  createMemberList(newMember.value)
+  newMember.value ='';
+
+}
 function changMemberButtonsClasses(e) {
-  const originalButtons = e.target.closest('.member-page').querySelectorAll('.edit-member-btn');
-  const newButtons = e.target.closest('.member-page').querySelectorAll('.member-save-changes-btn');
+  const originalButtons = e.target.closest('.member-in-list').querySelectorAll('.edit-member-btn');
+  const newButtons = e.target.closest('.member-in-list').querySelectorAll('.member-save-changes-btn');
 
   toggleMemberMenuButtons(originalButtons);
   toggleMemberMenuButtons(newButtons);
@@ -48,13 +56,32 @@ function createEditListPopUp() {
 
 }
 
-// function editMemberName(e) {
-//   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name').style;
-//   const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name').style;
-//   inputFiled.display = "block";
-//   memberName.display = "none";
-//   console.info(memberName);
-// }
+function editMemberName(e) {
+  const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
+  const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name');
+  memberName.classList.toggle('displayState')
+
+  inputFiled.classList.toggle('displayState')
+
+
+  if(e.currentTarget.id === 'check') {
+    inputFiled.value = memberName.textContent
+  }
+  if(e.currentTarget.id === 'save') {
+    memberName.textContent = inputFiled.value;
+  }
+  if(e.currentTarget.id === 'cancel') {
+    //do nothing
+  }
+  // if(e.currentTarget.id === 'delete') {
+  //   //do nothing
+  //   // e.target.closest('.list-group').remove()
+  //   console.info('hello');
+  // }
+
+}
+
+
 
 
 //the input of the list options move to
@@ -399,6 +426,8 @@ const memberLableColors = ['label-primary', 'label-success', 'label-info', 'labe
 let lColorIndex = 0;
 //to toggle menu by pressing anywhere in document
 document.addEventListener('click', dropDownMenuFocusClose);
+// add member in member page
+document.querySelector('.btn-add-member').addEventListener('click', addMember)
 
 //getting a Jason for lists & cards
 const xhr = new XMLHttpRequest();
