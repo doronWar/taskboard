@@ -131,9 +131,10 @@ main{
   max-height: calc(95vh - 150px);
   min-height: 15vh;
   /*background-color:  #F1F1F1;*/
-  background-color:  ghostwhite;
+  /*background-color:  ghostwhite;*/
   padding-bottom:10px;
   padding-top:10px;
+  border: 1px solid #F8F8F8;
 
   /*height:65vh;   !*should be the size of the X amount of cards*!*/
   /*overflow: auto;*/
@@ -387,8 +388,8 @@ button{
 }
 /*todo: do not forget to move this when shit is working */
 #mainCardHolders{
-  display: none;
+  /*display: none;*/
 }
 .member-page{
-  /*display: none;*/
+  display: none;
 }
