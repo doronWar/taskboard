@@ -2,6 +2,28 @@
  * Created by Doron Warzager on 26/02/2017.
  */
 
+
+function loadHtmlForMembers(){
+  const templat =`
+<div class="member-page">
+  <h2>TaskBoard Members</h2>
+  <div class="modal-content">
+  <!--<form class="form-horizontal">-->
+  <ul class="list-group ">
+
+  </ul>
+
+    <input type="text"  maxlength="25" placeholder="Add New Member" class="new-member-input" id="add-member-input"></input>
+    <button type="button" class="btn btn-primary btn-xs btn-add-member">Add Member</button>
+
+</div>
+</div>
+`
+  document.querySelector('.main-screen').innerHTML = templat;
+  document.querySelector('.btn-add-member').addEventListener('click', addMember)
+
+}
+
 //creating HTML for members page
 function createMemberList(memberName){
   const oneMember = document.createElement('li');
@@ -27,6 +49,95 @@ function createMemberList(memberName){
   // oneMember.querySelector('.delete').addEventListener('click', editMemberName)
 
 }
+
+
+
+
+
+
+
+
+function createBordHolder() {
+  const templat =`
+<div id="mainCardHolders">
+
+ <button class="btn btn-default navbar-btn btn-catcher add-button">Add new task</button>
+
+  </div>
+`
+
+  document.querySelector('.main-screen').innerHTML = templat;
+
+}
+
+
+
+
+
+
+function creatingCarEditModalHtml(){
+  const modalTemplate=`
+<div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Edit Card</h4>
+        </div>
+        <div class="modal-body editMenuInputes">
+
+
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="card-text"class="col-sm-2 control-label">Card Text</label>
+              <div class="col-sm-10">
+                <textarea type="text" id="card-text" class="form-control"></textarea>
+              </div>
+
+            </div>
+            <div class="form-group">
+
+              <label for="exampleSelect1" class="col-sm-2 control-label">Move To</label>
+              <div class="col-sm-10">
+                <select class="form-control lists-holder" id="exampleSelect1">
+
+                </select>
+              </div>
+            </div>
+            <label for="exampleSelect1" class="col-sm-2 control-label ">Members</label>
+            <div class="col-sm-offset-2 members-input  ">
+              <div class="checkbox form-control member-list">
+
+                <label for="Member-name1"><input type="checkbox" name="memeber1" value="memeber1" id="Member-name1">
+                Member Name</label>
+                <label for="Member-name2"><input type="checkbox" name="memeber2" value="memeber2" id="Member-name2">
+                Member Name</label>
+
+              </div>
+            </div>
+            <button type="button" class="btn btn-danger btn-delete-size">Delete Card</button>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default close-btn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+`
+  const editCardModale = document.createElement('div')
+  editCardModale.innerHTML = modalTemplate;
+  editCardModale.setAttribute("class", "modal PopUpMenuHide")
+  editCardModale.setAttribute("tabindex","-1")
+  editCardModale.setAttribute("role","dialog")
+  document.querySelector('.main-screen').appendChild(editCardModale)
+}
+
+
+
+
+
+
 
 function addMember(e) {
   const newMember = document.querySelector('#add-member-input')
@@ -123,6 +234,7 @@ function createNewList(title) {
 
 //creating the new list:
   const basicTemplete = document.createElement('div');
+  const listsholder = document.querySelector('#mainCardHolders');
   basicTemplete.setAttribute("class", "oneLists");
   basicTemplete.innerHTML += listStringHtml;
   listsholder.insertBefore(basicTemplete, nodereferece);
@@ -158,8 +270,10 @@ function deleteList(event) {
   const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
   const deleteCheck = confirm(`Deleting ${nameOfList} list. Are you sure?`);
 
+  //todo why doesn't this work right
   if (!deleteCheck) {
-    event.target.parentNode.parentNode.style.display = 'none'
+    // event.target.parentNode.parentNode.style.display = 'none'
+
   }
   else {
     listIAmIn.remove();
@@ -198,7 +312,10 @@ function dropDownMenuFocusClose(event) {
 }
 //usable modlar function to close all menus when needed
 function closingListMenu() {
-  const theMenu = listsholder.querySelectorAll('.dropdown-menu')
+  // const listsholder = document.querySelector('#mainCardHolders');
+
+  const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
+  console.info(theMenu);
   for (const oneMenu of theMenu) {
     oneMenu.style.display = 'none';
   }
@@ -308,8 +425,10 @@ function createCardByclick(e) {
 
     const newCard = cardCreation();
     const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
-    const referenceNode = parentNode.querySelector('ul > li:last-child')
-    parentNode.insertBefore(newCard, referenceNode);
+    parentNode.appendChild(newCard);
+
+    // const referenceNode = parentNode.querySelector('ul > li:last-child')
+    // parentNode.insertBefore(newCard, referenceNode);
     updateBagde(e, parentNode);
   }
 
@@ -380,6 +499,19 @@ function activeButton() {
   })
 }
 
+function navBarControls() {
+  const pageNav = document.querySelector('#page-nav')
+  pageNav.addEventListener('click', moveToPage);
+}
+
+function moveToPage(e) {
+  const chosen = e.target.parentNode;
+  if(!chosen.classList.contains('active')){
+    e.currentTarget.querySelector('.active').classList.remove('active');
+        chosen.classList.add('active');
+        }
+}
+
 function gettingJasonObject(event) {
   const savedLists = JSON.parse(event.target.responseText);
 
@@ -419,40 +551,133 @@ function gettingJasonMembersObj(event) {
 
 
 
+
+
+function loadpage(e) {
+
+
+  if(e.currentTarget.location.hash === '#Board'){
+
+    creatingBlamckBoard();
+    creatingBoard();
+  }
+  else{
+    loadHtmlForMembers(); //creating member page
+    // add member in member page
+    creatingMembersPage(); // placing info of members in member page
+  }
+ 
+}
+
+
+
+
+
 //        // creating page   //     //      //        / /
 
-const listsholder = document.querySelector('#mainCardHolders');
-const memberLableColors = ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
-let lColorIndex = 0;
-//to toggle menu by pressing anywhere in document
-document.addEventListener('click', dropDownMenuFocusClose);
-// add member in member page
-document.querySelector('.btn-add-member').addEventListener('click', addMember)
+
+function creatingBlamckBoard() {
+
+  createBordHolder();
+  activeButton();
+  creatingCarEditModalHtml();
+  createEditListPopUp();
+
+}
+
 
 //getting a Jason for lists & cards
-const xhr = new XMLHttpRequest();
-xhr.addEventListener("load", gettingJasonObject);
-xhr.open("GET", "assets/board.json");
-xhr.send();
+function creatingBoard() {
+
+//to toggle menu by pressing anywhere in document
+
+
+  document.addEventListener('click', dropDownMenuFocusClose);
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", gettingJasonObject);
+  xhr.open("GET", "assets/board.json");
+  xhr.send();
+
+}
 
 //getting jonson for members
-const xhrMembers = new XMLHttpRequest();
-xhrMembers.addEventListener("load", gettingJasonMembersObj);
-xhrMembers.open("GET", "assets/members.json");
-xhrMembers.send();
+function creatingMembersPage() {
+
+  const xhrMembers = new XMLHttpRequest();
+  xhrMembers.addEventListener("load", gettingJasonMembersObj);
+  xhrMembers.open("GET", "assets/members.json");
+  xhrMembers.send();
+  
+
+}
+
+
+navBarControls();
+const memberLableColors = ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
+let lColorIndex = 0;
+window.addEventListener('hashchange', loadpage);
+
+
+//fisr load
+if(window.location.hash === '#Board'){
+  creatingBlamckBoard();
+  creatingBoard();
+}
+if(window.location.hash === '#Members'){
+  loadHtmlForMembers(); //creating member page
+  // add member in member page
+  creatingMembersPage(); // placing info of members in member page
+}
+if(window.location.hash===''){
+  console.info('hello');
+  creatingBlamckBoard();
+  creatingBoard();
+}
+// else{
+  //so if i don't give it any # it checks what's active and loads it -
+  //althos i can just run it.
+
+// if(document.querySelector('#bord-link').classList.contains('active')){
+//   creatingBlamckBoard();
+//   creatingBoard();
+// }
+// if(document.querySelector('#members-link').classList.contains('active')){
+//   loadHtmlForMembers(); //creating member page
+//   // add member in member page
+//   creatingMembersPage(); // placing info of members in member page
+// }
+
+// }
 
 
 
-//action that happen when page is loaded
-// createNewList('tasks');
-// createNewList('todo');
-// createNewList('QNA');
 
-// createMemberList('Yoave');
-// createMemberList('Doron');
-// createMemberList('Michal');
-//
 
-// creatSpanListeners();
-activeButton();
-createEditListPopUp();
+
+
+
+// window.addEventListener('hashchange', ()=>console.info(window.location.hash));
+
+
+// window.addEventListener('hashchange', (event) => {
+//   console.log(window.location.hash);
+// });
+
+
+
+// creatingBoard();
+
+// const listsholder = document.querySelector('#mainCardHolders');
+
+
+
+
+
+// loadHtmlForMembers(); //creating member page
+// add member in member page
+// creatingMembersPage(); // placing info of members in member page
+
+
+
+
+
