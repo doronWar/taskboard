@@ -2,13 +2,13 @@
  * Created by Doron Warzager on 26/02/2017.
  */
 
-
+//loading HTML wrap of member page
 function loadHtmlForMembers(){
   const templat =`
 <div class="member-page">
   <h2>TaskBoard Members</h2>
   <div class="modal-content">
-  <!--<form class="form-horizontal">-->
+  
   <ul class="list-group ">
 
   </ul>
@@ -24,7 +24,7 @@ function loadHtmlForMembers(){
 
 }
 
-//creating HTML for members page
+//creating the HTML for members page
 function createMemberList(memberName){
   const oneMember = document.createElement('li');
   const listOfMembers = document.querySelector('.list-group');
@@ -44,19 +44,18 @@ function createMemberList(memberName){
   oneMember.querySelector('.edit-btn').addEventListener('click', changMemberButtonsClasses)
   oneMember.querySelector('.cancel-btn').addEventListener('click', changMemberButtonsClasses)
   oneMember.querySelector('.edit-btn').addEventListener('click', editMemberName)
-  oneMember.querySelector('.save-btn').addEventListener('click', editMemberName)
   oneMember.querySelector('.cancel-btn').addEventListener('click', editMemberName)
+  oneMember.querySelector('.save-btn').addEventListener('click', editMemberName)
+  oneMember.querySelector('.new-member-name').addEventListener('keypress', editMemberNameKeyBoard)
+
+  oneMember.querySelector('.save-btn').addEventListener('click', changMemberButtonsClasses)
   // oneMember.querySelector('.delete').addEventListener('click', editMemberName)
 
 }
 
 
 
-
-
-
-
-
+//creating HTML wrap of
 function createBordHolder() {
   const templat =`
 <div id="mainCardHolders">
@@ -69,9 +68,6 @@ function createBordHolder() {
   document.querySelector('.main-screen').innerHTML = templat;
 
 }
-
-
-
 
 
 
@@ -134,17 +130,15 @@ function creatingCarEditModalHtml(){
 }
 
 
-
-
-
-
-
+//memebrs - add memeber button function
 function addMember(e) {
   const newMember = document.querySelector('#add-member-input')
   createMemberList(newMember.value)
   newMember.value ='';
 
 }
+
+//members page main toggle options on every member-list-item
 function changMemberButtonsClasses(e) {
   const originalButtons = e.target.closest('.member-in-list').querySelectorAll('.edit-member-btn');
   const newButtons = e.target.closest('.member-in-list').querySelectorAll('.member-save-changes-btn');
@@ -153,13 +147,14 @@ function changMemberButtonsClasses(e) {
   toggleMemberMenuButtons(newButtons);
 }
 
+//the toggle code of the main member toggle
 function toggleMemberMenuButtons(buttons) {
   for(button of buttons){
     button.classList.toggle('seen')
   }
 }
 
-
+//toggle "edit card" modal
 function createEditListPopUp() {
 
   document.querySelector('.close').addEventListener('click',toggleEditPanle);
@@ -167,6 +162,27 @@ function createEditListPopUp() {
 
 }
 
+
+//saving members with enter
+function editMemberNameKeyBoard(e) {
+  const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
+  const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name');
+
+  if(e.keyCode === 13){
+    console.info('hello');
+    //to toggle sapn\inpute
+    memberName.classList.toggle('displayState')
+    inputFiled.classList.toggle('displayState')
+
+
+    if(e.target.value !==''){
+      memberName.textContent = inputFiled.value;
+      changMemberButtonsClasses(e);
+  }
+  }
+}
+
+//controls in member's edit mode
 function editMemberName(e) {
   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
   const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name');
@@ -195,7 +211,7 @@ function editMemberName(e) {
 
 
 
-//the input of the list options move to
+//createing MOVETO bar info in edit card modal
 function addMoveToOptions(title) {
   const moveToOption = document.querySelector('.lists-holder');
   const newOption = document.createElement('option')
@@ -263,16 +279,16 @@ function addEventListeners(basicTemplete) {
 
 }
 
-
+//DELTE list function
 function deleteList(event) {
   const listIAmIn = event.target.closest('.oneLists');
   // const listHolder =  event.target.closest('.mainCardHolders')
   const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
   const deleteCheck = confirm(`Deleting ${nameOfList} list. Are you sure?`);
 
-  //todo why doesn't this work right
+
   if (!deleteCheck) {
-    // event.target.parentNode.parentNode.style.display = 'none'
+    closingListMenu()
 
   }
   else {
@@ -281,9 +297,11 @@ function deleteList(event) {
 }
 
 
-//                //          dealing with list menu        //        ///       //
 
-//toggle for drop down menu
+
+//                //          dealing with DELETE list menu        //        ///       //
+
+//toggle for DELELTE drop down menu
 function listDropDownMenuActions(event) {
   const theMenu = event.currentTarget.parentNode.parentNode.querySelector('.dropdown-menu');
 
@@ -299,29 +317,35 @@ function listDropDownMenuActions(event) {
   }
 }
 
-//closing list menu by clicking anyhere
+
+//closing DELELTE list menu by clicking anyhere
 function dropDownMenuFocusClose(event) {
 
-  if (event.target.closest('.btn-group')) {
-//does nothing if button pressed
-  }
-  else {
+  if (!event.target.closest('.btn-group')) {
     closingListMenu()
   }
 
 }
-//usable modlar function to close all menus when needed
+
+
+//modlar function for DELELTE lists function
 function closingListMenu() {
   // const listsholder = document.querySelector('#mainCardHolders');
+  // console.info(1234, document.querySelector('#mainCardHolders'));
 
   const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
-  console.info(theMenu);
+
   for (const oneMenu of theMenu) {
     oneMenu.style.display = 'none';
   }
 }
 
+
+
 //                //          dealing with title        //        ///       //
+
+
+
 //chang from span to input in list title
 function upsdateListName(e) {
 
@@ -367,7 +391,7 @@ function inputLitener(event) {
 
 }
 
-//making sure the title will have a value
+//making sure the inpute title will have a value
 function autoReplaceEmptyInputValue(event, newTitle) {
   if (newTitle === '' || newTitle === ' ') {
     newTitle = event.target.parentNode.querySelector('.tagText').textContent;
@@ -518,7 +542,10 @@ function gettingJasonObject(event) {
   //creating the lists
   for (let list of savedLists.board) {
     const loadList = createNewList(list.title)
+    // debugger
+
     addMoveToOptions(list.title);
+
 //adding the cards
     for (let obj of list.tasks) {
       cardCreation(list, obj.text);
@@ -536,7 +563,8 @@ function gettingJasonObject(event) {
 
   }
 
-
+  // document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
+  document.addEventListener('click', dropDownMenuFocusClose);
 
 }
 
@@ -562,11 +590,13 @@ function loadpage(e) {
     creatingBoard();
   }
   else{
+    document.removeEventListener('click', dropDownMenuFocusClose)
+
     loadHtmlForMembers(); //creating member page
     // add member in member page
     creatingMembersPage(); // placing info of members in member page
   }
- 
+
 }
 
 
@@ -608,7 +638,7 @@ function creatingMembersPage() {
   xhrMembers.addEventListener("load", gettingJasonMembersObj);
   xhrMembers.open("GET", "assets/members.json");
   xhrMembers.send();
-  
+
 
 }
 
@@ -623,7 +653,7 @@ window.addEventListener('hashchange', loadpage);
 if(window.location.hash === '#Board'){
   creatingBlamckBoard();
   creatingBoard();
-  document.addEventListener('click', dropDownMenuFocusClose);
+  // document.addEventListener('click', dropDownMenuFocusClose);
 }
 if(window.location.hash === '#Members'){
   loadHtmlForMembers(); //creating member page
