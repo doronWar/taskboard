@@ -583,6 +583,7 @@ function creatingBlamckBoard() {
   creatingCarEditModalHtml();
   createEditListPopUp();
 
+
 }
 
 
@@ -592,7 +593,7 @@ function creatingBoard() {
 //to toggle menu by pressing anywhere in document
 
 
-  document.addEventListener('click', dropDownMenuFocusClose);
+
   const xhr = new XMLHttpRequest();
   xhr.addEventListener("load", gettingJasonObject);
   xhr.open("GET", "assets/board.json");
@@ -622,6 +623,7 @@ window.addEventListener('hashchange', loadpage);
 if(window.location.hash === '#Board'){
   creatingBlamckBoard();
   creatingBoard();
+  document.addEventListener('click', dropDownMenuFocusClose);
 }
 if(window.location.hash === '#Members'){
   loadHtmlForMembers(); //creating member page
