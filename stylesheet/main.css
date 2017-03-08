@@ -155,7 +155,7 @@ main{
 
 }
 .card{
-  height: 150px;
+  min-height: 150px;
   width:95%;
   /*background-color: aliceblue;*/
   background-color: white;
@@ -166,7 +166,7 @@ main{
   display: flex;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  /*overflow: hidden;*/
   margin:0 auto;
   margin-bottom: 5px;
   margin-top:3px;
@@ -177,7 +177,7 @@ main{
   top: 0;
   right: -5%;
   width:20%;
-  height:25%;
+  height:35px;
   display: none;
 
 }

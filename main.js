@@ -643,28 +643,38 @@ function creatingMembersPage() {
 }
 
 
+//fisr load
+//-------------- add here active action - to the right nav option - when creating board\member
+function firstLoad() {
+
+
+  if (window.location.hash === '#Board') {
+    //|| window.location.hash === '') left over of privious IF
+    creatingBlamckBoard();
+    creatingBoard();
+    // document.addEventListener('click', dropDownMenuFocusClose);
+  }
+  if (window.location.hash === '#Members') {
+    loadHtmlForMembers(); //creating member page
+    // add member in member page
+    creatingMembersPage(); // placing info of members in member page
+  }
+if(!window.location.hash){
+  window.location.hash ='#Board'
+  return;
+  //   creatingBlamckBoard();
+  // creatingBoard();
+}
+}
+
+
+
 navBarControls();
 const memberLableColors = ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
 let lColorIndex = 0;
 window.addEventListener('hashchange', loadpage);
+firstLoad();
 
-
-//fisr load
-if(window.location.hash === '#Board'){
-  creatingBlamckBoard();
-  creatingBoard();
-  // document.addEventListener('click', dropDownMenuFocusClose);
-}
-if(window.location.hash === '#Members'){
-  loadHtmlForMembers(); //creating member page
-  // add member in member page
-  creatingMembersPage(); // placing info of members in member page
-}
-if(window.location.hash===''){
-  console.info('hello');
-  creatingBlamckBoard();
-  creatingBoard();
-}
 // else{
   //so if i don't give it any # it checks what's active and loads it -
   //althos i can just run it.
