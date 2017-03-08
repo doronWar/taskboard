@@ -2,6 +2,8 @@
  * Created by Doron Warzager on 26/02/2017.
  */
 
+
+
 //loading HTML wrap of member page
 function loadHtmlForMembers(){
   const templat =`
@@ -23,6 +25,8 @@ function loadHtmlForMembers(){
   document.querySelector('.btn-add-member').addEventListener('click', addMember)
 
 }
+
+
 
 //creating the HTML for members page
 function createMemberList(memberName){
@@ -55,7 +59,17 @@ function createMemberList(memberName){
 
 
 
-//creating HTML wrap of
+//first boad element - the Add list button
+function activeButton() {
+  const button = document.querySelector('.btn-catcher');
+
+  button.addEventListener('click', () => {
+    createNewList('New List');
+  })
+}
+
+
+//creating HTML wrap of board
 function createBordHolder() {
   const templat =`
 <div id="mainCardHolders">
@@ -71,6 +85,7 @@ function createBordHolder() {
 
 
 
+//creating edit midal for cards
 function creatingCarEditModalHtml(){
   const modalTemplate=`
 <div class="modal-dialog" role="document">
@@ -130,7 +145,11 @@ function creatingCarEditModalHtml(){
 }
 
 
-//memebrs - add memeber button function
+
+
+//                      members page function          //
+
+//memebrs - ADD memeber function
 function addMember(e) {
   const newMember = document.querySelector('#add-member-input')
   createMemberList(newMember.value)
@@ -138,7 +157,9 @@ function addMember(e) {
 
 }
 
-//members page main toggle options on every member-list-item
+
+
+// toggle function for edit\delete\save\cancel state in members page
 function changMemberButtonsClasses(e) {
   const originalButtons = e.target.closest('.member-in-list').querySelectorAll('.edit-member-btn');
   const newButtons = e.target.closest('.member-in-list').querySelectorAll('.member-save-changes-btn');
@@ -147,42 +168,18 @@ function changMemberButtonsClasses(e) {
   toggleMemberMenuButtons(newButtons);
 }
 
-//the toggle code of the main member toggle
+
+
+//the toggle code for changMemberButtonsClasses()
 function toggleMemberMenuButtons(buttons) {
   for(button of buttons){
     button.classList.toggle('seen')
   }
 }
 
-//toggle "edit card" modal
-function createEditListPopUp() {
-
-  document.querySelector('.close').addEventListener('click',toggleEditPanle);
-  document.querySelector('.close-btn').addEventListener('click',toggleEditPanle);
-
-}
 
 
-//saving members with enter
-function editMemberNameKeyBoard(e) {
-  const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
-  const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name');
-
-  if(e.keyCode === 13){
-    console.info('hello');
-    //to toggle sapn\inpute
-    memberName.classList.toggle('displayState')
-    inputFiled.classList.toggle('displayState')
-
-
-    if(e.target.value !==''){
-      memberName.textContent = inputFiled.value;
-      changMemberButtonsClasses(e);
-  }
-  }
-}
-
-//controls in member's edit mode
+//controls in member's edit mode - edit\delete\save\cancel
 function editMemberName(e) {
   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
   const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name');
@@ -211,14 +208,30 @@ function editMemberName(e) {
 
 
 
-//createing MOVETO bar info in edit card modal
-function addMoveToOptions(title) {
-  const moveToOption = document.querySelector('.lists-holder');
-  const newOption = document.createElement('option')
-  newOption.innerHTML = title;
-  moveToOption.appendChild(newOption);
+//saving members with keypress enter
+function editMemberNameKeyBoard(e) {
+  const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
+  const memberName =e.target.closest('.member-in-list').querySelector('.memebr-name');
 
+  if(e.keyCode === 13){
+    console.info('hello');
+    //to toggle sapn\inpute
+    memberName.classList.toggle('displayState')
+    inputFiled.classList.toggle('displayState')
+
+
+    if(e.target.value !==''){
+      memberName.textContent = inputFiled.value;
+      changMemberButtonsClasses(e);
+  }
+  }
 }
+
+
+
+
+
+//                           board page functions            ///
 
 // creating a list
 function createNewList(title) {
@@ -279,69 +292,28 @@ function addEventListeners(basicTemplete) {
 
 }
 
-//DELTE list function
-function deleteList(event) {
 
-  const listIAmIn = event.target.closest('.oneLists');
-  // const listHolder =  event.target.closest('.mainCardHolders')
-  const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
-  const deleteCheck = confirm(`Deleting ${nameOfList} list. Are you sure?`);
+// board page - toggle for  "edit card" modal
+function createEditListPopUp() {
 
-
-
-  if (!deleteCheck) {
-    closingListMenu()
-
-  }
-  else {
-    listIAmIn.remove();
-  }
+  document.querySelector('.close').addEventListener('click',toggleEditPanle);
+  document.querySelector('.close-btn').addEventListener('click',toggleEditPanle);
 
 }
 
 
 
-
-//                //          dealing with DELETE list menu        //        ///       //
-
-//toggle for DELELTE drop down menu
-function listDropDownMenuActions(event) {
-  const theMenu = event.currentTarget.parentNode.parentNode.querySelector('.dropdown-menu');
-
-
-  if (theMenu.style.display === 'none' || !theMenu.style.display) {
-    closingListMenu();
-    theMenu.style.display = 'block'
-  }
-  else {
-
-    theMenu.style.display = 'none'
-
-  }
-}
-
-
-//closing DELELTE list menu by clicking anyhere
-function dropDownMenuFocusClose(event) {
-
-  if (!event.target.closest('.btn-group')) {
-    closingListMenu()
-  }
+//createing MOVETO bar info in edit card modal
+function addMoveToOptions(title) {
+  const moveToOption = document.querySelector('.lists-holder');
+  const newOption = document.createElement('option')
+  newOption.innerHTML = title;
+  moveToOption.appendChild(newOption);
 
 }
 
 
-//modlar function for DELELTE lists function
-function closingListMenu() {
-  // const listsholder = document.querySelector('#mainCardHolders');
-  // console.info(1234, document.querySelector('#mainCardHolders'));
 
-  const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
-
-  for (const oneMenu of theMenu) {
-    oneMenu.style.display = 'none';
-  }
-}
 
 
 
@@ -372,7 +344,6 @@ function upsdateListName(e) {
 
 
 //listening to the inpute when it appears
-
 function inputLitener(event) {
   let newTitle = event.target.value;
 
@@ -421,12 +392,81 @@ function displayChanger(event, newTitle) {
 
 
 
+//                //          dealing with DELETE list menu        //        ///       //
+
+
+
+
+//DELTE list function
+function deleteList(event) {
+
+  const listIAmIn = event.target.closest('.oneLists');
+  // const listHolder =  event.target.closest('.mainCardHolders')
+  const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
+  const deleteCheck = confirm(`Deleting ${nameOfList} list. Are you sure?`);
+
+
+
+  if (!deleteCheck) {
+    closingListMenu()
+
+  }
+  else {
+    listIAmIn.remove();
+  }
+
+}
+
+
+//toggle to see\unsee DELELTE drop down menu
+function listDropDownMenuActions(event) {
+  const theMenu = event.currentTarget.parentNode.parentNode.querySelector('.dropdown-menu');
+
+
+  if (theMenu.style.display === 'none' || !theMenu.style.display) {
+    closingListMenu();
+    theMenu.style.display = 'block'
+  }
+  else {
+
+    theMenu.style.display = 'none'
+
+  }
+}
+
+
+//closing DELELTE list menu by clicking anywhere
+function dropDownMenuFocusClose(event) {
+
+  if (!event.target.closest('.btn-group')) {
+    closingListMenu()
+  }
+
+}
+
+
+//the actual DELELTE lists function code
+function closingListMenu() {
+  // const listsholder = document.querySelector('#mainCardHolders');
+  // console.info(1234, document.querySelector('#mainCardHolders'));
+
+  const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
+
+  for (const oneMenu of theMenu) {
+    oneMenu.style.display = 'none';
+  }
+}
+
+
+
+
+
 
 
 
 //                //          dealing cards        //        ///       //
 
-
+//basic card template creator
 function cardCreation(text) {
   const cardContent = text || 'Add new task'
   const newCard = document.createElement('li');
@@ -445,7 +485,7 @@ function cardCreation(text) {
   return newCard
 }
 
-//function to create a card
+//function to create a card on board
 function createCardByclick(e) {
 
   if (e.keyCode === 13 || e.type === 'click') {
@@ -461,7 +501,7 @@ function createCardByclick(e) {
 
 }
 
-
+//edit button toggle controls
 function toggleEditPanle() {
   const menuState = document.querySelector('.PopUpMenuHide').style;
   if(menuState.display ==='none' || !menuState.display){
@@ -473,7 +513,7 @@ function toggleEditPanle() {
 
 }
 
-//add memebers to cards
+//add memebers to cards controls
 function addNewMember(memberName, fullName, newCard) {
   const newLabel = document.createElement('span');
 
@@ -487,8 +527,7 @@ function addNewMember(memberName, fullName, newCard) {
 
 }
 
-//this has to be a function that recives a name and returns thee two first lettes
-
+//creates anitials for cards    -- need to check it works with 3 word name
 function anitialsCreator(fullname) {
   const nameToArray = fullname.split(' ').map((n) => n[0]);
   return nameToArray.join('');
@@ -515,22 +554,15 @@ function updateBagde(badge, parentNode) {
 
 
 
-//loading from Jason functions
+//                                       NAV BAR controls          //
 
-
-function activeButton() {
-  const button = document.querySelector('.btn-catcher');
-
-  button.addEventListener('click', () => {
-    createNewList('New List');
-  })
-}
-
+//adding listener to nav-controls
 function navBarControls() {
   const pageNav = document.querySelector('#page-nav')
   pageNav.addEventListener('click', moveToPage);
 }
 
+//showing which nav option is choosed
 function moveToPage(e) {
   const chosen = e.target.parentNode;
   if(!chosen.classList.contains('active')){
@@ -540,10 +572,12 @@ function moveToPage(e) {
         }
 }
 
+//toggle for moveToPage function
 function navBarToggleAction(nav1, nav2) {
   nav1.classList.toggle('active');
   nav2.classList.toggle('active');
 }
+
 function gettingJasonObject(event) {
   const savedLists = JSON.parse(event.target.responseText);
   appData.lists = savedLists;
@@ -586,6 +620,12 @@ function gettingJasonObject(event) {
 
 }
 
+
+
+//                                       JSON uploading         //
+
+
+
 //getting members Jason // and then loading page
 function gettingJasonMembersObj(event) {
   const savedMembers = JSON.parse(event.target.responseText);
@@ -602,51 +642,10 @@ function gettingJasonMembersObj(event) {
 }
 
 
-
-//hash listener to load page
-function loadpage(e) {
-
-
-  if(e.currentTarget.location.hash === '#Board' || e.currentTarget.location.hash === '#'){
-
-    creatingBlamckBoard();
-    creatingBoard();
-
-
-  }
-  else{
-    document.removeEventListener('click', dropDownMenuFocusClose)
-
-    loadHtmlForMembers(); //creating member page
-    addingMemberListFromObj()
-
-
-
-    // add member in member page
-    // creatingMembersPage(); // placing info of members in member page
-  }
-
-}
-
 function addingMemberListFromObj() {
   for (const member of appData.members) {
     createMemberList(member.name);
   }
-}
-
-
-
-//        // creating page   //     //      //        / /
-
-//creating the board page
-function creatingBlamckBoard() {
-
-  createBordHolder();
-  activeButton();
-  creatingCarEditModalHtml();
-  createEditListPopUp();
-
-
 }
 
 
@@ -677,6 +676,8 @@ function creatingMembersPage() {
 //fisr load of webpage
 //-------------- add here active action - to the right nav option - when creating board\member
 //and fix anitials to be able to recieve as much words as needed.
+
+//cuilding list from appData obj
 function buildingListFromObj() {
 
   const savedLists = appData.lists;
@@ -707,6 +708,22 @@ function buildingListFromObj() {
 }
 
 
+
+
+//        // creating page   //     //      //        / /
+
+//creating the board page
+function creatingBlamckBoard() {
+
+  createBordHolder();
+  activeButton();
+  creatingCarEditModalHtml();
+  createEditListPopUp();
+
+
+}
+
+//first time loading page
 function firstLoad() {
 
 
@@ -742,8 +759,35 @@ if(!window.location.hash){
 }
 
 
+//hash listener to load page when app is open
+function loadpage(e) {
 
-navBarControls();
+
+  if(e.currentTarget.location.hash === '#Board' || e.currentTarget.location.hash === '#'){
+
+    creatingBlamckBoard();
+    creatingBoard();
+
+
+  }
+  else if(e.currentTarget.location.hash === '#Members'){
+    document.removeEventListener('click', dropDownMenuFocusClose)
+
+    loadHtmlForMembers(); //creating member page
+    addingMemberListFromObj()
+
+
+
+    // add member in member page
+    // creatingMembersPage(); // placing info of members in member page
+  }
+
+}
+
+
+
+
+
 const memberLableColors = ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
 let lColorIndex = 0;
 window.addEventListener('hashchange', loadpage);
@@ -752,59 +796,9 @@ const appData={
   members:[],
 }
 
-
+navBarControls();
 creatingBlamckBoard();
 creatingBoard();
-// creatingMembersPage();
-
-// firstLoad();
-
-
-// else{
-  //so if i don't give it any # it checks what's active and loads it -
-  //althos i can just run it.
-
-// if(document.querySelector('#bord-link').classList.contains('active')){
-//   creatingBlamckBoard();
-//   creatingBoard();
-// }
-// if(document.querySelector('#members-link').classList.contains('active')){
-//   loadHtmlForMembers(); //creating member page
-//   // add member in member page
-//   creatingMembersPage(); // placing info of members in member page
-// }
-
-// }
-
-
-
-
-
-
-
-
-// window.addEventListener('hashchange', ()=>console.info(window.location.hash));
-
-
-// window.addEventListener('hashchange', (event) => {
-//   console.log(window.location.hash);
-// });
-
-
-
-// creatingBoard();
-
-// const listsholder = document.querySelector('#mainCardHolders');
-
-
-
-
-
-// loadHtmlForMembers(); //creating member page
-// add member in member page
-// creatingMembersPage(); // placing info of members in member page
-
-
 
 
 
