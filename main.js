@@ -281,10 +281,12 @@ function addEventListeners(basicTemplete) {
 
 //DELTE list function
 function deleteList(event) {
+
   const listIAmIn = event.target.closest('.oneLists');
   // const listHolder =  event.target.closest('.mainCardHolders')
   const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
   const deleteCheck = confirm(`Deleting ${nameOfList} list. Are you sure?`);
+
 
 
   if (!deleteCheck) {
@@ -294,6 +296,7 @@ function deleteList(event) {
   else {
     listIAmIn.remove();
   }
+
 }
 
 
@@ -531,13 +534,152 @@ function navBarControls() {
 function moveToPage(e) {
   const chosen = e.target.parentNode;
   if(!chosen.classList.contains('active')){
-    e.currentTarget.querySelector('.active').classList.remove('active');
-        chosen.classList.add('active');
+    navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
+    // e.currentTarget.querySelector('.active').classList.remove('active');
+    //     chosen.classList.add('active');
         }
 }
 
+function navBarToggleAction(nav1, nav2) {
+  nav1.classList.toggle('active');
+  nav2.classList.toggle('active');
+}
 function gettingJasonObject(event) {
   const savedLists = JSON.parse(event.target.responseText);
+  appData.lists = savedLists;
+  // console.info(appData);
+
+  creatingMembersPage();
+
+  // loadpage(e)
+  // firstLoad();
+//
+//
+//   //creating the lists
+//   for (let list of savedLists.board) {
+//     const loadList = createNewList(list.title)
+//     // debugger
+//
+//     addMoveToOptions(list.title);
+//
+// //adding the cards
+//     for (let obj of list.tasks) {
+//       cardCreation(list, obj.text);
+//
+//       const newCard = cardCreation(obj.text);
+//       const parentNode = loadList.querySelector('.ulForCards')
+//       parentNode.appendChild(newCard);
+//       //adding members
+//       for (let member of obj.members) {
+//         // console.info(member);
+//         const anitinals = anitialsCreator(member)
+//         addNewMember(anitinals, member, newCard);
+//       }
+//     }
+//
+//   }
+
+
+
+
+  // document.addEventListener('click', dropDownMenuFocusClose);
+
+}
+
+//getting members Jason // and then loading page
+function gettingJasonMembersObj(event) {
+  const savedMembers = JSON.parse(event.target.responseText);
+  appData.members = savedMembers.members
+  firstLoad();
+  // console.info(appData.members);
+  //
+  // firstLoad();
+  // for (const member of appData.members) {
+  //   // console.info(member.name);
+  //   createMemberList(member.name);
+  //
+  // }
+}
+
+
+
+//hash listener to load page
+function loadpage(e) {
+
+
+  if(e.currentTarget.location.hash === '#Board' || e.currentTarget.location.hash === '#'){
+
+    creatingBlamckBoard();
+    creatingBoard();
+
+
+  }
+  else{
+    document.removeEventListener('click', dropDownMenuFocusClose)
+
+    loadHtmlForMembers(); //creating member page
+    addingMemberListFromObj()
+
+
+
+    // add member in member page
+    // creatingMembersPage(); // placing info of members in member page
+  }
+
+}
+
+function addingMemberListFromObj() {
+  for (const member of appData.members) {
+    createMemberList(member.name);
+  }
+}
+
+
+
+//        // creating page   //     //      //        / /
+
+//creating the board page
+function creatingBlamckBoard() {
+
+  createBordHolder();
+  activeButton();
+  creatingCarEditModalHtml();
+  createEditListPopUp();
+
+
+}
+
+
+//getting a Jason for lists & cards
+function creatingBoard() {
+
+//to toggle menu by pressing anywhere in document
+
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", gettingJasonObject);
+  xhr.open("GET", "assets/board.json");
+  xhr.send();
+
+}
+
+//getting jonson for members
+function creatingMembersPage() {
+
+  const xhrMembers = new XMLHttpRequest();
+  xhrMembers.addEventListener("load", gettingJasonMembersObj);
+  xhrMembers.open("GET", "assets/members.json");
+  xhrMembers.send();
+
+
+}
+
+
+//fisr load of webpage
+//-------------- add here active action - to the right nav option - when creating board\member
+//and fix anitials to be able to recieve as much words as needed.
+function buildingListFromObj() {
+
+  const savedLists = appData.lists;
 
   //creating the lists
   for (let list of savedLists.board) {
@@ -562,109 +704,40 @@ function gettingJasonObject(event) {
     }
 
   }
-
-  // document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
-  document.addEventListener('click', dropDownMenuFocusClose);
-
-}
-
-//getting members Jason
-function gettingJasonMembersObj(event) {
-  const savedMembers = JSON.parse(event.target.responseText);
-  for (const member of savedMembers.members) {
-    createMemberList(member.name);
-  }
 }
 
 
-
-
-
-
-function loadpage(e) {
-
-
-  if(e.currentTarget.location.hash === '#Board'){
-
-    creatingBlamckBoard();
-    creatingBoard();
-  }
-  else{
-    document.removeEventListener('click', dropDownMenuFocusClose)
-
-    loadHtmlForMembers(); //creating member page
-    // add member in member page
-    creatingMembersPage(); // placing info of members in member page
-  }
-
-}
-
-
-
-
-
-//        // creating page   //     //      //        / /
-
-
-function creatingBlamckBoard() {
-
-  createBordHolder();
-  activeButton();
-  creatingCarEditModalHtml();
-  createEditListPopUp();
-
-
-}
-
-
-//getting a Jason for lists & cards
-function creatingBoard() {
-
-//to toggle menu by pressing anywhere in document
-
-
-
-  const xhr = new XMLHttpRequest();
-  xhr.addEventListener("load", gettingJasonObject);
-  xhr.open("GET", "assets/board.json");
-  xhr.send();
-
-}
-
-//getting jonson for members
-function creatingMembersPage() {
-
-  const xhrMembers = new XMLHttpRequest();
-  xhrMembers.addEventListener("load", gettingJasonMembersObj);
-  xhrMembers.open("GET", "assets/members.json");
-  xhrMembers.send();
-
-
-}
-
-
-//fisr load
-//-------------- add here active action - to the right nav option - when creating board\member
-//and fix anitials to be able to recieve as much words as needed.
 function firstLoad() {
 
 
   if (window.location.hash === '#Board') {
     //|| window.location.hash === '') left over of privious IF
     creatingBlamckBoard();
-    creatingBoard();
+    // creatingBoard();
+    buildingListFromObj();
+    document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
+
     // document.addEventListener('click', dropDownMenuFocusClose);
   }
   if (window.location.hash === '#Members') {
+    navBarToggleAction(document.querySelector('#bord-link'),document.querySelector('#members-link'))
     loadHtmlForMembers(); //creating member page
-    // add member in member page
-    creatingMembersPage(); // placing info of members in member page
+    addingMemberListFromObj()
+
+    // loadHtmlForMembers(); //creating member page
+    // // add member in member page
+    // creatingMembersPage(); // placing info of members in member page
   }
 if(!window.location.hash){
   window.location.hash ='#Board'
-  return;
-  //   creatingBlamckBoard();
+  creatingBlamckBoard();
   // creatingBoard();
+  buildingListFromObj();
+  // return;
+
+
+//   //   creatingBlamckBoard();
+//   // creatingBoard();
 }
 }
 
@@ -674,7 +747,18 @@ navBarControls();
 const memberLableColors = ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
 let lColorIndex = 0;
 window.addEventListener('hashchange', loadpage);
-firstLoad();
+const appData={
+  lists:[],
+  members:[],
+}
+
+
+creatingBlamckBoard();
+creatingBoard();
+// creatingMembersPage();
+
+// firstLoad();
+
 
 // else{
   //so if i don't give it any # it checks what's active and loads it -
