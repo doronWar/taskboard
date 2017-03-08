@@ -645,6 +645,7 @@ function creatingMembersPage() {
 
 //fisr load
 //-------------- add here active action - to the right nav option - when creating board\member
+//and fix anitials to be able to recieve as much words as needed.
 function firstLoad() {
 
 
