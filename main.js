@@ -2,8 +2,10 @@
  * Created by Doron Warzager on 26/02/2017.
  */
 
-// data manegment
+//                            data manegment            //
 
+
+//updating member name in appdata
 function uppdatMemberInAppData(e){
 
   const originalName =e.target.closest('.member-in-list').querySelector('.memebr-name').textContent;
@@ -11,7 +13,7 @@ function uppdatMemberInAppData(e){
   const newList = {
     name:e.target.closest('.member-in-list').querySelector('.new-member-name').value
   };
-
+  
   appData.members.forEach((member)=>{
     if(member.name===originalName){
       member.name=newList.name;
@@ -20,7 +22,7 @@ function uppdatMemberInAppData(e){
 
 }
 
-
+//adding member in appdata
 function addMemberToAppData(e){
   const newList = {
     name: e.target.closest('.modal-content ').querySelector('.new-member-input').value
@@ -28,8 +30,20 @@ function addMemberToAppData(e){
   appData.members.push(newList);
 }
 
+//deleting member from appData
+function deleteMemberFromAppData(e, memberName) {
+
+  let indexinAppData =0;
+  appData.members.forEach((member, index)=> {
+    if(member.name === memberName){
+      indexinAppData = index;
+    }
+  })
+  appData.members.splice(indexinAppData,1);
+}
 
 
+//adding list in appdata
 function addListToAppData(e){
   const newList = {
     tasks: [],
@@ -39,8 +53,17 @@ function addListToAppData(e){
 
 }
 
+//updating the name of the list in appdata
+function changeListNameInAppData(event, newTitle) {
+  // const newTitle = event.target.closest('.oneLists').querySelector('.inputTag').value;
+  const oldTitle = event.target.closest('.oneLists').querySelector('.tagText').textContent;
+  const listInAppData = appData.lists.board.find((DataTitle) => oldTitle === DataTitle.title);
 
+  listInAppData.title = newTitle
+  console.info(appData);
+}
 
+//deleteing a list in appdata
 function deleteListToAppData(e){
   const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
   const listInAppData = appData.lists.board.find((DataTitle) => title === DataTitle.title)
@@ -56,6 +79,7 @@ function deleteListToAppData(e){
   });
 }
 
+// adding a card to board in appdata
 function addCardAppData(e) {
     const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
     const listInAppData = appData.lists.board.find((DataTitle) => title === DataTitle.title)
@@ -72,7 +96,7 @@ function addCardAppData(e) {
 
 
 /**
- *              UI
+ *                             UI             //
  */
 
 
@@ -109,7 +133,7 @@ function createMemberList(memberName) {
   <span class="memebr-name  ">${memberName}</span>
   <input class ="new-member-name displayState " type="text"  maxlength="25"></input>
   <div>
-  <button type="button" class="btn btn-danger edit-member-btn seen delete">Delet</button>
+  <button type="button" class="btn btn-danger edit-member-btn seen delete" id="delete-btn">Delet</button>
   <button type="button" class="btn btn-primary edit-member-btn edit-btn seen" id="check">Edit</button>
   <button type="button" class="btn btn-default member-save-changes-btn cancel-btn" id="cancel">Cancel</button>
   <button type="button" class="btn btn-success member-save-changes-btn save-btn" id="save">Save</button>
@@ -122,6 +146,7 @@ function createMemberList(memberName) {
   oneMember.querySelector('.edit-btn').addEventListener('click', editMemberName)
   oneMember.querySelector('.cancel-btn').addEventListener('click', editMemberName)
   oneMember.querySelector('.save-btn').addEventListener('click', editMemberName)
+  oneMember.querySelector('.delete').addEventListener('click', editMemberName)
   oneMember.querySelector('.new-member-name').addEventListener('keypress', editMemberNameKeyBoard)
 
   oneMember.querySelector('.save-btn').addEventListener('click', changMemberButtonsClasses)
@@ -158,10 +183,10 @@ function createBordHolder() {
 }
 
 
-//creating edit midal for cards
+//creating edit modal for cards
 function creatingCarEditModalHtml() {
   const modalTemplate = `
-<div class="modal-dialog" role="document">
+<div class="modal-dialog" id="modal"role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -172,7 +197,7 @@ function creatingCarEditModalHtml() {
 
           <form class="form-horizontal">
             <div class="form-group">
-              <label for="card-text"class="col-sm-2 control-label">Card Text</label>
+              <label for="card-text"class="col-sm-2 control-label editable-inpte">Card Text</label>
               <div class="col-sm-10">
                 <textarea type="text" id="card-text" class="form-control"></textarea>
               </div>
@@ -209,12 +234,15 @@ function creatingCarEditModalHtml() {
       </div>
     </div>
 `
+  // const cardContent = 
   const editCardModale = document.createElement('div')
   editCardModale.innerHTML = modalTemplate;
   editCardModale.setAttribute("class", "modal PopUpMenuHide")
   editCardModale.setAttribute("tabindex", "-1")
   editCardModale.setAttribute("role", "dialog")
   document.querySelector('.main-screen').appendChild(editCardModale)
+  // editCardModale.querySelector('.editable-inpte').textContent = 
+  // console.info();
 }
 
 
@@ -253,27 +281,28 @@ function toggleMemberMenuButtons(buttons) {
 function editMemberName(e) {
   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
   const memberName = e.target.closest('.member-in-list').querySelector('.memebr-name');
-  memberName.classList.toggle('displayState')
-
-  inputFiled.classList.toggle('displayState')
 
 
   if (e.currentTarget.id === 'check') {
     inputFiled.value = memberName.textContent
+
   }
   if (e.currentTarget.id === 'save') {
-    uppdatMemberInAppData(e)
+    uppdatMemberInAppData(e, memberName)
     memberName.textContent = inputFiled.value;
 
   }
   if (e.currentTarget.id === 'cancel') {
     //do nothing
   }
-  // if(e.currentTarget.id === 'delete') {
-  //   //do nothing
-  //   // e.target.closest('.list-group').remove()
-  //   console.info('hello');
-  // }
+  if(e.currentTarget.id === 'delete-btn') {
+    deleteMemberFromAppData(e, memberName);
+
+    e.target.closest('.member-in-list').remove();    
+  }
+  memberName.classList.toggle('displayState')
+  inputFiled.classList.toggle('displayState')
+
 
 }
 
@@ -296,6 +325,35 @@ function editMemberNameKeyBoard(e) {
     }
   }
 }
+
+
+
+//                           edit card modal            ///
+
+// board page - toggle for  "edit card" modal
+function createEditListPopUp() {
+
+  document.querySelector('.close').addEventListener('click', toggleEditPanle);
+  document.querySelector('.close-btn').addEventListener('click', toggleEditPanle);
+
+}
+
+
+//createing MOVETO bar info in edit card modal
+function addMoveToOptions(title) {
+  const moveToOption = document.querySelector('.lists-holder');
+  const newOption = document.createElement('option')
+  newOption.innerHTML = title;
+  moveToOption.appendChild(newOption);
+
+}
+
+function gettingCardInfoForModal(e) {
+  const cardContent = e.target.closest('.card').querySelector('.cardInnerText').textContent;
+  const inputInModalContent =document.querySelector('#card-text');
+  inputInModalContent.textContent = cardContent;
+}
+
 
 
 //                           board page functions            ///
@@ -360,24 +418,6 @@ function addEventListeners(basicTemplete) {
 }
 
 
-// board page - toggle for  "edit card" modal
-function createEditListPopUp() {
-
-  document.querySelector('.close').addEventListener('click', toggleEditPanle);
-  document.querySelector('.close-btn').addEventListener('click', toggleEditPanle);
-
-}
-
-
-//createing MOVETO bar info in edit card modal
-function addMoveToOptions(title) {
-  const moveToOption = document.querySelector('.lists-holder');
-  const newOption = document.createElement('option')
-  newOption.innerHTML = title;
-  moveToOption.appendChild(newOption);
-
-}
-
 
 //                //          dealing with title        //        ///       //
 
@@ -441,6 +481,7 @@ function autoReplaceEmptyInputValue(event, newTitle) {
 function displayChanger(event, newTitle) {
   const finalTitle = event.target.parentNode.querySelector('.tagText')
 
+  changeListNameInAppData(event, newTitle);
   finalTitle.textContent = newTitle;
 
   event.target.style.display = 'none';
@@ -563,10 +604,19 @@ function createCardByclick(e) {
 }
 
 //edit button toggle controls
-function toggleEditPanle() {
+function toggleEditPanle(e) {
   const menuState = document.querySelector('.PopUpMenuHide').style;
   if (menuState.display === 'none' || !menuState.display) {
     menuState.display = 'block'
+
+    //geting card info
+    gettingCardInfoForModal(e);
+
+
+    //getting members
+    // const members=[];
+    
+
   }
   else {
     menuState.display = 'none'
@@ -612,29 +662,29 @@ function updateBagde(badge, parentNode) {
 
 
 //                                       NAV BAR controls          //
-
-//adding listener to nav-controls
-function navBarControls() {
-  const pageNav = document.querySelector('#page-nav')
-  pageNav.addEventListener('click', moveToPage);
-}
-
-//showing which nav option is choosed
-function moveToPage(e) {
-  const chosen = e.target.parentNode;
-
-  if (!chosen.classList.contains('active')) {
-    navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
-    // e.currentTarget.querySelector('.active').classList.remove('active');
-    //     chosen.classList.add('active');
-  }
-}
-
-//toggle for moveToPage function
-function navBarToggleAction(nav1, nav2) {
-  nav1.classList.toggle('active');
-  nav2.classList.toggle('active');
-}
+//
+// //adding listener to nav-controls
+// function navBarControls() {
+//   const pageNav = document.querySelector('#page-nav')
+//   pageNav.addEventListener('click', moveToPage);
+// }
+//
+// //showing which nav option is choosed
+// function moveToPage(e) {
+//   const chosen = e.target.parentNode;
+//
+//   if (!chosen.classList.contains('active')) {
+//     navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
+//     // e.currentTarget.querySelector('.active').classList.remove('active');
+//     //     chosen.classList.add('active');
+//   }
+// }
+//
+// //toggle for moveToPage function
+// function navBarToggleAction(nav1, nav2) {
+//   nav1.classList.toggle('active');
+//   nav2.classList.toggle('active');
+// }
 
 
 //                                       JSON uploading         //
@@ -867,7 +917,7 @@ const appData = {
   members: [],
 }
 
-navBarControls();
+// navBarControls();
 creatingBlamckBoard();
 creatingBoard();
 creatingMembersPage();
