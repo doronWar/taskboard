@@ -655,7 +655,7 @@ function creatingBoard() {
 //to toggle menu by pressing anywhere in document
 
   const xhr = new XMLHttpRequest();
-  xhr.addEventListener("load", gettingJasonObject);
+ xhr.addEventListener("load", gettingJasonObject);
   xhr.open("GET", "assets/board.json");
   xhr.send();
 
