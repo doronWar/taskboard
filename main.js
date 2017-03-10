@@ -216,10 +216,10 @@ function creatingCarEditModalHtml() {
             <div class="col-sm-offset-2 members-input  ">
               <div class="checkbox form-control member-list">
 
-                <label for="Member-name1"><input type="checkbox" name="memeber1" value="memeber1" id="Member-name1">
-                Member Name</label>
-                <label for="Member-name2"><input type="checkbox" name="memeber2" value="memeber2" id="Member-name2">
-                Member Name</label>
+                <!--<label for="member-name1"><input type="checkbox" name="memeber1" value="memeber1" id="member-name1">-->
+                <!--Member Name</label>-->
+                <!--<label for="member-name2"><input type="checkbox" name="memeber2" value="memeber2" id="member-name2">-->
+                <!--Member Name</label>-->
 
               </div>
             </div>
@@ -354,6 +354,22 @@ function gettingCardInfoForModal(e) {
   inputInModalContent.textContent = cardContent;
 }
 
+function showMembersInModal(e) {
+  const members=e.target.closest('.card').querySelectorAll('.member-label')
+
+  document.querySelector('.member-list').innerHTML = '';
+  members.forEach((member, index)=>{
+    const addMember = document.createElement('label');
+    addMember.innerHTML = `<input type="checkbox" name= ${member.title} value=${member.title} id=member-name${index+1}>${member.title}`
+
+    addMember.setAttribute("for", `member-name${index+1}`)
+
+    document.querySelector('.member-list').appendChild(addMember);
+
+
+  })
+
+}
 
 
 //                           board page functions            ///
@@ -612,10 +628,8 @@ function toggleEditPanle(e) {
     //geting card info
     gettingCardInfoForModal(e);
 
-
     //getting members
-    // const members=[];
-    
+    showMembersInModal(e);
 
   }
   else {
