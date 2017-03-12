@@ -97,15 +97,40 @@ function addCardAppData(e) {
 }
 
 //adding edited info for card if SAVED
-function editModalCardInput(){
-  const inputInModalContent =document.querySelector('#card-text');
+function editModalCardInput(e){
+  const inputInModalContent =document.querySelector('#card-text').value;
+  const lists = appData.lists.board;
+  const cardId = e.target.getAttribute('temp-data-id')
 
+  console.info(inputInModalContent);
+  for (let list of lists) {
+    for (let task of list.tasks) {
+      if(task.id === cardId) {
+        task.text = inputInModalContent;
+       
+      }
+    }
+
+
+  }
+  
 }
+
+
+function editModalMemberChanges(e) {
+  const members = e.target.closest('.modal-content').querySelectorAll('.members-input input')
+  console.info(members);
+}
+
 //so there's the save botton and from there i can know wich card to save to.
 
 function saveButtonModal(e) {
-  const referenceForSaveButton = e.target.closest('.card');
-  const saveBtn = document
+  
+  //text area saving
+  editModalCardInput(e);
+  //member saving
+  editModalMemberChanges(e);
+  
 
 
 }
@@ -245,7 +270,7 @@ function creatingCarEditModalHtml() {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default close-btn" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary modal-save">Save changes</button>
         </div>
       </div>
     </div>
@@ -258,6 +283,7 @@ function creatingCarEditModalHtml() {
   editCardModale.setAttribute("role", "dialog")
   document.querySelector('.main-screen').appendChild(editCardModale)
   addingMembers();
+  editCardModale.querySelector('.modal-save').addEventListener('click', saveButtonModal)
   // editCardModale.querySelector('.editable-inpte').textContent =
   // console.info();
 }
@@ -273,7 +299,7 @@ function addingMembers(){
 
     const addMember = document.createElement('label');
     // const name= member.name
-    addMember.innerHTML = `<input type="checkbox" name= "${member.name}" value="${member.name}" id=member-name${index++}>${member.name}`
+    addMember.innerHTML = `<input type="checkbox" name= "${member.name}" value="${member.name}" id=member-name${index++} data-id="${member.id}">${member.name}`
 
     addMember.setAttribute("for", `member-name${index}`)
 
@@ -402,14 +428,16 @@ function showMembersInModal(e) {
 
   const membersOnCard=e.target.closest('.card').querySelectorAll('.member-label')
   membersOnModal = document.querySelectorAll('.member-list input')
-
+console.info(membersOnCard);
+  // console.info(membersOnCard);
+  //unmarking all members
   membersOnModal.forEach((memberInput)=> {
-    memberInput.checked = false ;
+        memberInput.checked = false ;
   })
+  //markinh the right members
   membersOnModal.forEach((memberInput)=> {
-
-
     for (let oneMember of membersOnCard) {
+      console.info(oneMember);
          if(memberInput.value === oneMember.title){
         memberInput.checked = true ;
           }
@@ -656,7 +684,9 @@ function cardCreation(text) {
 <div class="label-holder">
 </div>`;
 
-  newCard.querySelector('.edit-Card-Button').addEventListener('click', toggleEditPanle);
+  newCard.querySelector('.edit-Card-Button').addEventListener('click', (e)=>{
+    toggleEditPanle(e, newCard.getAttribute("data-id"));
+  });
   // addNewMember('DW', 'doron warzagr', newCard);
 
   return newCard
@@ -694,14 +724,14 @@ function createCardByclick(e) {
 }
 
 //edit button toggle controls
-function toggleEditPanle(e) {
+function toggleEditPanle(e, id) {
   const menuState = document.querySelector('.PopUpMenuHide').style;
   if (menuState.display === 'none' || !menuState.display) {
     menuState.display = 'block'
 
     //geting card info
     gettingCardInfoForModal(e);
-
+    savingCardDataIdToModalSaveBtn(e, id);
     //creating save-btn listener
     // saveButtonModal(e);
     //getting members
@@ -714,12 +744,29 @@ function toggleEditPanle(e) {
 
 }
 
+function savingCardDataIdToModalSaveBtn(e, id) {
+  const tempIdCardHolder = document.querySelector('.PopUpMenuHide').querySelector('.modal-save');
+  tempIdCardHolder.setAttribute("temp-data-id", id)
+  // console.info(tempIdCardHolder);
+  // console.info(id);
+  // const cardId = e.target.closest('.')
+  // tempIdCardHolder.setAttribute('data-id',)
+
+}
 //add memebers to cards controls
-function addNewMember(memberName, fullName, newCard) {
+function addNewMember(memberInitial, dataId, newCard) {
   const newLabel = document.createElement('span');
 
-
-  newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title="${fullName}">${memberName}</span>`
+  let memberName = '';
+  // console.info(appData);
+  for (let member of appData.members) {
+    // console.info(member.name);
+    if(member.id === dataId){
+      memberName= member.name;
+    }
+  }
+    
+  newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title="${memberName}" data-id="${dataId}">${memberInitial}</span>`
   newCard.querySelector('.label-holder').appendChild(newLabel);
   if (lColorIndex >= 5)
     lColorIndex = 0;
@@ -761,29 +808,29 @@ function updateBagde(badge, parentNode) {
 
 
 //                                       NAV BAR controls          //
-//
-// //adding listener to nav-controls
-// function navBarControls() {
-//   const pageNav = document.querySelector('#page-nav')
-//   pageNav.addEventListener('click', moveToPage);
-// }
-//
-// //showing which nav option is choosed
-// function moveToPage(e) {
-//   const chosen = e.target.parentNode;
-//
-//   if (!chosen.classList.contains('active')) {
-//     navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
-//     // e.currentTarget.querySelector('.active').classList.remove('active');
-//     //     chosen.classList.add('active');
-//   }
-// }
-//
-// //toggle for moveToPage function
-// function navBarToggleAction(nav1, nav2) {
-//   nav1.classList.toggle('active');
-//   nav2.classList.toggle('active');
-// }
+
+//adding listener to nav-controls
+function navBarControls() {
+  const pageNav = document.querySelector('#page-nav')
+  pageNav.addEventListener('click', moveToPage);
+}
+
+//showing which nav option is choosed
+function moveToPage(e) {
+  const chosen = e.target.parentNode;
+
+  if (!chosen.classList.contains('active')) {
+    navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
+    // e.currentTarget.querySelector('.active').classList.remove('active');
+    //     chosen.classList.add('active');
+  }
+}
+
+//toggle for moveToPage function
+function navBarToggleAction(nav1, nav2) {
+  nav1.classList.toggle('active');
+  nav2.classList.toggle('active');
+}
 
 
 //                                       JSON uploading         //
@@ -920,8 +967,9 @@ function buildingListFromObj() {
       const parentNode = loadList.querySelector('.ulForCards')
       parentNode.appendChild(newCard);
       //adding members
+      
       for (let member of obj.members) {
-        // console.info(member);
+      
         const anitinals = anitialsCreator(member)
         addNewMember(anitinals, member, newCard);
       }
@@ -1026,6 +1074,7 @@ const appData = {
 creatingBlamckBoard();
 creatingBoard();
 creatingMembersPage();
+navBarControls()
 // console.info(uuid.v4());
 
 
