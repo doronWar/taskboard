@@ -13,7 +13,7 @@ function uppdatMemberInAppData(e){
   const newList = {
     name:e.target.closest('.member-in-list').querySelector('.new-member-name').value
   };
-  
+
   appData.members.forEach((member)=>{
     if(member.name===originalName){
       member.name=newList.name;
@@ -234,15 +234,40 @@ function creatingCarEditModalHtml() {
       </div>
     </div>
 `
-  // const cardContent = 
+  // const cardContent =
   const editCardModale = document.createElement('div')
   editCardModale.innerHTML = modalTemplate;
   editCardModale.setAttribute("class", "modal PopUpMenuHide")
   editCardModale.setAttribute("tabindex", "-1")
   editCardModale.setAttribute("role", "dialog")
   document.querySelector('.main-screen').appendChild(editCardModale)
-  // editCardModale.querySelector('.editable-inpte').textContent = 
+  addingMembers();
+  // editCardModale.querySelector('.editable-inpte').textContent =
   // console.info();
+}
+
+//adding members to the edit modal
+function addingMembers(){
+
+  const members=appData.members;
+  let index= 0;
+
+  for (let member of members) {
+
+
+    const addMember = document.createElement('label');
+    // const name= member.name
+    addMember.innerHTML = `<input type="checkbox" name= "${member.name}" value="${member.name}" id=member-name${index++}>${member.name}`
+
+    addMember.setAttribute("for", `member-name${index}`)
+
+    document.querySelector('.member-list').appendChild(addMember);
+
+  }
+
+
+
+
 }
 
 
@@ -253,7 +278,7 @@ function addMember(e) {
   const newMember = document.querySelector('#add-member-input')
   addMemberToAppData(e);
   createMemberList(newMember.value)
-  
+
   newMember.value = '';
 
 }
@@ -298,7 +323,7 @@ function editMemberName(e) {
   if(e.currentTarget.id === 'delete-btn') {
     deleteMemberFromAppData(e, memberName);
 
-    e.target.closest('.member-in-list').remove();    
+    e.target.closest('.member-in-list').remove();
   }
   memberName.classList.toggle('displayState')
   inputFiled.classList.toggle('displayState')
@@ -354,20 +379,47 @@ function gettingCardInfoForModal(e) {
   inputInModalContent.textContent = cardContent;
 }
 
+//mark checked on input of edit modal
 function showMembersInModal(e) {
-  const members=e.target.closest('.card').querySelectorAll('.member-label')
 
-  document.querySelector('.member-list').innerHTML = '';
-  members.forEach((member, index)=>{
-    const addMember = document.createElement('label');
-    addMember.innerHTML = `<input type="checkbox" name= ${member.title} value=${member.title} id=member-name${index+1}>${member.title}`
+  const membersOnCard=e.target.closest('.card').querySelectorAll('.member-label')
+  membersOnModal = document.querySelectorAll('.member-list input')
 
-    addMember.setAttribute("for", `member-name${index+1}`)
-
-    document.querySelector('.member-list').appendChild(addMember);
-
-
+  membersOnModal.forEach((memberInput)=> {
+    memberInput.checked = false ;
   })
+  membersOnModal.forEach((memberInput)=> {
+
+
+    for (let oneMember of membersOnCard) {
+         if(memberInput.value === oneMember.title){
+        memberInput.checked = true ;
+          }
+
+    }
+  })
+
+  // document.querySelector('.member-list').innerHTML = '';
+
+
+  // members.forEach((member, index)=>{
+  //   if(member.title===)
+  //   const addMember = members.querySelector()
+  //   addMember.innerHTML = `<input type="checkbox" name= ${member.title} value=${member.title} id=member-name${index+1}>${member.title}`
+  //
+  //   addMember.setAttribute("for", `member-name${index+1}`)
+  //
+  //   document.querySelector('.member-list').appendChild(addMember);
+
+    // const addMember = document.createElement('label');
+    // addMember.innerHTML = `<input type="checkbox" name= ${member.title} value=${member.title} id=member-name${index+1}>${member.title}`
+    //
+    // addMember.setAttribute("for", `member-name${index+1}`)
+    //
+    // document.querySelector('.member-list').appendChild(addMember);
+
+
+  // })
 
 }
 
@@ -643,7 +695,7 @@ function addNewMember(memberName, fullName, newCard) {
   const newLabel = document.createElement('span');
 
 
-  newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title=" ${fullName} ">${memberName}</span>`
+  newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title="${fullName}">${memberName}</span>`
   newCard.querySelector('.label-holder').appendChild(newLabel);
   if (lColorIndex >= 5)
     lColorIndex = 0;
