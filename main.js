@@ -60,7 +60,7 @@ function changeListNameInAppData(event, newTitle) {
   const listInAppData = appData.lists.board.find((DataTitle) => oldTitle === DataTitle.title);
 
   listInAppData.title = newTitle
-  console.info(appData);
+  // console.info(appData);
 }
 
 //deleteing a list in appdata
@@ -83,10 +83,12 @@ function deleteListToAppData(e){
 function addCardAppData(e) {
     const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
     const listInAppData = appData.lists.board.find((DataTitle) => title === DataTitle.title)
+    const cardId= e.target.closest('.oneLists').querySelector('.ulForCards li:last-child');
 
     const cardOfAppData = {
       members: [],
-      text: 'Add new task'
+      text: 'Add new task',
+      id: cardId.getAttribute('data-id'),
     }
     listInAppData.tasks.push(cardOfAppData)
 
@@ -165,6 +167,7 @@ function createMemberList(memberName) {
   oneMember.querySelector('.save-btn').addEventListener('click', changMemberButtonsClasses)
   // oneMember.querySelector('.delete').addEventListener('click', editMemberName)
 
+  return oneMember;
 }
 
 
@@ -351,7 +354,7 @@ function editMemberNameKeyBoard(e) {
   const memberName = e.target.closest('.member-in-list').querySelector('.memebr-name');
 
   if (e.keyCode === 13) {
-    console.info('hello');
+    // console.info('hello');
     //to toggle sapn\inpute
     memberName.classList.toggle('displayState')
     inputFiled.classList.toggle('displayState')
@@ -644,6 +647,7 @@ function cardCreation(text) {
   const cardContent = text || 'Add new task'
   const newCard = document.createElement('li');
   newCard.setAttribute("class", "card");
+  newCard.setAttribute("data-id", uuid());
   const cardsText = document.createElement('p');
   cardsText.setAttribute("class", "cardInnerText");
   newCard.appendChild(cardsText);
@@ -665,6 +669,9 @@ function createCardByclick(e) {
 
     const newCard = cardCreation();
     const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
+
+    parentNode.appendChild(newCard);
+
     //inserting card into AppData
     addCardAppData(e);
     // console.info(appData);
@@ -677,7 +684,7 @@ function createCardByclick(e) {
     // }
     // listInAppData.tasks.push(cardOfAppData)
 
-    parentNode.appendChild(newCard);
+
 
     // const referenceNode = parentNode.querySelector('ul > li:last-child')
     // parentNode.insertBefore(newCard, referenceNode);
@@ -723,7 +730,16 @@ function addNewMember(memberName, fullName, newCard) {
 
 //creates anitials for cards    -- need to check it works with 3 word name
 function anitialsCreator(fullname) {
-  const nameToArray = fullname.split(' ').map((n) => n[0]);
+
+  let fullNameString ='';
+  for (let member of appData.members) {
+    if(fullname === member.id){
+      fullNameString = member.name
+      // console.info(fullNameString);
+    }
+  }
+
+  const nameToArray = fullNameString.split(' ').map((n) => n[0]);
   return nameToArray.join('');
 
 }
@@ -846,7 +862,11 @@ function gettingJasonMembersObj(event) {
 
 function addingMemberListFromObj() {
   for (const member of appData.members) {
-    createMemberList(member.name);
+    const addedMember = createMemberList(member.name);
+
+    addedMember.setAttribute("data-id", member.id)
+    // console.info(addedMember);
+
   }
 }
 
@@ -879,7 +899,7 @@ function creatingMembersPage() {
 //-------------- add here active action - to the right nav option - when creating board\member
 //and fix anitials to be able to recieve as much words as needed.
 
-//cuilding list from appData obj
+//building list from appData obj
 function buildingListFromObj() {
 
   const savedLists = appData.lists;
@@ -887,15 +907,16 @@ function buildingListFromObj() {
   //creating the lists
   for (let list of savedLists.board) {
     const loadList = createNewList(list.title)
-    // debugger
+
 
     addMoveToOptions(list.title);
 
 //adding the cards
     for (let obj of list.tasks) {
-      cardCreation(list, obj.text);
-
+      // cardCreation(list, obj.text);
+      // console.info(list.id);
       const newCard = cardCreation(obj.text);
+      newCard.setAttribute("data-id", obj.id) // adding the uniqe ID of every card
       const parentNode = loadList.querySelector('.ulForCards')
       parentNode.appendChild(newCard);
       //adding members
@@ -907,6 +928,7 @@ function buildingListFromObj() {
     }
 
   }
+  // console.info(appData);
 }
 
 
@@ -997,13 +1019,14 @@ let jsonsState = [];
 window.addEventListener('hashchange', loadpage);
 const appData = {
   lists: [],
-  members: [],
+  members: []
 }
 
 // navBarControls();
 creatingBlamckBoard();
 creatingBoard();
 creatingMembersPage();
+// console.info(uuid.v4());
 
 
 
