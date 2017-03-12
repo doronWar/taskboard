@@ -94,6 +94,19 @@ function addCardAppData(e) {
 
 }
 
+//adding edited info for card if SAVED
+function editModalCardInput(){
+  const inputInModalContent =document.querySelector('#card-text');
+
+}
+//so there's the save botton and from there i can know wich card to save to.
+
+function saveButtonModal(e) {
+  const referenceForSaveButton = e.target.closest('.card');
+  const saveBtn = document
+
+
+}
 
 /**
  *                             UI             //
@@ -355,7 +368,7 @@ function editMemberNameKeyBoard(e) {
 
 //                           edit card modal            ///
 
-// board page - toggle for  "edit card" modal
+//  close for  "edit card" modal
 function createEditListPopUp() {
 
   document.querySelector('.close').addEventListener('click', toggleEditPanle);
@@ -373,10 +386,12 @@ function addMoveToOptions(title) {
 
 }
 
+//getting info from card content into nodal
 function gettingCardInfoForModal(e) {
   const cardContent = e.target.closest('.card').querySelector('.cardInnerText').textContent;
   const inputInModalContent =document.querySelector('#card-text');
   inputInModalContent.textContent = cardContent;
+
 }
 
 //mark checked on input of edit modal
@@ -680,6 +695,8 @@ function toggleEditPanle(e) {
     //geting card info
     gettingCardInfoForModal(e);
 
+    //creating save-btn listener
+    // saveButtonModal(e);
     //getting members
     showMembersInModal(e);
 
