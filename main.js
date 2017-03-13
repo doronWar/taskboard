@@ -101,36 +101,107 @@ function editModalCardInput(e){
   const inputInModalContent =document.querySelector('#card-text').value;
   const lists = appData.lists.board;
   const cardId = e.target.getAttribute('temp-data-id')
+  const listId = e.target.getAttribute('temp-list-data-id')
 
-  console.info(inputInModalContent);
+  // console.info(inputInModalContent);
   for (let list of lists) {
-    for (let task of list.tasks) {
-      if(task.id === cardId) {
-        task.text = inputInModalContent;
-       
+    if(list.id===listId){
+      for (let task of list.tasks) {
+        if(task.id === cardId) {
+          task.text = inputInModalContent;
+        }
       }
     }
-
-
   }
-  
-}
 
+}
+//
+// function searchingForCardsOnAppData(cardId, newContent, key) {
+//
+//
+//
+// }
 
 function editModalMemberChanges(e) {
-  const members = e.target.closest('.modal-content').querySelectorAll('.members-input input')
-  console.info(members);
+  const membersOnModal = e.target.closest('.modal-content').querySelectorAll('.members-input input')
+
+  const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
+  const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
+
+  const lists = appData.lists.board;
+
+
+  //checking what members to update
+  membersOnModal.forEach((memberInput)=> {
+    //checking if the member is checked
+    if(memberInput.checked === true ){
+      //finding the right list in appData
+      lists.forEach((list)=>{
+        if(list.id===listId){
+          //finding the right card
+          for (let task of list.tasks) {
+            if(task.id === cardId) {
+              //searching the members in the card
+              for (let appDataMember of task.members) {
+                //i need here another loop to check on each inpute member
+
+                if(appDataMember !==memberInput.getAttribute('data-id')){
+                  // console.info('memebers on modal',memberInput.getAttribute('data-id'));
+                  // console.info('members on card',appDataMember );
+                  console.info('the inpute im checking', memberInput.getAttribute('data-id'));
+                }
+              }
+              // task.members.push(memberInput)
+              // console.info(task);
+
+              // task.text = inputInModalContent;
+            }
+          }
+        }
+      })
+      // for (let list of lists) {
+      //
+      //  }
+
+
+
+
+       for (let list of lists) {
+          for (let task of list.tasks) {
+            if(task.id === cardId) {
+              for (let member of task.members) {
+                // if(member === task.members)  // need to check members on card and on appdata
+                // console.info(task.members);
+              }
+              // if(tasks.members.id)
+              // task.members.push(memberInput)
+              // console.info(memberInput);
+              // console.info(task.members);
+
+            }
+          }
+
+
+        }
+
+      }
+
+    // console.info(lists);
+  })
+
+
+
 }
 
 //so there's the save botton and from there i can know wich card to save to.
 
 function saveButtonModal(e) {
-  
+
   //text area saving
   editModalCardInput(e);
   //member saving
   editModalMemberChanges(e);
-  
+
 
 
 }
@@ -428,7 +499,7 @@ function showMembersInModal(e) {
 
   const membersOnCard=e.target.closest('.card').querySelectorAll('.member-label')
   membersOnModal = document.querySelectorAll('.member-list input')
-console.info(membersOnCard);
+// console.info(membersOnCard);
   // console.info(membersOnCard);
   //unmarking all members
   membersOnModal.forEach((memberInput)=> {
@@ -437,7 +508,7 @@ console.info(membersOnCard);
   //markinh the right members
   membersOnModal.forEach((memberInput)=> {
     for (let oneMember of membersOnCard) {
-      console.info(oneMember);
+      // console.info(oneMember);
          if(memberInput.value === oneMember.title){
         memberInput.checked = true ;
           }
@@ -473,7 +544,7 @@ console.info(membersOnCard);
 //                           board page functions            ///
 
 // creating a list
-function createNewList(title) {
+function createNewList(title, id) {
 
   const nodereferece = document.querySelector('.btn-catcher')
   const numberOfTasks = 0;
@@ -503,7 +574,10 @@ function createNewList(title) {
 //creating the new list:
   const basicTemplete = document.createElement('div');
   const listsholder = document.querySelector('#mainCardHolders');
+  const dataId = id || uuid();
+  // console.info(dataId);
   basicTemplete.setAttribute("class", "oneLists");
+  basicTemplete.setAttribute("data-id", dataId);
   basicTemplete.innerHTML += listStringHtml;
   listsholder.insertBefore(basicTemplete, nodereferece);
 
@@ -685,7 +759,11 @@ function cardCreation(text) {
 </div>`;
 
   newCard.querySelector('.edit-Card-Button').addEventListener('click', (e)=>{
-    toggleEditPanle(e, newCard.getAttribute("data-id"));
+
+    const cardId= newCard.getAttribute("data-id");
+    const listId = newCard.closest('.oneLists').getAttribute("data-id")
+
+    toggleEditPanle(e,cardId, listId );
   });
   // addNewMember('DW', 'doron warzagr', newCard);
 
@@ -724,14 +802,14 @@ function createCardByclick(e) {
 }
 
 //edit button toggle controls
-function toggleEditPanle(e, id) {
+function toggleEditPanle(e, id, listId) {
   const menuState = document.querySelector('.PopUpMenuHide').style;
   if (menuState.display === 'none' || !menuState.display) {
     menuState.display = 'block'
 
     //geting card info
     gettingCardInfoForModal(e);
-    savingCardDataIdToModalSaveBtn(e, id);
+    savingCardDataIdToModalSaveBtn(e, id, listId);
     //creating save-btn listener
     // saveButtonModal(e);
     //getting members
@@ -744,9 +822,10 @@ function toggleEditPanle(e, id) {
 
 }
 
-function savingCardDataIdToModalSaveBtn(e, id) {
+function savingCardDataIdToModalSaveBtn(e, id, listId) {
   const tempIdCardHolder = document.querySelector('.PopUpMenuHide').querySelector('.modal-save');
   tempIdCardHolder.setAttribute("temp-data-id", id)
+  tempIdCardHolder.setAttribute("temp-list-data-id", listId)
   // console.info(tempIdCardHolder);
   // console.info(id);
   // const cardId = e.target.closest('.')
@@ -765,7 +844,7 @@ function addNewMember(memberInitial, dataId, newCard) {
       memberName= member.name;
     }
   }
-    
+
   newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title="${memberName}" data-id="${dataId}">${memberInitial}</span>`
   newCard.querySelector('.label-holder').appendChild(newLabel);
   if (lColorIndex >= 5)
@@ -953,7 +1032,7 @@ function buildingListFromObj() {
 
   //creating the lists
   for (let list of savedLists.board) {
-    const loadList = createNewList(list.title)
+    const loadList = createNewList(list.title, list.id)
 
 
     addMoveToOptions(list.title);
@@ -967,9 +1046,9 @@ function buildingListFromObj() {
       const parentNode = loadList.querySelector('.ulForCards')
       parentNode.appendChild(newCard);
       //adding members
-      
+
       for (let member of obj.members) {
-      
+
         const anitinals = anitialsCreator(member)
         addNewMember(anitinals, member, newCard);
       }
