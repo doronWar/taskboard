@@ -96,31 +96,8 @@ function addCardAppData(e) {
 
 }
 
-//adding edited info for card if SAVED
-function editModalCardInput(e){
-  const inputInModalContent =document.querySelector('#card-text').value;
-  const lists = appData.lists.board;
-  const cardId = e.target.getAttribute('temp-data-id')
-  const listId = e.target.getAttribute('temp-list-data-id')
 
-  // console.info(inputInModalContent);
-  for (let list of lists) {
-    if(list.id===listId){
-      for (let task of list.tasks) {
-        if(task.id === cardId) {
-          task.text = inputInModalContent;
-        }
-      }
-    }
-  }
 
-}
-//
-// function searchingForCardsOnAppData(cardId, newContent, key) {
-//
-//
-//
-// }
 
 //searching appdata and returning a reference to the card i want
 function returnCardReference(cardId, listId) {
@@ -141,9 +118,23 @@ function returnCardReference(cardId, listId) {
   return cardReference;
 }
 
+
+//adding edited info for card if SAVED
+function editModalCardInput(e){
+  const inputInModalContent =document.querySelector('#card-text').value;
+  const lists = appData.lists.board;
+  const cardId = e.target.getAttribute('temp-data-id')
+  const listId = e.target.getAttribute('temp-list-data-id')
+  const cardReference =  returnCardReference(cardId, listId);
+  cardReference.text =inputInModalContent;
+
+
+}
+
+//adding and removing members from card
 function editModalMemberChanges(e) {
   const membersOnModal = e.target.closest('.modal-content').querySelectorAll('.members-input input')
-
+  const memberToCheck = Array.prototype.slice.call(membersOnModal);
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
 
@@ -152,67 +143,17 @@ function editModalMemberChanges(e) {
 
   const cardReference =  returnCardReference(cardId, listId);
 
-  console.info(cardReference.members);
-
-  //checking what member s to update
-  membersOnModal.forEach((memberInput)=> {
-    //checking if the member is checked
-    if(memberInput.checked === true ){
-      //finding the right list in appData
-      lists.forEach((list)=>{
-        if(list.id===listId){
-          //finding the right card
-          for (let task of list.tasks) {
-            if(task.id === cardId) {
-              //searching the members in the card
-              for (let appDataMember of task.members) {
-                //i need here another loop to check on each inpute member
-
-                if(appDataMember !==memberInput.getAttribute('data-id')){
-                  // console.info('memebers on modal',memberInput.getAttribute('data-id'));
-                  // console.info('members on card',appDataMember );
-                  console.info('the inpute im checking', memberInput.getAttribute('data-id'));
-                }
-              }
-              // task.members.push(memberInput)
-              // console.info(task);
-
-              // task.text = inputInModalContent;
-            }
-          }
-        }
-      })
-      // for (let list of lists) {
-      //
-      //  }
-
-
-
-
-       for (let list of lists) {
-          for (let task of list.tasks) {
-            if(task.id === cardId) {
-              for (let member of task.members) {
-                // if(member === task.members)  // need to check members on card and on appdata
-                // console.info(task.members);
-              }
-              // if(tasks.members.id)
-              // task.members.push(memberInput)
-              // console.info(memberInput);
-              // console.info(task.members);
-
-            }
-          }
-
-
-        }
-
-      }
-
-    // console.info(lists);
-  })
-
-
+  //adding checked members into the card
+  for (let inputMember of memberToCheck) {
+    if(inputMember.checked === true && !cardReference.members.includes(inputMember.getAttribute('data-id'))){
+           cardReference.members.push(inputMember.getAttribute('data-id'))
+    }
+    if(inputMember.checked === false && cardReference.members.includes(inputMember.getAttribute('data-id'))){
+      const index = cardReference.members.indexOf(inputMember.getAttribute('data-id'));
+      cardReference.members.splice(index,1);
+    }
+       
+  }
 
 }
 
@@ -225,8 +166,8 @@ function saveButtonModal(e) {
   //member saving
   editModalMemberChanges(e);
 
-
-
+  //need to add delete card listener in modal + confirm function
+  //need to add move to function here
 }
 
 /**
