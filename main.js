@@ -152,7 +152,8 @@ function editModalMemberChanges(e) {
 
   const cardReference =  returnCardReference(cardId, listId);
 
-  console.info(cardReference);
+  console.info(cardReference.members);
+
   //checking what member s to update
   membersOnModal.forEach((memberInput)=> {
     //checking if the member is checked
