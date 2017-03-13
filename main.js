@@ -122,6 +122,25 @@ function editModalCardInput(e){
 //
 // }
 
+//searching appdata and returning a reference to the card i want
+function returnCardReference(cardId, listId) {
+  let cardReference = '';
+  const lists = appData.lists.board;
+
+  lists.forEach((list)=> {
+    if (list.id === listId) {
+      //finding the right card
+      for (let task of list.tasks) {
+        if (task.id === cardId) {
+          cardReference= task
+        }
+      }
+    }
+  })
+
+  return cardReference;
+}
+
 function editModalMemberChanges(e) {
   const membersOnModal = e.target.closest('.modal-content').querySelectorAll('.members-input input')
 
@@ -131,7 +150,10 @@ function editModalMemberChanges(e) {
   const lists = appData.lists.board;
 
 
-  //checking what members to update
+  const cardReference =  returnCardReference(cardId, listId);
+
+  console.info(cardReference);
+  //checking what member s to update
   membersOnModal.forEach((memberInput)=> {
     //checking if the member is checked
     if(memberInput.checked === true ){
