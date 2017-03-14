@@ -853,6 +853,8 @@ function cardCreation(text) {
   });
   // addNewMember('DW', 'doron warzagr', newCard);
 
+
+
   return newCard
 }
 
