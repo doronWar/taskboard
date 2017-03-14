@@ -96,6 +96,19 @@ function addCardAppData(e) {
 
 }
 
+//(move this to appdata)   -- Deleteing the card through edit Modal
+function deleteButtonModal(e) {
+  const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
+  const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id');
+  const currentLocation =returnListReference(listId);
+
+  const deleteCheck = confirm(`Are you sure you want to delete this task?`);
+  if(deleteCheck){
+  deleteCardFromAppData(currentLocation, cardId);
+  closeEditModal();
+  }
+}
+
 
 
 
@@ -183,10 +196,11 @@ function editModalCardMoveToOptions(e) {
 
   const directory = e.target.closest('#modal').querySelector('.lists-holder');
   const directoryId = directory.options[directory.selectedIndex].value;
-  if( directoryId=== listId){
-    console.info(directory.options[directory.selectedIndex]);
-  }
-  else{
+  if( directoryId!== listId){
+//original code that was here: if( directoryId== listId){}
+    //else{
+
+
     const newLocation = returnListReference(directoryId)
     const currentLocation =returnListReference(listId)
     const cardReference= returnCardReference(cardId,listId);
@@ -227,9 +241,18 @@ function saveButtonModal(e) {
   //move to functionality
   editModalCardMoveToOptions(e);
 
+  //closing the modal and reloading the page
+  closeEditModal();
+
 
   //need to add delete card listener in modal + confirm function
   //need to add move to function here
+}
+
+function closeEditModal() {
+  const menuState = document.querySelector('.PopUpMenuHide').style;
+  menuState.display = 'none'
+  firstLoad();
 }
 
 /**
@@ -321,15 +344,7 @@ function createBordHolder() {
 }
 
 
-//move this to appdata
-function deleteButtonModal(e) {
-  const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
-  const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id');
-  const currentLocation =returnListReference(listId);
 
-
-  deleteCardFromAppData(currentLocation, cardId);
-}
 
 
 
@@ -431,9 +446,14 @@ function addingMembers(){
 //memebrs - ADD memeber function
 function addMember(e) {
   const newMember = document.querySelector('#add-member-input')
+
+  if(newMember.value=== ''){
+    newMember.value= 'New member'
+  }
+
   addMemberToAppData(e);
   createMemberList(newMember.value)
-
+//emptying inpute feild
   newMember.value = '';
 
 }
@@ -468,6 +488,9 @@ function editMemberName(e) {
 
   }
   if (e.currentTarget.id === 'save') {
+    // if (e.target.value !== '') {
+    //   memberName.textContent = inputFiled.value;
+    // }
     uppdatMemberInAppData(e, memberName)
     memberName.textContent = inputFiled.value;
 
@@ -492,6 +515,11 @@ function editMemberNameKeyBoard(e) {
   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
   const memberName = e.target.closest('.member-in-list').querySelector('.memebr-name');
 
+
+  if (e.target.value !== '') {
+    memberName.textContent = inputFiled.value;
+    changMemberButtonsClasses(e);
+  }
   if (e.keyCode === 13) {
     // console.info('hello');
     //to toggle sapn\inpute
@@ -499,10 +527,6 @@ function editMemberNameKeyBoard(e) {
     inputFiled.classList.toggle('displayState')
 
 
-    if (e.target.value !== '') {
-      memberName.textContent = inputFiled.value;
-      changMemberButtonsClasses(e);
-    }
   }
 }
 
