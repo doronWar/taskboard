@@ -152,11 +152,33 @@ function editModalMemberChanges(e) {
       const index = cardReference.members.indexOf(inputMember.getAttribute('data-id'));
       cardReference.members.splice(index,1);
     }
-       
+
   }
 
 }
 
+function editModalCardMoveToOptions(e) {
+  const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
+  const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
+
+  // const directory = e.target.closest('#modal').querySelector('option[selected]')
+
+  const directory = e.target.closest('#modal').querySelector('.lists-holder');
+  const DirectoryId = directory.options[directory.selectedIndex].value;
+  if( DirectoryId=== listId){
+    console.info(directory.options[directory.selectedIndex]);
+  }
+  else{
+    console.info('not where i am ');
+    //here i have to delete the card,
+    //move it to another list - the one i'm looking for
+    //don't forget to use confirm
+  }
+
+
+
+
+}
 //so there's the save botton and from there i can know wich card to save to.
 
 function saveButtonModal(e) {
@@ -166,6 +188,8 @@ function saveButtonModal(e) {
   //member saving
   editModalMemberChanges(e);
 
+  //move to functionality
+  editModalCardMoveToOptions(e);
   //need to add delete card listener in modal + confirm function
   //need to add move to function here
 }
@@ -442,11 +466,16 @@ function createEditListPopUp() {
 
 
 //createing MOVETO bar info in edit card modal
-function addMoveToOptions(title) {
+function addMoveToOptions(listElm, listId) {
+  //, listId
   const moveToOption = document.querySelector('.lists-holder');
   const newOption = document.createElement('option')
-  newOption.innerHTML = title;
+  newOption.innerHTML = listElm.title;
+  newOption.setAttribute('value', listId)
   moveToOption.appendChild(newOption);
+  // if(listElm.id === listId){
+  //   newOption.selected =true;
+  // }
 
 }
 
@@ -766,6 +795,7 @@ function createCardByclick(e) {
 }
 
 //edit button toggle controls
+//&& loading intfo into edit  MOdal
 function toggleEditPanle(e, id, listId) {
   const menuState = document.querySelector('.PopUpMenuHide').style;
   if (menuState.display === 'none' || !menuState.display) {
@@ -778,6 +808,19 @@ function toggleEditPanle(e, id, listId) {
     // saveButtonModal(e);
     //getting members
     showMembersInModal(e);
+
+// creating the moveto Menu
+    const nameOfLists = document.querySelectorAll('select option')
+    nameOfLists.forEach((list)=>{
+        if(list.value === listId){
+        list.selected =true;
+
+      }
+
+  })
+
+
+
 
   }
   else {
@@ -990,6 +1033,7 @@ function creatingMembersPage() {
 //and fix anitials to be able to recieve as much words as needed.
 
 //building list from appData obj
+// & adding list names to edit Modal
 function buildingListFromObj() {
 
   const savedLists = appData.lists;
@@ -999,7 +1043,7 @@ function buildingListFromObj() {
     const loadList = createNewList(list.title, list.id)
 
 
-    addMoveToOptions(list.title);
+    addMoveToOptions(list, list.id);
 
 //adding the cards
     for (let obj of list.tasks) {

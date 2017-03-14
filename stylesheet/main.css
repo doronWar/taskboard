@@ -3,7 +3,12 @@
 body{
   overflow: auto;
   padding-top:51px;
-
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after{
+  box-sizing: inherit;
 }
 body,
 html{
