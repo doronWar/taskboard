@@ -291,7 +291,7 @@ function createMemberList(memberName) {
   // oneMember.textContent = ;
   oneMember.innerHTML += `
   <span class="memebr-name  ">${memberName}</span>
-  <input class ="new-member-name displayState " type="text"  maxlength="25"></input>
+  <input type="text" class ="new-member-name displayState"   maxlength="25"></input>
   <div>
   <button type="button" class="btn btn-danger edit-member-btn seen delete" id="delete-btn">Delet</button>
   <button type="button" class="btn btn-primary edit-member-btn edit-btn seen" id="check">Edit</button>
@@ -481,10 +481,14 @@ function toggleMemberMenuButtons(buttons) {
 function editMemberName(e) {
   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
   const memberName = e.target.closest('.member-in-list').querySelector('.memebr-name');
+  memberName.classList.toggle('displayState')
+  inputFiled.classList.toggle('displayState')
 
 
   if (e.currentTarget.id === 'check') {
     inputFiled.value = memberName.textContent
+    inputFiled.focus()
+
 
   }
   if (e.currentTarget.id === 'save') {
@@ -492,11 +496,12 @@ function editMemberName(e) {
 
     if (inputFiled.value) {
 
+    uppdatMemberInAppData(e, memberName);
       memberName.textContent = inputFiled.value;
     }
 
 
-    // uppdatMemberInAppData(e, memberName)
+
 
     // memberName.textContent = inputFiled.value;
 
@@ -509,8 +514,6 @@ function editMemberName(e) {
 
     e.target.closest('.member-in-list').remove();
   }
-  memberName.classList.toggle('displayState')
-  inputFiled.classList.toggle('displayState')
 
 
 }
@@ -522,18 +525,22 @@ function editMemberNameKeyBoard(e) {
   const memberName = e.target.closest('.member-in-list').querySelector('.memebr-name');
 
 
-  if (e.target.value !== '') {
-    memberName.textContent = inputFiled.value;
-    changMemberButtonsClasses(e);
-  }
+
   if (e.keyCode === 13) {
-    // console.info('hello');
-    //to toggle sapn\inpute
+    if (e.target.value) {
+      // console.info('hello');
+      //to toggle sapn\inpute
+      uppdatMemberInAppData(e, memberName);
+      memberName.textContent = inputFiled.value;
+    }
     memberName.classList.toggle('displayState')
     inputFiled.classList.toggle('displayState')
+    changMemberButtonsClasses(e);
 
+    // uppdatMemberInAppData(e)
 
   }
+
 }
 
 
