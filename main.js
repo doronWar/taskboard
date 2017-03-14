@@ -172,6 +172,7 @@ function editModalMemberChanges(e) {
 
 }
 
+//moving a card from list to list
 function editModalCardMoveToOptions(e) {
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
@@ -193,15 +194,26 @@ function editModalCardMoveToOptions(e) {
     newLocation.tasks.push(cardReference);
 
     //earasing the card from the list
-    [].forEach.call(currentLocation.tasks, (task, index)=>{
-      if (task.id===cardId){
-        Array.prototype.splice.call(currentLocation.tasks , index, 1)
-      }
-    })
+    deleteCardFromAppData(currentLocation, cardId);
+    // [].forEach.call(currentLocation.tasks, (task, index)=>{
+    //   if (task.id===cardId){
+    //     Array.prototype.splice.call(currentLocation.tasks , index, 1)
+    //   }
+    // })
   }
 
 }
 
+//deleteing a card from the appdata
+function deleteCardFromAppData(currentLocation,cardId) {
+
+
+  [].forEach.call(currentLocation.tasks, (task, index)=>{
+    if (task.id===cardId){
+      Array.prototype.splice.call(currentLocation.tasks , index, 1)
+    }
+  })
+}
 
 //so there's the save botton and from there i can know wich card to save to.
 
@@ -214,6 +226,8 @@ function saveButtonModal(e) {
 
   //move to functionality
   editModalCardMoveToOptions(e);
+
+
   //need to add delete card listener in modal + confirm function
   //need to add move to function here
 }
@@ -307,6 +321,18 @@ function createBordHolder() {
 }
 
 
+//move this to appdata
+function deleteButtonModal(e) {
+  const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
+  const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id');
+  const currentLocation =returnListReference(listId);
+
+
+  deleteCardFromAppData(currentLocation, cardId);
+}
+
+
+
 //creating edit modal for cards
 function creatingCarEditModalHtml() {
   const modalTemplate = `
@@ -347,7 +373,7 @@ function creatingCarEditModalHtml() {
 
               </div>
             </div>
-            <button type="button" class="btn btn-danger btn-delete-size">Delete Card</button>
+            <button type="button" class="btn btn-danger btn-delete-size modal-delete-btn">Delete Card</button>
 
           </form>
         </div>
@@ -366,7 +392,11 @@ function creatingCarEditModalHtml() {
   editCardModale.setAttribute("role", "dialog")
   document.querySelector('.main-screen').appendChild(editCardModale)
   addingMembers();
+
   editCardModale.querySelector('.modal-save').addEventListener('click', saveButtonModal)
+  editCardModale.querySelector('.modal-delete-btn').addEventListener('click', deleteButtonModal)
+
+
   // editCardModale.querySelector('.editable-inpte').textContent =
   // console.info();
 }
@@ -833,6 +863,7 @@ function toggleEditPanle(e, id, listId) {
     //getting members
     showMembersInModal(e);
 
+
 // creating the moveto Menu
     const nameOfLists = document.querySelectorAll('select option')
     nameOfLists.forEach((list)=>{
@@ -849,6 +880,7 @@ function toggleEditPanle(e, id, listId) {
   }
   else {
     menuState.display = 'none'
+    firstLoad();
   }
 
 }
