@@ -818,6 +818,8 @@ function closingListMenu() {
   // const listsholder = document.querySelector('#mainCardHolders');
   // console.info(1234, document.querySelector('#mainCardHolders'));
 
+  console.info(document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu'));
+  console.info(document.querySelector('#mainCardHolders'));
   const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
 
   for (const oneMenu of theMenu) {
@@ -1194,6 +1196,7 @@ function firstLoad() {
     // navBarToggleAction(document.querySelector('#bord-link'),document.querySelector('#members-link'))
     loadHtmlForMembers(); //creating member page
     addingMemberListFromObj()
+    document.querySelector('.main-screen').removeEventListener('click', dropDownMenuFocusClose);
 
     // loadHtmlForMembers(); //creating member page
     // // add member in member page
