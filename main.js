@@ -488,11 +488,17 @@ function editMemberName(e) {
 
   }
   if (e.currentTarget.id === 'save') {
-    // if (e.target.value !== '') {
-    //   memberName.textContent = inputFiled.value;
-    // }
-    uppdatMemberInAppData(e, memberName)
-    memberName.textContent = inputFiled.value;
+    // console.info('hello', e.target);
+
+    if (inputFiled.value) {
+
+      memberName.textContent = inputFiled.value;
+    }
+
+
+    // uppdatMemberInAppData(e, memberName)
+
+    // memberName.textContent = inputFiled.value;
 
   }
   if (e.currentTarget.id === 'cancel') {
