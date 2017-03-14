@@ -99,6 +99,7 @@ function addCardAppData(e) {
 
 
 
+
 //searching appdata and returning a reference to the card i want
 function returnCardReference(cardId, listId) {
   let cardReference = '';
@@ -118,6 +119,20 @@ function returnCardReference(cardId, listId) {
   return cardReference;
 }
 
+//searching appdata and returning a reference to the list i want
+function returnListReference(listId) {
+  let listReference = '';
+  const lists = appData.lists.board;
+
+  lists.forEach((list)=> {
+    if (list.id === listId) {
+      listReference= list;
+
+    }
+  });
+
+  return listReference;
+}
 
 //adding edited info for card if SAVED
 function editModalCardInput(e){
@@ -158,27 +173,36 @@ function editModalMemberChanges(e) {
 }
 
 function editModalCardMoveToOptions(e) {
-  const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
+  const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
+
+
 
   // const directory = e.target.closest('#modal').querySelector('option[selected]')
 
   const directory = e.target.closest('#modal').querySelector('.lists-holder');
-  const DirectoryId = directory.options[directory.selectedIndex].value;
-  if( DirectoryId=== listId){
+  const directoryId = directory.options[directory.selectedIndex].value;
+  if( directoryId=== listId){
     console.info(directory.options[directory.selectedIndex]);
   }
   else{
-    console.info('not where i am ');
-    //here i have to delete the card,
-    //move it to another list - the one i'm looking for
-    //don't forget to use confirm
+    const newLocation = returnListReference(directoryId)
+    const currentLocation =returnListReference(listId)
+    const cardReference= returnCardReference(cardId,listId);
+    //moving to new location
+    newLocation.tasks.push(cardReference);
+
+    //earasing the card from the list
+    [].forEach.call(currentLocation.tasks, (task, index)=>{
+      if (task.id===cardId){
+        Array.prototype.splice.call(currentLocation.tasks , index, 1)
+      }
+    })
   }
 
-
-
-
 }
+
+
 //so there's the save botton and from there i can know wich card to save to.
 
 function saveButtonModal(e) {
