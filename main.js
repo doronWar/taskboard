@@ -572,9 +572,13 @@ function addMoveToOptions(listElm, listId) {
 
 //getting info from card content into nodal
 function gettingCardInfoForModal(e) {
-  const cardContent = e.target.closest('.card').querySelector('.cardInnerText').textContent;
+  // const cardContent = e.target.closest('.card').querySelector('.cardInnerText').textContent;
+  const cardId = e.target.closest('.card').getAttribute('data-id');
+  const listId = e.target.closest('.oneLists').getAttribute('data-id');
+  const cardContent =returnCardReference(cardId, listId)
+    // console.info(cardContent2);
   const inputInModalContent =document.querySelector('#card-text');
-  inputInModalContent.textContent = cardContent;
+  inputInModalContent.textContent = cardContent.text;
 
 }
 
@@ -975,10 +979,20 @@ function anitialsCreator(fullname) {
 }
 
 
-//updating badge number
+//updating badge number by click
 function updateBagde(badge, parentNode) {
 
+
+
   const badgenumberOfCards = badge.target.parentNode.querySelector('.badge');
+
+
+  addtoBudge(badgenumberOfCards,parentNode);
+}
+
+//updating badge number at creation
+function addtoBudge(badgenumberOfCards,parentNode){
+
   const numbeOfCards = parentNode.querySelectorAll('.card').length;
   badgenumberOfCards.textContent = numbeOfCards;
 
@@ -987,7 +1001,6 @@ function updateBagde(badge, parentNode) {
     badgenumberOfCards.style.paddingLeft = '3px';
   }
 }
-
 
 
 //                                       NAV BAR controls          //
@@ -1148,8 +1161,15 @@ function buildingListFromObj() {
       // console.info(list.id);
       const newCard = cardCreation(obj.text);
       newCard.setAttribute("data-id", obj.id) // adding the uniqe ID of every card
-      const parentNode = loadList.querySelector('.ulForCards')
+      const parentNode = loadList.querySelector('.ulForCards');
+
+
       parentNode.appendChild(newCard);
+
+      //adding badge counter
+      const badge= loadList.querySelector('.badge')
+      addtoBudge(badge, parentNode);
+
       //adding members
 
       for (let member of obj.members) {
@@ -1233,8 +1253,8 @@ function loadpage(e) {
 
   }
   else if (e.currentTarget.location.hash === '#Members') {
-    document.removeEventListener('click', dropDownMenuFocusClose)
-
+    // document.removeEventListener('click', dropDownMenuFocusClose);
+    document.querySelector('.main-screen').removeEventListener('click', dropDownMenuFocusClose);
     loadHtmlForMembers(); //creating member page
     addingMemberListFromObj()
 
