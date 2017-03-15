@@ -582,6 +582,19 @@ function gettingCardInfoForModal(e) {
 
 }
 
+//not showing mroe then 200 char on card UI
+function setUITextInCard(cardContent){
+  // let newCardContent;
+  if(cardContent.length >200){
+    let newCardContent = cardContent.slice(0, 197);
+    newCardContent+= '...'
+    // console.info(newCardContent);
+    return newCardContent
+  }
+  else{
+    return cardContent
+  }
+}
 //mark checked on input of edit modal
 function showMembersInModal(e) {
 
@@ -822,8 +835,8 @@ function closingListMenu() {
   // const listsholder = document.querySelector('#mainCardHolders');
   // console.info(1234, document.querySelector('#mainCardHolders'));
 
-  console.info(document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu'));
-  console.info(document.querySelector('#mainCardHolders'));
+  // console.info(document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu'));
+  // console.info(document.querySelector('#mainCardHolders'));
   const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
 
   for (const oneMenu of theMenu) {
@@ -843,10 +856,19 @@ function cardCreation(text) {
   const cardsText = document.createElement('p');
   cardsText.setAttribute("class", "cardInnerText");
   newCard.appendChild(cardsText);
-  cardsText.textContent = cardContent;
+  // setUITextInCard(cardContent);
+  // cardsText.textContent = cardContent;
+  cardsText.textContent = setUITextInCard(cardContent);;
   newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
 <div class="label-holder">
 </div>`;
+
+
+  //i hve to count the length of carContent
+  //if it's longer then something - i have to slice it where i want to
+  //then slice 3 more char and change them to ...
+  //and then place it back into card
+
 
   newCard.querySelector('.edit-Card-Button').addEventListener('click', (e)=>{
 
