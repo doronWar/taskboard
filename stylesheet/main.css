@@ -43,11 +43,12 @@ a.navbar-brand {
 
 /*holding lists*/
 main{
-  display: flex;
+  /*display: flex;*/
+  /*justify-content: space-between;*/
   /*background-color: #ffffcc;*/
   height: 100%;
 
-  overflow: hidden;
+  /*overflow: auto;*/
   padding-top:20px;
   /*margin-right:20px;*/
   /*padding-right: 20px;*/
@@ -87,12 +88,14 @@ main{
 
 #mainCardHolders {
   display: flex;
-  /*justify-content:space-between;*/
-  flex-direction: row;
+  /*flex-wrap: nowrap;*/
+  /*align-content:stretch;*/
+  /*width:100%;*/
+  /*flex-direction: row;*/
   overflow: auto;
   /*margin-right:20px;*/
   /*width:100%;*/
-  /*padding-right: 20px;*/
+  /*padding-right: 40px;*/
   /*position: relative;*/
 }
 
@@ -139,10 +142,12 @@ main{
 
 .oneLists{
   min-width: 250px;
-
+  /*height: 95vh;*/
   /*min-height: 60vh;*/
   margin-right: 15px;
   margin-left:1%;
+  margin-bottom:20px;
+
 
   /*position: relative;*/
   /*bottom:10px;*/
@@ -155,6 +160,7 @@ main{
   /*background-color:  #F1F1F1;*/
   /*background-color:  ghostwhite;*/
   padding-bottom:10px;
+
   padding-top:10px;
   border: 1px solid #F5F5F5;
 
@@ -448,7 +454,7 @@ main{
   /*border-right: 10px solid white;*/
   background-color: #96cde9;
   font-weight: 600;
-  /*margin-right:100px;*/
+  margin-right:40px;
   border: 2px solid white;
 
 

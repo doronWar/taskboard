@@ -357,11 +357,9 @@ function activeButton() {
 function createBordHolder() {
   const templat = `
 <div id="mainCardHolders">
-
-
- <button class="btn  navbar-btn btn-catcher add-button">Add new List</button>
-
+  <button class="btn  navbar-btn btn-catcher add-button">Add new List</button>
   </div>
+  
 `
 
   document.querySelector('.main-screen').innerHTML = templat;
