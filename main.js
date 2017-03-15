@@ -24,8 +24,12 @@ function uppdatMemberInAppData(e){
 
 //adding member in appdata
 function addMemberToAppData(e){
+  // console.info(e.target.closest('.modal-content ').querySelector('.new-member-input').getAttribute('data-id'));
+  // const color = addLabelColors();
   const newList = {
-    name: e.target.closest('.modal-content ').querySelector('.new-member-input').value
+    name: e.target.closest('.modal-content ').querySelector('.new-member-input').value,
+    id:uuid(),
+    labelColor: addColor()
   };
   appData.members.push(newList);
 }
@@ -44,10 +48,11 @@ function deleteMemberFromAppData(e, memberName) {
 
 
 //adding list in appdata
-function addListToAppData(e){
+function addListToAppData(e, list){
   const newList = {
-    tasks: [],
-    title: 'New List'
+    id: list.getAttribute('data-id'),
+    title: 'New List',
+    tasks: []
   };
   appData.lists.board.push(newList)
 
@@ -60,7 +65,7 @@ function changeListNameInAppData(event, newTitle) {
   const listInAppData = appData.lists.board.find((DataTitle) => oldTitle === DataTitle.title);
 
   listInAppData.title = newTitle
-  // console.info(appData);
+
 }
 
 //deleteing a list in appdata
@@ -81,8 +86,24 @@ function deleteListToAppData(e){
 
 // adding a card to board in appdata
 function addCardAppData(e) {
-    const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
-    const listInAppData = appData.lists.board.find((DataTitle) => title === DataTitle.title)
+
+// const listId =e.target.closest('.oneLists').getAttribute('data-id');
+
+  // const listInAppData2 = appData.lists.board.find((list)=> listId === list.id);
+
+  //
+  // const cardOfAppData = {
+  //   members: [],
+  //   text: 'Add new task',
+  //   id: newCard.getAttribute("data-id"),
+  // }
+  // listInAppData2.tasks.push(cardOfAppData);
+
+  const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
+  const id =e.target.closest('.oneLists').getAttribute('data-id');
+
+    const listInAppData =returnListReference(id)
+      // appData.lists.board.find((bord) => id === bord.id)
     const cardId= e.target.closest('.oneLists').querySelector('.ulForCards li:last-child');
 
     const cardOfAppData = {
@@ -299,6 +320,7 @@ function createMemberList(memberName) {
   <button type="button" class="btn btn-success member-save-changes-btn save-btn" id="save">Save</button>
 </div>`
   oneMember.className = "list-group-item member-in-list";
+
   listOfMembers.appendChild(oneMember);
 
   oneMember.querySelector('.edit-btn').addEventListener('click', changMemberButtonsClasses)
@@ -321,9 +343,11 @@ function activeButton() {
   const button = document.querySelector('.btn-catcher');
 
   button.addEventListener('click', (e) => {
-    addListToAppData(e)
 
-    createNewList('New List');
+
+    const newList = createNewList('New List');
+    addListToAppData(e, newList)
+    e.currentTarget.blur();
 
   })
 }
@@ -334,7 +358,8 @@ function createBordHolder() {
   const templat = `
 <div id="mainCardHolders">
 
- <button class="btn btn-default navbar-btn btn-catcher add-button">Add new task</button>
+
+ <button class="btn  navbar-btn btn-catcher add-button">Add new List</button>
 
   </div>
 `
@@ -413,7 +438,7 @@ function creatingCarEditModalHtml() {
 
 
   // editCardModale.querySelector('.editable-inpte').textContent =
-  // console.info();
+
 }
 
 //adding members to the edit modal
@@ -426,10 +451,11 @@ function addingMembers(){
 
 
     const addMember = document.createElement('label');
+    addMember.setAttribute("for", `member-name${index}`)
     // const name= member.name
     addMember.innerHTML = `<input type="checkbox" name= "${member.name}" value="${member.name}" id=member-name${index++} data-id="${member.id}">${member.name}`
 
-    addMember.setAttribute("for", `member-name${index}`)
+
 
     document.querySelector('.member-list').appendChild(addMember);
 
@@ -492,7 +518,7 @@ function editMemberName(e) {
 
   }
   if (e.currentTarget.id === 'save') {
-    // console.info('hello', e.target);
+
 
     if (inputFiled.value) {
 
@@ -538,7 +564,7 @@ function editMemberNameKeyBoard(e) {
 
   if (e.keyCode === 13) {
     if (e.target.value) {
-      // console.info('hello');
+
       //to toggle sapn\inpute
       uppdatMemberInAppData(e, memberName);
       memberName.textContent = inputFiled.value;
@@ -586,7 +612,7 @@ function gettingCardInfoForModal(e) {
   const cardId = e.target.closest('.card').getAttribute('data-id');
   const listId = e.target.closest('.oneLists').getAttribute('data-id');
   const cardContent =returnCardReference(cardId, listId)
-    // console.info(cardContent2);
+
   const inputInModalContent =document.querySelector('#card-text');
   inputInModalContent.textContent = cardContent.text;
 
@@ -598,7 +624,7 @@ function setUITextInCard(cardContent){
   if(cardContent.length >200){
     let newCardContent = cardContent.slice(0, 197);
     newCardContent+= '...'
-    // console.info(newCardContent);
+
     return newCardContent
   }
   else{
@@ -610,8 +636,7 @@ function showMembersInModal(e) {
 
   const membersOnCard=e.target.closest('.card').querySelectorAll('.member-label')
   membersOnModal = document.querySelectorAll('.member-list input')
-// console.info(membersOnCard);
-  // console.info(membersOnCard);
+
   //unmarking all members
   membersOnModal.forEach((memberInput)=> {
         memberInput.checked = false ;
@@ -619,7 +644,7 @@ function showMembersInModal(e) {
   //markinh the right members
   membersOnModal.forEach((memberInput)=> {
     for (let oneMember of membersOnCard) {
-      // console.info(oneMember);
+
          if(memberInput.value === oneMember.title){
         memberInput.checked = true ;
           }
@@ -686,7 +711,7 @@ function createNewList(title, id) {
   const basicTemplete = document.createElement('div');
   const listsholder = document.querySelector('#mainCardHolders');
   const dataId = id || uuid();
-  // console.info(dataId);
+
   basicTemplete.setAttribute("class", "oneLists");
   basicTemplete.setAttribute("data-id", dataId);
   basicTemplete.innerHTML += listStringHtml;
@@ -843,10 +868,8 @@ function dropDownMenuFocusClose(event) {
 //the actual DELELTE lists function code
 function closingListMenu() {
   // const listsholder = document.querySelector('#mainCardHolders');
-  // console.info(1234, document.querySelector('#mainCardHolders'));
 
-  // console.info(document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu'));
-  // console.info(document.querySelector('#mainCardHolders'));
+
   const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
 
   for (const oneMenu of theMenu) {
@@ -862,7 +885,7 @@ function cardCreation(text) {
   const cardContent = text || 'Add new task'
   const newCard = document.createElement('li');
   newCard.setAttribute("class", "card");
-  newCard.setAttribute("data-id", uuid());
+  // newCard.setAttribute("data-id", uuid());
   const cardsText = document.createElement('p');
   cardsText.setAttribute("class", "cardInnerText");
   newCard.appendChild(cardsText);
@@ -900,13 +923,14 @@ function createCardByclick(e) {
   if (e.keyCode === 13 || e.type === 'click') {
 
     const newCard = cardCreation();
+    newCard.setAttribute("data-id", uuid())
     const parentNode = e.target.closest('.oneLists').querySelector('.ulForCards')
 
     parentNode.appendChild(newCard);
 
     //inserting card into AppData
     addCardAppData(e);
-    // console.info(appData);
+
     //
     // const title =e.target.closest('.oneLists').querySelector('.tagText').textContent
     // const listInAppData =appData.lists.board.find((DataTitle)=> title === DataTitle.title)
@@ -966,8 +990,7 @@ function savingCardDataIdToModalSaveBtn(e, id, listId) {
   const tempIdCardHolder = document.querySelector('.PopUpMenuHide').querySelector('.modal-save');
   tempIdCardHolder.setAttribute("temp-data-id", id)
   tempIdCardHolder.setAttribute("temp-list-data-id", listId)
-  // console.info(tempIdCardHolder);
-  // console.info(id);
+
   // const cardId = e.target.closest('.')
   // tempIdCardHolder.setAttribute('data-id',)
 
@@ -977,20 +1000,23 @@ function addNewMember(memberInitial, dataId, newCard) {
   const newLabel = document.createElement('span');
 
   let memberName = '';
-  // console.info(appData);
+  let memberColor;
+
   for (let member of appData.members) {
-    // console.info(member.name);
+
     if(member.id === dataId){
       memberName= member.name;
+      memberColor =member.labelColor;
     }
   }
 
-  newLabel.innerHTML = `<span class="label ${memberLableColors[lColorIndex]} member-label " title="${memberName}" data-id="${dataId}">${memberInitial}</span>`
+  newLabel.innerHTML = `<span class="label ${memberColor} member-label " title="${memberName}" data-id="${dataId}">${memberInitial}</span>`
   newCard.querySelector('.label-holder').appendChild(newLabel);
-  if (lColorIndex >= 5)
-    lColorIndex = 0;
-
-  lColorIndex++;
+  //memberLableColors[lColorIndex]
+  // if (lColorIndex >= 5)
+  //   lColorIndex = 0;
+  //
+  // lColorIndex++;
 
 }
 
@@ -1001,7 +1027,6 @@ function anitialsCreator(fullname) {
   for (let member of appData.members) {
     if(fullname === member.id){
       fullNameString = member.name
-      // console.info(fullNameString);
     }
   }
 
@@ -1036,29 +1061,29 @@ function addtoBudge(badgenumberOfCards,parentNode){
 
 
 //                                       NAV BAR controls          //
-
-//adding listener to nav-controls
-function navBarControls() {
-  const pageNav = document.querySelector('#page-nav')
-  pageNav.addEventListener('click', moveToPage);
-}
-
-//showing which nav option is choosed
-function moveToPage(e) {
-  const chosen = e.target.parentNode;
-
-  if (!chosen.classList.contains('active')) {
-    navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
-    // e.currentTarget.querySelector('.active').classList.remove('active');
-    //     chosen.classList.add('active');
-  }
-}
-
-//toggle for moveToPage function
-function navBarToggleAction(nav1, nav2) {
-  nav1.classList.toggle('active');
-  nav2.classList.toggle('active');
-}
+//
+// //adding listener to nav-controls
+// function navBarControls() {
+//   const pageNav = document.querySelector('#page-nav')
+//   pageNav.addEventListener('click', moveToPage);
+// }
+//
+// //showing which nav option is choosed
+// function moveToPage(e) {
+//   const chosen = e.target.parentNode;
+//
+//   if (!chosen.classList.contains('active')) {
+//     navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
+//     // e.currentTarget.querySelector('.active').classList.remove('active');
+//     //     chosen.classList.add('active');
+//   }
+// }
+//
+// //toggle for moveToPage function
+// function navBarToggleAction(nav1, nav2) {
+//   nav1.classList.toggle('active');
+//   nav2.classList.toggle('active');
+// }
 
 
 //                                       JSON uploading         //
@@ -1075,7 +1100,7 @@ function checkIfCanLoadPage() {
 function gettingJasonObject(event) {
   const savedLists = JSON.parse(event.target.responseText);
   appData.lists = savedLists;
-  // console.info(appData);
+
   jsonsState.push('true');
   checkIfCanLoadPage();
 
@@ -1102,7 +1127,7 @@ function gettingJasonObject(event) {
 //       parentNode.appendChild(newCard);
 //       //adding members
 //       for (let member of obj.members) {
-//         // console.info(member);
+//
 //         const anitinals = anitialsCreator(member)
 //         addNewMember(anitinals, member, newCard);
 //       }
@@ -1121,26 +1146,43 @@ function gettingJasonMembersObj(event) {
   const savedMembers = JSON.parse(event.target.responseText);
   appData.members = savedMembers.members
   jsonsState.push('true');
+  addLabelColors();
   //checking only two since i have only 2 AJAX calls
   checkIfCanLoadPage();
   // firstLoad();
-  // console.info(appData.members);
+
   //
   // firstLoad();
   // for (const member of appData.members) {
-  //   // console.info(member.name);
+
   //   createMemberList(member.name);
   //
   // }
 }
 
+function addLabelColors() {
+  const members = appData.members
+  for (let member of members) {
+    member.labelColor=addColor()
+    
+  }
 
+}
+
+function addColor() {
+  const color= memberLableColors[lColorIndex];
+  if (lColorIndex >= 5)
+    lColorIndex = 0;
+
+  lColorIndex++;
+  return color
+}
 function addingMemberListFromObj() {
   for (const member of appData.members) {
     const addedMember = createMemberList(member.name);
 
     addedMember.setAttribute("data-id", member.id)
-    // console.info(addedMember);
+
 
   }
 }
@@ -1182,6 +1224,7 @@ function buildingListFromObj() {
 
   //creating the lists
   for (let list of savedLists.board) {
+
     const loadList = createNewList(list.title, list.id)
 
 
@@ -1190,7 +1233,7 @@ function buildingListFromObj() {
 //adding the cards
     for (let obj of list.tasks) {
       // cardCreation(list, obj.text);
-      // console.info(list.id);
+
       const newCard = cardCreation(obj.text);
       newCard.setAttribute("data-id", obj.id) // adding the uniqe ID of every card
       const parentNode = loadList.querySelector('.ulForCards');
@@ -1212,7 +1255,7 @@ function buildingListFromObj() {
     }
 
   }
-  // console.info(appData);
+
 }
 
 
@@ -1278,6 +1321,7 @@ function loadpage(e) {
   if (e.currentTarget.location.hash === '#Board' || e.currentTarget.location.hash === '#') {
     document.querySelector('#bord-link').classList.add('active')
     document.querySelector('#members-link').classList.remove('active')
+    document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
     creatingBlamckBoard();
     buildingListFromObj();
     // creatingBoard();
@@ -1286,6 +1330,8 @@ function loadpage(e) {
   }
   else if (e.currentTarget.location.hash === '#Members') {
     // document.removeEventListener('click', dropDownMenuFocusClose);
+    document.querySelector('#members-link').classList.add('active')
+    document.querySelector('#bord-link').classList.remove('active')
     document.querySelector('.main-screen').removeEventListener('click', dropDownMenuFocusClose);
     loadHtmlForMembers(); //creating member page
     addingMemberListFromObj()
@@ -1311,8 +1357,8 @@ const appData = {
 creatingBlamckBoard();
 creatingBoard();
 creatingMembersPage();
-navBarControls()
-// console.info(uuid.v4());
+// navBarControls()
+
 
 
 
