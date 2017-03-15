@@ -96,7 +96,7 @@ function addCardAppData(e) {
 
 }
 
-//(move this to appdata)   -- Deleteing the card through edit Modal
+//   -- Deleteing the card through edit Modal
 function deleteButtonModal(e) {
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id');
@@ -510,9 +510,19 @@ function editMemberName(e) {
     //do nothing
   }
   if(e.currentTarget.id === 'delete-btn') {
-    deleteMemberFromAppData(e, memberName);
+    const deleteCheck = confirm(`Are you sure?`);
+    if(deleteCheck){
+      deleteMemberFromAppData(e, memberName);
+      e.target.closest('.member-in-list').remove();
+    }
+    else{
+      memberName.classList.toggle('displayState')
+      inputFiled.classList.toggle('displayState')
+    }
 
-    e.target.closest('.member-in-list').remove();
+    // deleteMemberFromAppData(e, memberName);
+    //
+    // e.target.closest('.member-in-list').remove();
   }
 
 
