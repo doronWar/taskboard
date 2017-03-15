@@ -56,10 +56,7 @@ main{
   /*display: inline-block;*/
 }
 
-/*.modal-content{*/
-  /*position: absolute;*/
-  /*top: 10%;*/
-/*}*/
+
 .members-input{
   width:  50%;
 }
@@ -317,9 +314,18 @@ button{
 
 /*}*/
 
+.modal-content{
+  /*position: absolute;*/
+  /*top: 10%;*/
+  box-shadow: 0 0 0 0;
+}
 
 .new-member-input{
-  width:50%;
+  width:30%;
+  height:40px;
+  border-radius: 5px;
+  border: 1px solid #CCCCCC;
+  padding-left:10px;
   margin-left:20px;
   margin-right: 20px;
   margin-bottom:20px;
@@ -330,26 +336,14 @@ button{
 
 }
 
-@media (max-width: 871px) {
 
-  .nav > li {
-    /*float: right;*/
-    display: inline-block;
-  }
-.navbar-header{
-  display: inline-block;
-}
-
-.navbar-nav{
-    float: right;
-    display: inline-block;
-  }
-}
 
 .member-page{
   position: absolute;
+  left: 20px;
   z-index: 10;
-  width:600px;
+  width:800px;
+  /*box-shadow: 0 0 0 0 ;*/
 
 
 }
@@ -394,6 +388,22 @@ button{
   font-size: 18px;
 
   line-height: 70px;
+}
+
+@media (max-width: 871px) {
+
+  .nav > li {
+    /*float: right;*/
+    display: inline-block;
+  }
+  .navbar-header{
+    display: inline-block;
+  }
+
+  .navbar-nav{
+    float: right;
+    display: inline-block;
+  }
 }
 /*todo: do not forget to move this when shit is working */
 #mainCardHolders{
