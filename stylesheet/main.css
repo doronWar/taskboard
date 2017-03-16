@@ -433,7 +433,7 @@ main{
   }
 
   .navbar-nav{
-    float: right;
+    float: left;
     display: inline-block;
   }
 }
