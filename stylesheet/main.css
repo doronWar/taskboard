@@ -386,11 +386,13 @@ main{
 .member-save-changes-btn{
   display: none;
   float: right;
+  margin-left: 10px;
 }
 
 .edit-member-btn{
   display: none;
   float: right;
+  margin-left: 10px;
 }
 .member-in-list:hover .seen{
   display: block;
