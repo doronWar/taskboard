@@ -155,7 +155,7 @@ main{
 .ulForCards{
   overflow: auto;
   /*max-height: 70vh;*/
-  max-height: calc(95vh - 150px);
+  max-height: calc(95vh - 160px);
   min-height: 15vh;
   /*background-color:  #F1F1F1;*/
   /*background-color:  ghostwhite;*/
@@ -386,11 +386,13 @@ main{
 .member-save-changes-btn{
   display: none;
   float: right;
+  margin-left: 10px;
 }
 
 .edit-member-btn{
   display: none;
   float: right;
+  margin-left: 10px;
 }
 .member-in-list:hover .seen{
   display: block;
@@ -433,7 +435,7 @@ main{
   }
 
   .navbar-nav{
-    float: right;
+    float: left;
     display: inline-block;
   }
 }
