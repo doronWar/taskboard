@@ -106,16 +106,24 @@ function addCardAppData(e) {
       // appData.lists.board.find((bord) => id === bord.id)
     const cardId= e.target.closest('.oneLists').querySelector('.ulForCards li:last-child');
 
-    const cardOfAppData = {
-      members: [],
-      text: 'Add new task',
-      id: cardId.getAttribute('data-id'),
-    }
-    listInAppData.tasks.push(cardOfAppData)
-
-
+  const cardOfAppData = {
+    members: [],
+    text: 'Add new task',
+    id: cardId.getAttribute('data-id'),
+  }
+  listInAppData.tasks.push(cardOfAppData)
+    //pushnigNewCard(listInAppData, cardId);
 
 }
+//
+// function pushnigNewCard(listInAppData,cardId) {
+//   const cardOfAppData = {
+//     members: [],
+//     text: 'Add new task',
+//     id: cardId.getAttribute('data-id'),
+//   }
+//   listInAppData.tasks.push(cardOfAppData)
+// }
 
 //   -- Deleteing the card through edit Modal
 function deleteButtonModal(e) {
@@ -736,6 +744,11 @@ function addEventListeners(basicTemplete) {
   basicTemplete.querySelector('.dropdown-toggle').addEventListener('click', listDropDownMenuActions);
 
   basicTemplete.querySelector('.listOption').addEventListener('click', deleteList);
+  
+  basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragOverDropZone);
+
+  
+  basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropHandlerDropZone);
 
 }
 
@@ -886,7 +899,11 @@ function cardCreation(text) {
   // newCard.setAttribute("data-id", uuid());
   const cardsText = document.createElement('p');
   cardsText.setAttribute("class", "cardInnerText");
+  newCard.setAttribute("draggable", "true");
+  newCard.setAttribute("id", `card${CardIdCounter++}`);
+
   newCard.appendChild(cardsText);
+  newCard.addEventListener('dragstart', dragHandler)
   // setUITextInCard(cardContent);
   // cardsText.textContent = cardContent;
   cardsText.textContent = setUITextInCard(cardContent);;
@@ -1083,6 +1100,55 @@ function addtoBudge(badgenumberOfCards,parentNode){
 //   nav2.classList.toggle('active');
 // }
 
+//                                      drageevent controlls              //
+
+//passing card Id to drop zone
+function dragHandler(e) {
+  const cardId = e.currentTarget.getAttribute('id');
+  // console.info(e);
+  e.dataTransfer.setData('text', cardId);
+
+}
+
+function dragOverDropZone(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "move";
+
+
+}
+
+function dropHandlerDropZone(e) {
+  e.preventDefault();
+
+  //dealling with UI
+  const cardId = e.dataTransfer.getData('text')
+  const cardUi = document.querySelector(`#${cardId}`)
+  const cardDataId = cardUi.getAttribute('data-id')
+
+  const originalList = cardUi.closest('.oneLists').getAttribute('data-id');
+  const curentList = e.currentTarget.closest('.oneLists').getAttribute('data-id');
+  const listInAppData = returnListReference(originalList);
+  const movedToList =returnListReference(curentList);
+
+  const cardReference= returnCardReference(cardDataId,originalList);
+
+  //making sure i'm moving to a new list
+  if(originalList!==curentList) {
+
+    e.currentTarget.appendChild(cardUi);
+
+    movedToList.tasks.push(cardReference);
+    deleteCardFromAppData(listInAppData, cardDataId);
+
+  }
+
+
+
+  //
+  // console.info(cardUi);
+
+  // console.info(e.currentTarget);
+}
 
 //                                       JSON uploading         //
 
@@ -1344,6 +1410,7 @@ function loadpage(e) {
 
 const memberLableColors = ['label-primary', 'label-success', 'label-info', 'label-warning', 'label-danger', 'label-default'];
 let lColorIndex = 0;
+let CardIdCounter =0;
 let jsonsState = [];
 window.addEventListener('hashchange', loadpage);
 const appData = {
