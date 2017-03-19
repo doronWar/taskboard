@@ -705,7 +705,7 @@ function dropHandlerDropZone(e) {
 
     movedToList.tasks.push(cardReference);
     deleteCardFromAppData(listInAppData, cardDataId);
-
+    // SaveAppDataToLocalStorage()
   }
 }
 
@@ -716,6 +716,7 @@ function checkIfCanLoadPage() {
   //checking only two since i have only 2 AJAX calls
   //can work also with checking length.
   if (jsonsState[0] && jsonsState[1]) {
+    SaveAppDataToLocalStorage()
     firstLoad();
   }
 }
@@ -865,22 +866,24 @@ function firstLoad() {
 
 
 //hash listener to load page when app is open
-function loadpage(e) {
+function loadpage() {
 
-  if (e.currentTarget.location.hash === '#Board' || e.currentTarget.location.hash === '#') {
-    document.querySelector('#bord-link').classList.add('active')
-    document.querySelector('#members-link').classList.remove('active')
-    document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
-    creatingBlamckBoard();
-    buildingListFromObj();
-  }
-  else if (e.currentTarget.location.hash === '#Members') {
-    // document.removeEventListener('click', dropDownMenuFocusClose);
+  if (window.location.hash === '#Members') {
     document.querySelector('#members-link').classList.add('active')
     document.querySelector('#bord-link').classList.remove('active')
     document.querySelector('.main-screen').removeEventListener('click', dropDownMenuFocusClose);
     loadHtmlForMembers(); //creating member page
     addingMemberListFromObj()
+
+
+  }
+  else  {
+    // document.removeEventListener('click', dropDownMenuFocusClose);
+    document.querySelector('#bord-link').classList.add('active')
+    document.querySelector('#members-link').classList.remove('active')
+    document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
+    creatingBlamckBoard();
+    buildingListFromObj();
   }
 
 }
@@ -893,6 +896,15 @@ let jsonsState = [];
 window.addEventListener('hashchange', loadpage);
 
 creatingBlamckBoard();
-creatingBoard();
-creatingMembersPage();
+
+if(localStorage.getItem("appData")) {
+  GetAppDataFromLocalStroage()
+
+  loadpage()
+}
+else{
+  creatingBoard();
+  creatingMembersPage();
+
+}
 

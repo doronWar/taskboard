@@ -35,7 +35,7 @@ function uppdatMemberInAppData(e, memberId){
       member.name=newList.name;
     }
   })
-
+  SaveAppDataToLocalStorage()
 }
 
 
@@ -49,6 +49,7 @@ function addMemberToAppData(e){
   };
   const members =  returnAllMemebers();
     members.push(newList);
+  SaveAppDataToLocalStorage()
 }
 
 //deleting member from appData
@@ -62,6 +63,7 @@ function deleteMemberFromAppData(e, memberId) {
     }
   })
   members.splice(indexinAppData,1);
+  SaveAppDataToLocalStorage()
 }
 
 
@@ -78,6 +80,7 @@ function addListToAppData(e, list){
   allListsAppData.push(newList)
 
   addMoveToOptions(newList, newList.id);
+  SaveAppDataToLocalStorage()
 
 }
 
@@ -89,6 +92,7 @@ function changeListNameInAppData(event, newTitle) {
   const listInAppData = allListsAppData.find((DataTitle) => oldTitle === DataTitle.title);
 
   listInAppData.title = newTitle
+  SaveAppDataToLocalStorage()
 
 }
 
@@ -105,8 +109,10 @@ function deleteListToAppData(e){
     if (list.id === listInAppData.id) {
       indexOfList = index;
       AlllistsInAppData.splice(indexOfList, 1)
+      SaveAppDataToLocalStorage()
     }
   });
+
 }
 
 
@@ -123,6 +129,7 @@ function addCardAppData(e) {
     id: cardId.getAttribute('data-id'),
   }
   listInAppData.tasks.push(cardOfAppData)
+  SaveAppDataToLocalStorage()
 }
 
 
@@ -135,6 +142,7 @@ function deleteButtonModal(e) {
   if(deleteCheck){
     deleteCardFromAppData(currentLocation, cardId);
     closeEditModal();
+    SaveAppDataToLocalStorage()
   }
 }
 
@@ -158,6 +166,7 @@ function editModalMemberChanges(e) {
       cardReference.members.splice(index,1);
     }
   }
+
 }
 
 //moving a card from list to list
@@ -181,6 +190,7 @@ function editModalCardMoveToOptions(e) {
 
     //earasing the card from the list
     deleteCardFromAppData(currentLocation, cardId);
+
   }
 
 }
@@ -191,6 +201,7 @@ function deleteCardFromAppData(currentLocation,cardId) {
   [].forEach.call(currentLocation.tasks, (task, index)=>{
     if (task.id===cardId){
       Array.prototype.splice.call(currentLocation.tasks , index, 1)
+      SaveAppDataToLocalStorage()
     }
   })
 }
@@ -208,6 +219,7 @@ function saveButtonModal(e) {
 
   //closing the modal and reloading the page
   closeEditModal();
+  SaveAppDataToLocalStorage()
 
 }
 
@@ -280,7 +292,15 @@ function addListsFromJason(JsonList) {
   appData.lists = JsonList;
 }
 
-const appData = {
+function SaveAppDataToLocalStorage() {
+  localStorage.setItem("appData", JSON.stringify(appData))
+}
+
+function GetAppDataFromLocalStroage() {
+  appData= JSON.parse(localStorage.getItem('appData'));
+}
+
+let appData = {
   lists: [],
   members: []
 }
