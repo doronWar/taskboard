@@ -744,10 +744,10 @@ function addEventListeners(basicTemplete) {
   basicTemplete.querySelector('.dropdown-toggle').addEventListener('click', listDropDownMenuActions);
 
   basicTemplete.querySelector('.listOption').addEventListener('click', deleteList);
-  
+
   basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragOverDropZone);
 
-  
+
   basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropHandlerDropZone);
 
 }
@@ -1056,7 +1056,7 @@ function updateBagde(badge, parentNode) {
 
 
 
-  const badgenumberOfCards = badge.target.parentNode.querySelector('.badge');
+  const badgenumberOfCards = badge.target.closest('.oneLists').querySelector('.badge');
 
 
   addtoBudge(badgenumberOfCards,parentNode);
@@ -1110,6 +1110,7 @@ function dragHandler(e) {
 
 }
 
+//logo change
 function dragOverDropZone(e) {
   e.preventDefault();
   e.dataTransfer.dropEffect = "move";
@@ -1117,6 +1118,7 @@ function dragOverDropZone(e) {
 
 }
 
+//dropying card in new list
 function dropHandlerDropZone(e) {
   e.preventDefault();
 
@@ -1135,7 +1137,14 @@ function dropHandlerDropZone(e) {
   //making sure i'm moving to a new list
   if(originalList!==curentList) {
 
+    const curentListUI = e.currentTarget.closest('.oneLists');
+
+    const originalListBadge = cardUi.closest('.oneLists').querySelector('.badge')
     e.currentTarget.appendChild(cardUi);
+
+    //updating bage
+    updateBagde(e, curentListUI);
+    originalListBadge.textContent = parseInt(originalListBadge.textContent)-1;
 
     movedToList.tasks.push(cardReference);
     deleteCardFromAppData(listInAppData, cardDataId);
@@ -1228,7 +1237,7 @@ function addLabelColors() {
   const members = appData.members
   for (let member of members) {
     member.labelColor=addColor()
-    
+
   }
 
 }

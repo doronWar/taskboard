@@ -424,24 +424,51 @@ main{
   line-height: 70px;
 }
 
-@media (max-width: 871px) {
+@media (max-width: 767px){
+  .nav > li > a{
+    line-height: 40px;
+  }
+}
+@media (max-width: 891px) {
 
   .nav > li {
-    /*float: right;*/
-    display: inline-block;
-  }
-  .navbar-header{
-    display: inline-block;
+    float: left;
+    /*display: inline-block;*/
+
   }
 
+
+  .navbar-header{
+    display: inline-block;
+    /*float: left;*/
+  }
+#page-nav{
+  margin-top:0;
+  margin-bottom:0;
+}
+
+.nav{
+  padding-left:30px;
+
+}
+.navbar-header{
+  float: left;
+}
   .navbar-nav{
     float: left;
-    display: inline-block;
+    /*display: inline-block;*/
+
   }
+  #mainCardHolders{
+    height: 100%;
+  }
+
+
 }
 /*todo: do not forget to move this when shit is working */
 #mainCardHolders{
   /*display: none;*/
+  height: 100%;
 }
 .member-page{
   /*display: none;*/
