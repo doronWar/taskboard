@@ -6,7 +6,12 @@
  *                             UI             //
  */
 
-
+//last version with all erased lines/////
+///
+///
+//
+//
+//
 
 //loading HTML wrap of member page
 function loadHtmlForMembers() {

@@ -76,12 +76,6 @@ function activeButton() {
     //scrolling to new list
     const elementToScroll =document.querySelector('#mainCardHolders');
     elementToScroll.scrollLeft =elementToScroll.scrollWidth
-
-
-
-
-
-
   })
 }
 
@@ -94,14 +88,8 @@ function createBordHolder() {
   </div>
   
 `
-
   document.querySelector('.main-screen').innerHTML = templat;
-
 }
-
-
-
-
 
 
 //creating edit modal for cards
@@ -172,20 +160,12 @@ function addingMembers(){
 
   for (let member of members) {
 
-
     const addMember = document.createElement('label');
     addMember.setAttribute("for", `member-name${index}`)
     addMember.innerHTML = `<input type="checkbox" name= "${member.name}" value="${member.name}" id=member-name${index++} data-id="${member.id}">${member.name}`
 
-
-
     document.querySelector('.member-list').appendChild(addMember);
-
   }
-
-
-
-
 }
 
 
@@ -242,12 +222,8 @@ function editMemberName(e) {
 
   }
   if (e.currentTarget.id === 'save') {
-
-
     if (inputFiled.value) {
-
     uppdatMemberInAppData(e, memberId);
-
       memberName.textContent = inputFiled.value;
     }
   }
@@ -257,19 +233,14 @@ function editMemberName(e) {
   if(e.currentTarget.id === 'delete-btn') {
     const deleteCheck = confirm(`Are you sure?`);
     if(deleteCheck){
-
       deleteMemberFromAppData(e, memberId);
-
       e.target.closest('.member-in-list').remove();
-
     }
     else{
       memberName.classList.toggle('displayState')
       inputFiled.classList.toggle('displayState')
     }
   }
-
-
 }
 
 
@@ -278,11 +249,8 @@ function editMemberNameKeyBoard(e) {
   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
   const memberName = e.target.closest('.member-in-list').querySelector('.memebr-name');
 
-
-
   if (e.keyCode === 13) {
     if (e.target.value) {
-
       //to toggle sapn\inpute
       uppdatMemberInAppData(e, memberName);
       memberName.textContent = inputFiled.value;
@@ -315,7 +283,6 @@ function editModalCardInput(e){
   const cardReference =  returnCardReference(cardId, listId);
   cardReference.text =inputInModalContent;
 
-
 }
 
 //createing MOVETO bar info in edit card modal
@@ -346,13 +313,13 @@ function setUITextInCard(cardContent){
   if(cardContent.length >200){
     let newCardContent = cardContent.slice(0, 197);
     newCardContent+= '...'
-
     return newCardContent
   }
   else{
     return cardContent
   }
 }
+
 //mark checked on input of edit modal
 function showMembersInModal(e) {
 
@@ -366,14 +333,11 @@ function showMembersInModal(e) {
   //markinh the right members
   membersOnModal.forEach((memberInput)=> {
     for (let oneMember of membersOnCard) {
-
          if(memberInput.value === oneMember.title){
         memberInput.checked = true ;
           }
-
     }
   })
-
 }
 
 
@@ -480,18 +444,15 @@ function upsdateListName(e) {
 function inputLitener(event) {
   let newTitle = event.target.value;
 
-
   if (event.type === 'keydown') {
     if (event.keyCode === 13) {
       autoReplaceEmptyInputValue(event, newTitle)
     }
     if (event.keyCode === 27) {
       autoReplaceEmptyInputValue(event, '')
-
     }
   }
   if (event.type === 'blur' && event.target.style.display !== 'none') {
-
     autoReplaceEmptyInputValue(event, newTitle)
   }
 }
@@ -516,7 +477,6 @@ function displayChanger(event, newTitle) {
 
   event.target.style.display = 'none';
   finalTitle.style.display = 'inline-block'
-
 }
 
 
@@ -533,13 +493,11 @@ function deleteList(event) {
 
   if (!deleteCheck) {
     closingListMenu()
-
   }
   else {
     listIAmIn.remove();
     deleteListToAppData(event)
   }
-
 }
 
 
@@ -598,15 +556,11 @@ function cardCreation(text) {
 </div>`;
 
   newCard.querySelector('.edit-Card-Button').addEventListener('click', (e)=>{
-
     const cardId= newCard.getAttribute("data-id");
     const listId = newCard.closest('.oneLists').getAttribute("data-id")
 
     toggleEditPanle(e,cardId, listId );
   });
-  // addNewMember('DW', 'doron warzagr', newCard);
-
-
 
   return newCard
 }
@@ -714,7 +668,6 @@ function dragHandler(e) {
   const cardId = e.currentTarget.getAttribute('id');
   // console.info(e);
   e.dataTransfer.setData('text', cardId);
-
 }
 
 //move logo change
@@ -743,7 +696,6 @@ function dropHandlerDropZone(e) {
   if(originalList!==curentList) {
 
     const curentListUI = e.currentTarget.closest('.oneLists');
-
     const originalListBadge = cardUi.closest('.oneLists').querySelector('.badge')
     e.currentTarget.appendChild(cardUi);
 
@@ -782,7 +734,7 @@ function gettingJasonObject(event) {
 function gettingJasonMembersObj(event) {
   const savedMembers = JSON.parse(event.target.responseText);
   addMembersFromJason(savedMembers.members)
-  // appData.members = savedMembers.members
+
   jsonsState.push('true');
   addLabelColors();
   //checking only two since i have only 2 AJAX calls
@@ -793,9 +745,7 @@ function addLabelColors() {
   const members =returnAllMemebers();
   for (let member of members) {
     member.labelColor=addColor()
-
   }
-
 }
 
 function addColor() {
@@ -812,8 +762,6 @@ function addingMemberListFromObj() {
     const addedMember = createMemberList(member.name);
 
     addedMember.setAttribute("data-id", member.id)
-
-
   }
 }
 
@@ -827,7 +775,6 @@ function creatingBoard() {
   xhr.addEventListener("load", gettingJasonObject);
   xhr.open("GET", "assets/board.json");
   xhr.send();
-
 }
 
 //getting jonson for members
@@ -837,8 +784,6 @@ function creatingMembersPage() {
   xhrMembers.addEventListener("load", gettingJasonMembersObj);
   xhrMembers.open("GET", "assets/members.json");
   xhrMembers.send();
-
-
 }
 
 
@@ -852,20 +797,15 @@ function buildingListFromObj() {
 
   //creating the lists
   for (let list of savedLists) {
-
     const loadList = createNewList(list.title, list.id)
-
-
     addMoveToOptions(list, list.id);
 
-//adding the cards
+    //adding the cards
     for (let obj of list.tasks) {
       // cardCreation(list, obj.text);
-
       const newCard = cardCreation(obj.text);
       newCard.setAttribute("data-id", obj.id) // adding the uniqe ID of every card
       const parentNode = loadList.querySelector('.ulForCards');
-
 
       parentNode.appendChild(newCard);
 
@@ -874,9 +814,7 @@ function buildingListFromObj() {
       addtoBudge(badge, parentNode);
 
       //adding members
-
       for (let member of obj.members) {
-
         const anitinals = anitialsCreator(member)
         addNewMember(anitinals, member, newCard);
       }
@@ -889,7 +827,6 @@ function buildingListFromObj() {
 
 //creating the board page
 function creatingBlamckBoard() {
-
   createBordHolder();
   activeButton();
   creatingCarEditModalHtml();
@@ -923,14 +860,12 @@ function firstLoad() {
     creatingBlamckBoard();
     // creatingBoard();
     buildingListFromObj();
-
   }
 }
 
 
 //hash listener to load page when app is open
 function loadpage(e) {
-
 
   if (e.currentTarget.location.hash === '#Board' || e.currentTarget.location.hash === '#') {
     document.querySelector('#bord-link').classList.add('active')
