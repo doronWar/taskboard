@@ -411,9 +411,16 @@ function addEventListeners(basicTemplete) {
   basicTemplete.querySelector('.listOption').addEventListener('click', deleteList);
 
   basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragOverDropZone);
+  // basicTemplete.querySelector('.ulForCards').addEventListener('draend', dragOutOfDropZone);
+
 
 
   basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropHandlerDropZone);
+  // basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragEnterToDropZone);
+  // basicTemplete.querySelector('.ulForCards').addEventListener('dragleave', dragOutOfDropZone);
+  // basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropUi);
+
+
 
 }
 
@@ -563,8 +570,42 @@ function cardCreation(text) {
     toggleEditPanle(e,cardId, listId );
   });
 
-  newCard.addEventListener('drop', dropHandlerDropZone);
+  // newCard.addEventListener('drop', dropHandlerDropZone);
+  // newCard.addEventListener('dragend', dragOutOfDropZone);
+  // newCard.addEventListener('dragleave', dragOutOfDropZone);
+
+
+  // newCard.addEventListener('dragenter', dragEnterToDropZone);
   return newCard
+}
+
+function dropUi(e) {
+  e.target.closest('.card').style.borderTop = '1px solid #7cdaf9';
+}
+
+function dragOutOfDropZone(e) {
+  // e.preventDefault();
+  // e.dataTransfer.dropEffect = "move";
+  if(e.target.closest('.card')) {
+    e.target.closest('.card').style.borderTop = '0 solid white';
+  }
+
+  // const cards = e.target.closest('.ulForCards ').querySelectorAll('.card');
+  // for (let card of cards) {
+  //   card.style.marginTop = ''
+  // }
+  //
+}
+
+
+function dragEnterToDropZone(e) {
+  // e.preventDefault();
+  // e.dataTransfer.dropEffect = "move";
+
+  if(e.target.closest('.card')) {
+    console.info(e.target.closest('.card'));
+    e.target.closest('.card').style.borderTop = '150px solid white'
+  }
 }
 
 //function to create a card on board
@@ -676,8 +717,11 @@ function dragHandler(e) {
 function dragOverDropZone(e) {
   e.preventDefault();
   e.dataTransfer.dropEffect = "move";
+  // e.target.closest('.card').style.marginTop = '150px'
+
 }
 
+//
 //dropying card in new list
 function dropHandlerDropZone(e) {
   e.preventDefault();
@@ -699,7 +743,7 @@ function dropHandlerDropZone(e) {
 
     const curentListUI = e.currentTarget.closest('.oneLists');
     const originalListBadge = cardUi.closest('.oneLists').querySelector('.badge')
-    console.info(e.target.closest('.card'));
+    // console.info(e.target.closest('.card'));
 
     // e.currentTarget.closest('.ulForCards ').appendChild(cardUi);
     // cardUi.insertBefore()
@@ -709,8 +753,9 @@ function dropHandlerDropZone(e) {
     updateBagde(e, curentListUI);
     originalListBadge.textContent = parseInt(originalListBadge.textContent)-1;
 
-    // DropHandlerMoveCardInAppData(e.currentTarget.closest('.oneLists'), movedToList);
-    movedToList.tasks.push(cardReference);
+
+    DropHandlerMoveCardInAppData(e.currentTarget.closest('.oneLists'), movedToList, cardReference);
+    // movedToList.tasks.push(cardReference);
     deleteCardFromAppData(listInAppData, cardDataId);
     // SaveAppDataToLocalStorage()
   }

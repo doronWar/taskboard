@@ -170,32 +170,19 @@ function editModalMemberChanges(e) {
 
 }
 
-function DropHandlerMoveCardInAppData(currentList, listInAppData) {
+//pushing card by drop handler to the right place in appData
+function DropHandlerMoveCardInAppData(currentList, listInAppData, cardId) {
 
   const tasks = currentList.querySelectorAll('.card');
-  const newArray = Array.prototype.slice.call(listInAppData.tasks);
-
-  //what i'm thinking of doing:
-  //going through each item andseeing with the index f the function that loops with index two
-  //where's the index of the new card and then pushing it in the right place.
-  newArray.forEach((card)=>{
-    // for (let task of tasks) {
-    //   if(task.getAttribute('.data-id')!==)
-    // }
-    // if()
+  const newArray = Array.prototype.slice.call(tasks);
+  let cardIndex;
+  newArray.forEach((task, index)=>{
+    if(task.getAttribute('data-id')===cardId.id) {
+      cardIndex = index;
+    }
   })
+  listInAppData.tasks.splice(cardIndex, 0, cardId )
 
-  console.info(newArray);
-  // console.info(tasks);
-  
-//   for (let task of tasks) {
-//    const member = {
-//      id: task.getAttribute('data-id'),
-//      members:
-//     text: task.querySelector('p').textContent
-//    }
-//     console.info(task);
-//   }
 
 }
 
