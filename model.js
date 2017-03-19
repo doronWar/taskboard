@@ -1,26 +1,43 @@
 /**
- * Created by Doron Warzager on 19/03/2017.
+ * Model
  */
 
 //                            data manegment            //
 
 
 //updating member name in appdata
-function uppdatMemberInAppData(e){
+// function uppdatMemberInAppData(e){
+//
+//   const originalName =e.target.closest('.member-in-list').querySelector('.memebr-name').textContent;
+//
+//   const newList = {
+//     name:e.target.closest('.member-in-list').querySelector('.new-member-name').value
+//   };
+//   const members = returnAllMemebers();
+//   members.forEach((member)=>{
+//     if(member.name===originalName){
+//       member.name=newList.name;
+//     }
+//   })
+//
+// }
+
+function uppdatMemberInAppData(e, memberId){
 
   const originalName =e.target.closest('.member-in-list').querySelector('.memebr-name').textContent;
 
   const newList = {
     name:e.target.closest('.member-in-list').querySelector('.new-member-name').value
   };
-
-  appData.members.forEach((member)=>{
-    if(member.name===originalName){
+  const members = returnAllMemebers();
+  members.forEach((member)=>{
+    if(member.id===memberId){
       member.name=newList.name;
     }
   })
 
 }
+
 
 //adding member in appdata
 function addMemberToAppData(e){
@@ -31,19 +48,21 @@ function addMemberToAppData(e){
     id:uuid(),
     labelColor: addColor()
   };
-  appData.members.push(newList);
+  const members =  returnAllMemebers();
+    members.push(newList);
 }
 
 //deleting member from appData
-function deleteMemberFromAppData(e, memberName) {
+function deleteMemberFromAppData(e, memberId) {
 
   let indexinAppData =0;
-  appData.members.forEach((member, index)=> {
-    if(member.name === memberName){
+  const members= returnAllMemebers()
+  members.forEach((member, index)=> {
+    if(member.id === memberId){
       indexinAppData = index;
     }
   })
-  appData.members.splice(indexinAppData,1);
+  members.splice(indexinAppData,1);
 }
 
 
@@ -54,7 +73,12 @@ function addListToAppData(e, list){
     title: 'New List',
     tasks: []
   };
-  appData.lists.board.push(newList)
+
+  const allListsAppData = returnsAllListsReference();
+
+  allListsAppData.push(newList)
+
+  addMoveToOptions(newList, newList.id);
 
 }
 
@@ -62,7 +86,8 @@ function addListToAppData(e, list){
 function changeListNameInAppData(event, newTitle) {
   // const newTitle = event.target.closest('.oneLists').querySelector('.inputTag').value;
   const oldTitle = event.target.closest('.oneLists').querySelector('.tagText').textContent;
-  const listInAppData = appData.lists.board.find((DataTitle) => oldTitle === DataTitle.title);
+  const allListsAppData = returnsAllListsReference();
+  const listInAppData = allListsAppData.find((DataTitle) => oldTitle === DataTitle.title);
 
   listInAppData.title = newTitle
 
@@ -70,15 +95,20 @@ function changeListNameInAppData(event, newTitle) {
 
 //deleteing a list in appdata
 function deleteListToAppData(e){
-  const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
-  const listInAppData = appData.lists.board.find((DataTitle) => title === DataTitle.title)
+  // const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
+  const listId = e.target.closest('.oneLists').getAttribute('data-id');
+  // const listInAppData = appData.lists.board.find((DataTitle) => title === DataTitle.title)
+  const AlllistsInAppData= returnsAllListsReference()
+  const listInAppData = AlllistsInAppData.find((DataTitle) => listId === DataTitle.id)
+
   let indexOfList = 0;
 
-  appData.lists.board.forEach((list, index) => {
+  AlllistsInAppData.forEach((list, index) => {
 
-    if (list.title === listInAppData.title) {
+    if (list.id === listInAppData.id) {
       indexOfList = index;
-      appData.lists.board.splice(indexOfList, 1)
+
+      AlllistsInAppData.splice(indexOfList, 1)
 
     }
   });
@@ -99,7 +129,7 @@ function addCardAppData(e) {
   // }
   // listInAppData2.tasks.push(cardOfAppData);
 
-  const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
+  // const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
   const id =e.target.closest('.oneLists').getAttribute('data-id');
 
   const listInAppData =returnListReference(id)
@@ -139,17 +169,6 @@ function deleteButtonModal(e) {
 }
 
 
-//adding edited info for card if SAVED
-function editModalCardInput(e){
-  const inputInModalContent =document.querySelector('#card-text').value;
-  const lists = appData.lists.board;
-  const cardId = e.target.getAttribute('temp-data-id')
-  const listId = e.target.getAttribute('temp-list-data-id')
-  const cardReference =  returnCardReference(cardId, listId);
-  cardReference.text =inputInModalContent;
-
-
-}
 
 //adding and removing members from card
 function editModalMemberChanges(e) {
@@ -158,7 +177,7 @@ function editModalMemberChanges(e) {
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
 
-  const lists = appData.lists.board;
+  // const lists = appData.lists.board;
 
 
   const cardReference =  returnCardReference(cardId, listId);
@@ -248,7 +267,8 @@ function saveButtonModal(e) {
 //searching appdata and returning a reference to the card i want
 function returnCardReference(cardId, listId) {
   let cardReference = '';
-  const lists = appData.lists.board;
+  const lists = returnsAllListsReference();
+
 
   lists.forEach((list)=> {
     if (list.id === listId) {
@@ -284,5 +304,34 @@ function  returnsAllListsReference(){
   return appData.lists.board
 }
 
+//reciving memers list
+function returnAllMemebers() {
+  return appData.members
+}
+
+//return member by Id
+function returnMemberById(id) {
+  const members = returnAllMemebers();
+  for (let member of members) {
+    if(id === member.id){
+      return  member
+    }
+  }
+}
 
 
+
+
+//Moving from Json to AppData
+function addMembersFromJason(JsoonMembers) {
+  appData.members = JsoonMembers;
+}
+
+function addListsFromJason(JsonList) {
+  appData.lists = JsonList;
+}
+
+const appData = {
+  lists: [],
+  members: []
+}

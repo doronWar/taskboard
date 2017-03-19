@@ -81,6 +81,8 @@ function activeButton() {
 
 
 
+
+
   })
 }
 
@@ -174,7 +176,7 @@ function creatingCarEditModalHtml() {
 //adding members to the edit modal
 function addingMembers(){
 
-  const members=appData.members;
+  const members=returnAllMemebers()
   let index= 0;
 
   for (let member of members) {
@@ -237,6 +239,8 @@ function toggleMemberMenuButtons(buttons) {
 function editMemberName(e) {
   const inputFiled = e.target.closest('.member-in-list').querySelector('.new-member-name');
   const memberName = e.target.closest('.member-in-list').querySelector('.memebr-name');
+  const memberId =e.target.closest('.member-in-list').getAttribute('data-id')
+
   memberName.classList.toggle('displayState')
   inputFiled.classList.toggle('displayState')
 
@@ -252,7 +256,8 @@ function editMemberName(e) {
 
     if (inputFiled.value) {
 
-    uppdatMemberInAppData(e, memberName);
+    uppdatMemberInAppData(e, memberId);
+
       memberName.textContent = inputFiled.value;
     }
 
@@ -268,8 +273,11 @@ function editMemberName(e) {
   if(e.currentTarget.id === 'delete-btn') {
     const deleteCheck = confirm(`Are you sure?`);
     if(deleteCheck){
-      deleteMemberFromAppData(e, memberName);
+
+      deleteMemberFromAppData(e, memberId);
+
       e.target.closest('.member-in-list').remove();
+
     }
     else{
       memberName.classList.toggle('displayState')
@@ -321,6 +329,19 @@ function createEditListPopUp() {
 
 }
 
+
+
+//adding edited info for card if SAVED
+function editModalCardInput(e){
+  const inputInModalContent =document.querySelector('#card-text').value;
+  // const lists = appData.lists.board;
+  const cardId = e.target.getAttribute('temp-data-id')
+  const listId = e.target.getAttribute('temp-list-data-id')
+  const cardReference =  returnCardReference(cardId, listId);
+  cardReference.text =inputInModalContent;
+
+
+}
 
 //createing MOVETO bar info in edit card modal
 function addMoveToOptions(listElm, listId) {
@@ -749,16 +770,17 @@ function savingCardDataIdToModalSaveBtn(e, id, listId) {
 function addNewMember(memberInitial, dataId, newCard) {
   const newLabel = document.createElement('span');
 
-  let memberName = '';
-  let memberColor;
-
-  for (let member of appData.members) {
-
-    if(member.id === dataId){
-      memberName= member.name;
-      memberColor =member.labelColor;
-    }
-  }
+  const memberName = returnMemberById(dataId).name;
+  const memberColor = returnMemberById(dataId).labelColor;
+  //
+  // const members =returnAllMemebers()
+  // for (let member of members) {
+  //
+  //   if(member.id === dataId){
+  //     memberName= member.name;
+  //     memberColor =member.labelColor;
+  //   }
+  // }
 
   newLabel.innerHTML = `<span class="label ${memberColor} member-label " title="${memberName}" data-id="${dataId}">${memberInitial}</span>`
   newCard.querySelector('.label-holder').appendChild(newLabel);
@@ -771,17 +793,21 @@ function addNewMember(memberInitial, dataId, newCard) {
 }
 
 //creates anitials for cards    -- need to check it works with 3 word name
-function anitialsCreator(fullname) {
-
-  let fullNameString ='';
-  for (let member of appData.members) {
-    if(fullname === member.id){
-      fullNameString = member.name
-    }
-  }
-
+function anitialsCreator(id) {
+  const fullNameString = returnMemberById(id).name;
   const nameToArray = fullNameString.split(' ').map((n) => n[0]);
   return nameToArray.join('');
+  // let fullNameString ='';
+
+  // const members = returnAllMemebers();
+
+  // for (let member of members) {
+  //   if(fullname === member.id){
+  //     fullNameString = member.name
+  //   }
+  // }
+
+
 
 }
 
@@ -907,7 +933,8 @@ function checkIfCanLoadPage() {
 
 function gettingJasonObject(event) {
   const savedLists = JSON.parse(event.target.responseText);
-  appData.lists = savedLists;
+  addListsFromJason(savedLists);
+  // appData.lists = savedLists;
 
   jsonsState.push('true');
   checkIfCanLoadPage();
@@ -952,7 +979,8 @@ function gettingJasonObject(event) {
 //getting members Jason // and then loading page
 function gettingJasonMembersObj(event) {
   const savedMembers = JSON.parse(event.target.responseText);
-  appData.members = savedMembers.members
+  addMembersFromJason(savedMembers.members)
+  // appData.members = savedMembers.members
   jsonsState.push('true');
   addLabelColors();
   //checking only two since i have only 2 AJAX calls
@@ -969,7 +997,7 @@ function gettingJasonMembersObj(event) {
 }
 
 function addLabelColors() {
-  const members = appData.members
+  const members =returnAllMemebers();
   for (let member of members) {
     member.labelColor=addColor()
 
@@ -986,7 +1014,8 @@ function addColor() {
   return color
 }
 function addingMemberListFromObj() {
-  for (const member of appData.members) {
+  const members = returnAllMemebers()
+  for (const member of members) {
     const addedMember = createMemberList(member.name);
 
     addedMember.setAttribute("data-id", member.id)
@@ -1028,10 +1057,10 @@ function creatingMembersPage() {
 // & adding list names to edit Modal
 function buildingListFromObj() {
 
-  const savedLists = appData.lists;
+  const savedLists =returnsAllListsReference();
 
   //creating the lists
-  for (let list of savedLists.board) {
+  for (let list of savedLists) {
 
     const loadList = createNewList(list.title, list.id)
 
@@ -1157,10 +1186,7 @@ let lColorIndex = 0;
 let CardIdCounter =0;
 let jsonsState = [];
 window.addEventListener('hashchange', loadpage);
-const appData = {
-  lists: [],
-  members: []
-}
+
 
 // navBarControls();
 creatingBlamckBoard();

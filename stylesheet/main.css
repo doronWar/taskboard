@@ -142,6 +142,7 @@ main{
 
 .oneLists{
   min-width: 250px;
+  width: 250px;
   /*height: 95vh;*/
   /*min-height: 60vh;*/
   margin-right: 15px;
