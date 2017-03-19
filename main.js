@@ -387,6 +387,7 @@ function createNewList(title, id) {
   basicTemplete.innerHTML += listStringHtml;
   listsholder.insertBefore(basicTemplete, nodereferece);
 
+
 //adding event listeners
   addEventListeners(basicTemplete);
 
@@ -562,6 +563,7 @@ function cardCreation(text) {
     toggleEditPanle(e,cardId, listId );
   });
 
+  newCard.addEventListener('drop', dropHandlerDropZone);
   return newCard
 }
 
@@ -697,12 +699,17 @@ function dropHandlerDropZone(e) {
 
     const curentListUI = e.currentTarget.closest('.oneLists');
     const originalListBadge = cardUi.closest('.oneLists').querySelector('.badge')
-    e.currentTarget.appendChild(cardUi);
+    console.info(e.target.closest('.card'));
+
+    // e.currentTarget.closest('.ulForCards ').appendChild(cardUi);
+    // cardUi.insertBefore()
+    e.currentTarget.closest('.ulForCards ').insertBefore(cardUi,e.target.closest('.card'))
 
     //updating bage
     updateBagde(e, curentListUI);
     originalListBadge.textContent = parseInt(originalListBadge.textContent)-1;
 
+    // DropHandlerMoveCardInAppData(e.currentTarget.closest('.oneLists'), movedToList);
     movedToList.tasks.push(cardReference);
     deleteCardFromAppData(listInAppData, cardDataId);
     // SaveAppDataToLocalStorage()

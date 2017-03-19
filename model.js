@@ -133,6 +133,7 @@ function addCardAppData(e) {
 }
 
 
+
 function deleteButtonModal(e) {
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id');
@@ -166,6 +167,35 @@ function editModalMemberChanges(e) {
       cardReference.members.splice(index,1);
     }
   }
+
+}
+
+function DropHandlerMoveCardInAppData(currentList, listInAppData) {
+
+  const tasks = currentList.querySelectorAll('.card');
+  const newArray = Array.prototype.slice.call(listInAppData.tasks);
+
+  //what i'm thinking of doing:
+  //going through each item andseeing with the index f the function that loops with index two
+  //where's the index of the new card and then pushing it in the right place.
+  newArray.forEach((card)=>{
+    // for (let task of tasks) {
+    //   if(task.getAttribute('.data-id')!==)
+    // }
+    // if()
+  })
+
+  console.info(newArray);
+  // console.info(tasks);
+  
+//   for (let task of tasks) {
+//    const member = {
+//      id: task.getAttribute('data-id'),
+//      members:
+//     text: task.querySelector('p').textContent
+//    }
+//     console.info(task);
+//   }
 
 }
 
