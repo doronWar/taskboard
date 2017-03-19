@@ -35,7 +35,7 @@ function loadHtmlForMembers() {
 function createMemberList(memberName) {
   const oneMember = document.createElement('li');
   const listOfMembers = document.querySelector('.list-group');
-  // oneMember.textContent = ;
+
   oneMember.innerHTML += `
   <span class="memebr-name  ">${memberName}</span>
   <input type="text" class ="new-member-name displayState"   maxlength="25"></input>
@@ -58,7 +58,6 @@ function createMemberList(memberName) {
   oneMember.querySelector('.new-member-name').addEventListener('keypress', editMemberNameKeyBoard)
 
   oneMember.querySelector('.save-btn').addEventListener('click', changMemberButtonsClasses)
-  // oneMember.querySelector('.delete').addEventListener('click', editMemberName)
 
   return oneMember;
 }
@@ -137,12 +136,6 @@ function creatingCarEditModalHtml() {
             <label for="exampleSelect1" class="col-sm-2 control-label ">Members</label>
             <div class="col-sm-offset-2 members-input  ">
               <div class="checkbox form-control member-list">
-
-                <!--<label for="member-name1"><input type="checkbox" name="memeber1" value="memeber1" id="member-name1">-->
-                <!--Member Name</label>-->
-                <!--<label for="member-name2"><input type="checkbox" name="memeber2" value="memeber2" id="member-name2">-->
-                <!--Member Name</label>-->
-
               </div>
             </div>
             <button type="button" class="btn btn-danger btn-delete-size modal-delete-btn">Delete Card</button>
@@ -156,7 +149,7 @@ function creatingCarEditModalHtml() {
       </div>
     </div>
 `
-  // const cardContent =
+
   const editCardModale = document.createElement('div')
   editCardModale.innerHTML = modalTemplate;
   editCardModale.setAttribute("class", "modal PopUpMenuHide")
@@ -168,8 +161,6 @@ function creatingCarEditModalHtml() {
   editCardModale.querySelector('.modal-save').addEventListener('click', saveButtonModal)
   editCardModale.querySelector('.modal-delete-btn').addEventListener('click', deleteButtonModal)
 
-
-  // editCardModale.querySelector('.editable-inpte').textContent =
 
 }
 
@@ -184,7 +175,6 @@ function addingMembers(){
 
     const addMember = document.createElement('label');
     addMember.setAttribute("for", `member-name${index}`)
-    // const name= member.name
     addMember.innerHTML = `<input type="checkbox" name= "${member.name}" value="${member.name}" id=member-name${index++} data-id="${member.id}">${member.name}`
 
 
@@ -260,12 +250,6 @@ function editMemberName(e) {
 
       memberName.textContent = inputFiled.value;
     }
-
-
-
-
-    // memberName.textContent = inputFiled.value;
-
   }
   if (e.currentTarget.id === 'cancel') {
     //do nothing
@@ -283,10 +267,6 @@ function editMemberName(e) {
       memberName.classList.toggle('displayState')
       inputFiled.classList.toggle('displayState')
     }
-
-    // deleteMemberFromAppData(e, memberName);
-    //
-    // e.target.closest('.member-in-list').remove();
   }
 
 
@@ -310,11 +290,7 @@ function editMemberNameKeyBoard(e) {
     memberName.classList.toggle('displayState')
     inputFiled.classList.toggle('displayState')
     changMemberButtonsClasses(e);
-
-    // uppdatMemberInAppData(e)
-
   }
-
 }
 
 
@@ -334,7 +310,6 @@ function createEditListPopUp() {
 //adding edited info for card if SAVED
 function editModalCardInput(e){
   const inputInModalContent =document.querySelector('#card-text').value;
-  // const lists = appData.lists.board;
   const cardId = e.target.getAttribute('temp-data-id')
   const listId = e.target.getAttribute('temp-list-data-id')
   const cardReference =  returnCardReference(cardId, listId);
@@ -345,21 +320,17 @@ function editModalCardInput(e){
 
 //createing MOVETO bar info in edit card modal
 function addMoveToOptions(listElm, listId) {
-  //, listId
+
   const moveToOption = document.querySelector('.lists-holder');
   const newOption = document.createElement('option')
   newOption.innerHTML = listElm.title;
   newOption.setAttribute('value', listId)
   moveToOption.appendChild(newOption);
-  // if(listElm.id === listId){
-  //   newOption.selected =true;
-  // }
 
 }
 
 //getting info from card content into nodal
 function gettingCardInfoForModal(e) {
-  // const cardContent = e.target.closest('.card').querySelector('.cardInnerText').textContent;
   const cardId = e.target.closest('.card').getAttribute('data-id');
   const listId = e.target.closest('.oneLists').getAttribute('data-id');
   const cardContent =returnCardReference(cardId, listId)
@@ -402,28 +373,6 @@ function showMembersInModal(e) {
 
     }
   })
-
-  // document.querySelector('.member-list').innerHTML = '';
-
-
-  // members.forEach((member, index)=>{
-  //   if(member.title===)
-  //   const addMember = members.querySelector()
-  //   addMember.innerHTML = `<input type="checkbox" name= ${member.title} value=${member.title} id=member-name${index+1}>${member.title}`
-  //
-  //   addMember.setAttribute("for", `member-name${index+1}`)
-  //
-  //   document.querySelector('.member-list').appendChild(addMember);
-
-    // const addMember = document.createElement('label');
-    // addMember.innerHTML = `<input type="checkbox" name= ${member.title} value=${member.title} id=member-name${index+1}>${member.title}`
-    //
-    // addMember.setAttribute("for", `member-name${index+1}`)
-    //
-    // document.querySelector('.member-list').appendChild(addMember);
-
-
-  // })
 
 }
 
@@ -523,10 +472,7 @@ function upsdateListName(e) {
     nameHolder.style.display = 'none';
     nameHolder.parentNode.appendChild(inputeFiled)
     inputeFiled.focus();
-
   }
-
-
 }
 
 
@@ -548,8 +494,6 @@ function inputLitener(event) {
 
     autoReplaceEmptyInputValue(event, newTitle)
   }
-
-
 }
 
 //making sure the inpute title will have a value
@@ -587,7 +531,6 @@ function deleteList(event) {
   const nameOfList = event.target.closest('.oneLists').querySelector('.tagText').textContent
   const deleteCheck = confirm(`Deleting ${nameOfList} list. Are you sure?`);
 
-
   if (!deleteCheck) {
     closingListMenu()
 
@@ -604,15 +547,12 @@ function deleteList(event) {
 function listDropDownMenuActions(event) {
   const theMenu = event.currentTarget.parentNode.parentNode.querySelector('.dropdown-menu');
 
-
   if (theMenu.style.display === 'none' || !theMenu.style.display) {
     closingListMenu();
     theMenu.style.display = 'block'
   }
   else {
-
     theMenu.style.display = 'none'
-
   }
 }
 
@@ -623,14 +563,11 @@ function dropDownMenuFocusClose(event) {
   if (!event.target.closest('.btn-group')) {
     closingListMenu()
   }
-
 }
 
 
 //the actual DELELTE lists function code
 function closingListMenu() {
-  // const listsholder = document.querySelector('#mainCardHolders');
-
 
   const theMenu = document.querySelector('#mainCardHolders').querySelectorAll('.dropdown-menu')
 
@@ -647,7 +584,6 @@ function cardCreation(text) {
   const cardContent = text || 'Add new task'
   const newCard = document.createElement('li');
   newCard.setAttribute("class", "card");
-  // newCard.setAttribute("data-id", uuid());
   const cardsText = document.createElement('p');
   cardsText.setAttribute("class", "cardInnerText");
   newCard.setAttribute("draggable", "true");
@@ -655,19 +591,11 @@ function cardCreation(text) {
 
   newCard.appendChild(cardsText);
   newCard.addEventListener('dragstart', dragHandler)
-  // setUITextInCard(cardContent);
-  // cardsText.textContent = cardContent;
+
   cardsText.textContent = setUITextInCard(cardContent);;
   newCard.innerHTML += `<button class="btn btn-default edit-Card-Button" type="submit">Edit</button>
 <div class="label-holder">
 </div>`;
-
-
-  //i hve to count the length of carContent
-  //if it's longer then something - i have to slice it where i want to
-  //then slice 3 more char and change them to ...
-  //and then place it back into card
-
 
   newCard.querySelector('.edit-Card-Button').addEventListener('click', (e)=>{
 
@@ -695,26 +623,10 @@ function createCardByclick(e) {
     parentNode.appendChild(newCard);
     //scroll down in lists
     parentNode.scrollTop = parentNode.scrollHeight;
-    // parentNode.scrollTop += 4000; // need a function to know how much to scroll
-    // console.info(parentNode.scrollHeight)
 
     //inserting card into AppData
     addCardAppData(e);
 
-
-    //
-    // const title =e.target.closest('.oneLists').querySelector('.tagText').textContent
-    // const listInAppData =appData.lists.board.find((DataTitle)=> title === DataTitle.title)
-    // const cardOfAppData = {
-    //   members:[],
-    //   text: 'Add new task'
-    // }
-    // listInAppData.tasks.push(cardOfAppData)
-
-
-
-    // const referenceNode = parentNode.querySelector('ul > li:last-child')
-    // parentNode.insertBefore(newCard, referenceNode);
     updateBagde(e, parentNode);
   }
 
@@ -730,8 +642,6 @@ function toggleEditPanle(e, id, listId) {
     //geting card info
     gettingCardInfoForModal(e);
     savingCardDataIdToModalSaveBtn(e, id, listId);
-    //creating save-btn listener
-    // saveButtonModal(e);
     //getting members
     showMembersInModal(e);
 
@@ -741,14 +651,8 @@ function toggleEditPanle(e, id, listId) {
     nameOfLists.forEach((list)=>{
         if(list.value === listId){
         list.selected =true;
-
       }
-
   })
-
-
-
-
   }
   else {
     menuState.display = 'none'
@@ -761,34 +665,17 @@ function savingCardDataIdToModalSaveBtn(e, id, listId) {
   const tempIdCardHolder = document.querySelector('.PopUpMenuHide').querySelector('.modal-save');
   tempIdCardHolder.setAttribute("temp-data-id", id)
   tempIdCardHolder.setAttribute("temp-list-data-id", listId)
-
-  // const cardId = e.target.closest('.')
-  // tempIdCardHolder.setAttribute('data-id',)
-
 }
+
 //add memebers to cards controls
 function addNewMember(memberInitial, dataId, newCard) {
   const newLabel = document.createElement('span');
 
   const memberName = returnMemberById(dataId).name;
   const memberColor = returnMemberById(dataId).labelColor;
-  //
-  // const members =returnAllMemebers()
-  // for (let member of members) {
-  //
-  //   if(member.id === dataId){
-  //     memberName= member.name;
-  //     memberColor =member.labelColor;
-  //   }
-  // }
 
   newLabel.innerHTML = `<span class="label ${memberColor} member-label " title="${memberName}" data-id="${dataId}">${memberInitial}</span>`
   newCard.querySelector('.label-holder').appendChild(newLabel);
-  //memberLableColors[lColorIndex]
-  // if (lColorIndex >= 5)
-  //   lColorIndex = 0;
-  //
-  // lColorIndex++;
 
 }
 
@@ -797,28 +684,13 @@ function anitialsCreator(id) {
   const fullNameString = returnMemberById(id).name;
   const nameToArray = fullNameString.split(' ').map((n) => n[0]);
   return nameToArray.join('');
-  // let fullNameString ='';
-
-  // const members = returnAllMemebers();
-
-  // for (let member of members) {
-  //   if(fullname === member.id){
-  //     fullNameString = member.name
-  //   }
-  // }
-
-
-
 }
 
 
 //updating badge number by click
 function updateBagde(badge, parentNode) {
 
-
-
   const badgenumberOfCards = badge.target.closest('.oneLists').querySelector('.badge');
-
 
   addtoBudge(badgenumberOfCards,parentNode);
 }
@@ -835,33 +707,7 @@ function addtoBudge(badgenumberOfCards,parentNode){
   }
 }
 
-
-//                                       NAV BAR controls          //
-//
-// //adding listener to nav-controls
-// function navBarControls() {
-//   const pageNav = document.querySelector('#page-nav')
-//   pageNav.addEventListener('click', moveToPage);
-// }
-//
-// //showing which nav option is choosed
-// function moveToPage(e) {
-//   const chosen = e.target.parentNode;
-//
-//   if (!chosen.classList.contains('active')) {
-//     navBarToggleAction(e.currentTarget.querySelector('.active'), chosen);
-//     // e.currentTarget.querySelector('.active').classList.remove('active');
-//     //     chosen.classList.add('active');
-//   }
-// }
-//
-// //toggle for moveToPage function
-// function navBarToggleAction(nav1, nav2) {
-//   nav1.classList.toggle('active');
-//   nav2.classList.toggle('active');
-// }
-
-//                                      drageevent controlls              //
+//                                      drage event controlls              //
 
 //passing card Id to drop zone
 function dragHandler(e) {
@@ -871,12 +717,10 @@ function dragHandler(e) {
 
 }
 
-//logo change
+//move logo change
 function dragOverDropZone(e) {
   e.preventDefault();
   e.dataTransfer.dropEffect = "move";
-
-
 }
 
 //dropying card in new list
@@ -911,13 +755,6 @@ function dropHandlerDropZone(e) {
     deleteCardFromAppData(listInAppData, cardDataId);
 
   }
-
-
-
-  //
-  // console.info(cardUi);
-
-  // console.info(e.currentTarget);
 }
 
 //                                       JSON uploading         //
@@ -938,41 +775,6 @@ function gettingJasonObject(event) {
 
   jsonsState.push('true');
   checkIfCanLoadPage();
-
-
-  // creatingMembersPage();
-
-  // loadpage(e)
-  // firstLoad();
-//
-//
-//   //creating the lists
-//   for (let list of savedLists.board) {
-//     const loadList = createNewList(list.title)
-//     // debugger
-//
-//     addMoveToOptions(list.title);
-//
-// //adding the cards
-//     for (let obj of list.tasks) {
-//       cardCreation(list, obj.text);
-//
-//       const newCard = cardCreation(obj.text);
-//       const parentNode = loadList.querySelector('.ulForCards')
-//       parentNode.appendChild(newCard);
-//       //adding members
-//       for (let member of obj.members) {
-//
-//         const anitinals = anitialsCreator(member)
-//         addNewMember(anitinals, member, newCard);
-//       }
-//     }
-//
-//   }
-
-
-  // document.addEventListener('click', dropDownMenuFocusClose);
-
 }
 
 
@@ -985,15 +787,6 @@ function gettingJasonMembersObj(event) {
   addLabelColors();
   //checking only two since i have only 2 AJAX calls
   checkIfCanLoadPage();
-  // firstLoad();
-
-  //
-  // firstLoad();
-  // for (const member of appData.members) {
-
-  //   createMemberList(member.name);
-  //
-  // }
 }
 
 function addLabelColors() {
@@ -1049,9 +842,7 @@ function creatingMembersPage() {
 }
 
 
-//fisr load of webpage
-//-------------- add here active action - to the right nav option - when creating board\member
-//and fix anitials to be able to recieve as much words as needed.
+//                    fisr load of webpage
 
 //building list from appData obj
 // & adding list names to edit Modal
@@ -1090,9 +881,7 @@ function buildingListFromObj() {
         addNewMember(anitinals, member, newCard);
       }
     }
-
   }
-
 }
 
 
@@ -1105,13 +894,10 @@ function creatingBlamckBoard() {
   activeButton();
   creatingCarEditModalHtml();
   createEditListPopUp();
-
-
 }
 
 //first time loading page
 function firstLoad() {
-
 
   if (window.location.hash === '#Board') {
     //|| window.location.hash === '') left over of privious IF
@@ -1123,18 +909,13 @@ function firstLoad() {
     buildingListFromObj();
     document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
 
-    // document.addEventListener('click', dropDownMenuFocusClose);
   }
   if (window.location.hash === '#Members') {
     document.querySelector('#members-link').classList.add('active')
-    // navBarToggleAction(document.querySelector('#bord-link'),document.querySelector('#members-link'))
     loadHtmlForMembers(); //creating member page
     addingMemberListFromObj()
     document.querySelector('.main-screen').removeEventListener('click', dropDownMenuFocusClose);
 
-    // loadHtmlForMembers(); //creating member page
-    // // add member in member page
-    // creatingMembersPage(); // placing info of members in member page
   }
   if (!window.location.hash) {
     window.location.hash = '#Board'
@@ -1142,11 +923,7 @@ function firstLoad() {
     creatingBlamckBoard();
     // creatingBoard();
     buildingListFromObj();
-    // return;
 
-
-//   //   creatingBlamckBoard();
-//   // creatingBoard();
   }
 }
 
@@ -1161,9 +938,6 @@ function loadpage(e) {
     document.querySelector('.main-screen').addEventListener('click', dropDownMenuFocusClose);
     creatingBlamckBoard();
     buildingListFromObj();
-    // creatingBoard();
-
-
   }
   else if (e.currentTarget.location.hash === '#Members') {
     // document.removeEventListener('click', dropDownMenuFocusClose);
@@ -1172,10 +946,6 @@ function loadpage(e) {
     document.querySelector('.main-screen').removeEventListener('click', dropDownMenuFocusClose);
     loadHtmlForMembers(); //creating member page
     addingMemberListFromObj()
-
-
-    // add member in member page
-    // creatingMembersPage(); // placing info of members in member page
   }
 
 }
@@ -1187,13 +957,7 @@ let CardIdCounter =0;
 let jsonsState = [];
 window.addEventListener('hashchange', loadpage);
 
-
-// navBarControls();
 creatingBlamckBoard();
 creatingBoard();
 creatingMembersPage();
-// navBarControls()
-
-
-
 

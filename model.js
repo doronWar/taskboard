@@ -23,8 +23,8 @@
 // }
 
 function uppdatMemberInAppData(e, memberId){
-
-  const originalName =e.target.closest('.member-in-list').querySelector('.memebr-name').textContent;
+  //
+  // const originalName =e.target.closest('.member-in-list').querySelector('.memebr-name').textContent;
 
   const newList = {
     name:e.target.closest('.member-in-list').querySelector('.new-member-name').value
@@ -41,8 +41,7 @@ function uppdatMemberInAppData(e, memberId){
 
 //adding member in appdata
 function addMemberToAppData(e){
-  // console.info(e.target.closest('.modal-content ').querySelector('.new-member-input').getAttribute('data-id'));
-  // const color = addLabelColors();
+
   const newList = {
     name: e.target.closest('.modal-content ').querySelector('.new-member-input').value,
     id:uuid(),
@@ -84,7 +83,7 @@ function addListToAppData(e, list){
 
 //updating the name of the list in appdata
 function changeListNameInAppData(event, newTitle) {
-  // const newTitle = event.target.closest('.oneLists').querySelector('.inputTag').value;
+
   const oldTitle = event.target.closest('.oneLists').querySelector('.tagText').textContent;
   const allListsAppData = returnsAllListsReference();
   const listInAppData = allListsAppData.find((DataTitle) => oldTitle === DataTitle.title);
@@ -93,47 +92,29 @@ function changeListNameInAppData(event, newTitle) {
 
 }
 
+
 //deleteing a list in appdata
 function deleteListToAppData(e){
-  // const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
+
   const listId = e.target.closest('.oneLists').getAttribute('data-id');
-  // const listInAppData = appData.lists.board.find((DataTitle) => title === DataTitle.title)
   const AlllistsInAppData= returnsAllListsReference()
   const listInAppData = AlllistsInAppData.find((DataTitle) => listId === DataTitle.id)
-
   let indexOfList = 0;
 
   AlllistsInAppData.forEach((list, index) => {
-
     if (list.id === listInAppData.id) {
       indexOfList = index;
-
       AlllistsInAppData.splice(indexOfList, 1)
-
     }
   });
 }
 
+
 // adding a card to board in appdata
 function addCardAppData(e) {
 
-// const listId =e.target.closest('.oneLists').getAttribute('data-id');
-
-  // const listInAppData2 = appData.lists.board.find((list)=> listId === list.id);
-
-  //
-  // const cardOfAppData = {
-  //   members: [],
-  //   text: 'Add new task',
-  //   id: newCard.getAttribute("data-id"),
-  // }
-  // listInAppData2.tasks.push(cardOfAppData);
-
-  // const title = e.target.closest('.oneLists').querySelector('.tagText').textContent
   const id =e.target.closest('.oneLists').getAttribute('data-id');
-
   const listInAppData =returnListReference(id)
-  // appData.lists.board.find((bord) => id === bord.id)
   const cardId= e.target.closest('.oneLists').querySelector('.ulForCards li:last-child');
 
   const cardOfAppData = {
@@ -142,32 +123,20 @@ function addCardAppData(e) {
     id: cardId.getAttribute('data-id'),
   }
   listInAppData.tasks.push(cardOfAppData)
-  //pushnigNewCard(listInAppData, cardId);
-
 }
-//
-// function pushnigNewCard(listInAppData,cardId) {
-//   const cardOfAppData = {
-//     members: [],
-//     text: 'Add new task',
-//     id: cardId.getAttribute('data-id'),
-//   }
-//   listInAppData.tasks.push(cardOfAppData)
-// }
 
-//   -- Deleteing the card through edit Modal
+
 function deleteButtonModal(e) {
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id');
   const currentLocation =returnListReference(listId);
-
   const deleteCheck = confirm(`Are you sure you want to delete this task?`);
+
   if(deleteCheck){
     deleteCardFromAppData(currentLocation, cardId);
     closeEditModal();
   }
 }
-
 
 
 //adding and removing members from card
@@ -176,9 +145,6 @@ function editModalMemberChanges(e) {
   const memberToCheck = Array.prototype.slice.call(membersOnModal);
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
-
-  // const lists = appData.lists.board;
-
 
   const cardReference =  returnCardReference(cardId, listId);
 
@@ -191,9 +157,7 @@ function editModalMemberChanges(e) {
       const index = cardReference.members.indexOf(inputMember.getAttribute('data-id'));
       cardReference.members.splice(index,1);
     }
-
   }
-
 }
 
 //moving a card from list to list
@@ -201,9 +165,6 @@ function editModalCardMoveToOptions(e) {
   const listId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-list-data-id')
   const cardId = e.target.closest('#modal').querySelector('.modal-save').getAttribute('temp-data-id');
 
-
-
-  // const directory = e.target.closest('#modal').querySelector('option[selected]')
 
   const directory = e.target.closest('#modal').querySelector('.lists-holder');
   const directoryId = directory.options[directory.selectedIndex].value;
@@ -220,18 +181,12 @@ function editModalCardMoveToOptions(e) {
 
     //earasing the card from the list
     deleteCardFromAppData(currentLocation, cardId);
-    // [].forEach.call(currentLocation.tasks, (task, index)=>{
-    //   if (task.id===cardId){
-    //     Array.prototype.splice.call(currentLocation.tasks , index, 1)
-    //   }
-    // })
   }
 
 }
 
 //deleteing a card from the appdata
 function deleteCardFromAppData(currentLocation,cardId) {
-
 
   [].forEach.call(currentLocation.tasks, (task, index)=>{
     if (task.id===cardId){
@@ -240,7 +195,6 @@ function deleteCardFromAppData(currentLocation,cardId) {
   })
 }
 
-//so there's the save botton and from there i can know wich card to save to.
 
 function saveButtonModal(e) {
 
@@ -255,16 +209,13 @@ function saveButtonModal(e) {
   //closing the modal and reloading the page
   closeEditModal();
 
-
-  //need to add delete card listener in modal + confirm function
-  //need to add move to function here
 }
 
 
 //          search data functions         //
 
 
-//searching appdata and returning a reference to the card i want
+// returning a reference to the card i want
 function returnCardReference(cardId, listId) {
   let cardReference = '';
   const lists = returnsAllListsReference();
@@ -284,7 +235,7 @@ function returnCardReference(cardId, listId) {
   return cardReference;
 }
 
-//searching appdata and returning a reference to the list i want
+// returning a reference to the list i want
 function returnListReference(listId) {
   let listReference = '';
   const lists = appData.lists.board;
@@ -318,8 +269,6 @@ function returnMemberById(id) {
     }
   }
 }
-
-
 
 
 //Moving from Json to AppData
