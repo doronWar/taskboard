@@ -625,6 +625,8 @@ console.info(memberId);
     MODEL.changeListNameInAppData(listInAppData, newTitle)
 
   }
+
+
 //                //          dealing with DELETE list menu        //        ///       //
 
 
@@ -696,6 +698,8 @@ console.info(memberId);
 
     newCard.appendChild(cardsText);
     newCard.addEventListener('dragstart', dragHandler)
+    newCard.addEventListener('dragend', dragOutOfDropZone)
+    // newCard.addEventListener('drop', dropHandlerDropZone);
 
     cardsText.textContent = setUITextInCard(cardContent);
     ;
@@ -710,7 +714,7 @@ console.info(memberId);
       toggleEditPanle(e, cardId, listId);
     });
 
-    // newCard.addEventListener('drop', dropHandlerDropZone);
+
     // newCard.addEventListener('dragend', dragOutOfDropZone);
     // newCard.addEventListener('dragleave', dragOutOfDropZone);
 
@@ -828,6 +832,7 @@ console.info(memberId);
     }
   }
 
+
 //                                      drage event controlls              //
 
 //passing card Id to drop zone
@@ -871,7 +876,15 @@ console.info(memberId);
 
       // e.currentTarget.closest('.ulForCards ').appendChild(cardUi);
       // cardUi.insertBefore()
-      e.currentTarget.closest('.ulForCards ').insertBefore(cardUi, e.target.closest('.card'))
+
+      // e.currentTarget.closest('.ulForCards ').insertBefore(cardUi, e.target.querySelector('.card'))
+      e.currentTarget.closest('.ulForCards ').insertBefore(cardUi, e.target.querySelector('.spacing-ul'))
+
+      //if i want to do something with last child situation
+      const lastLichild = e.target.querySelector('li:last-child');
+
+
+
 
       //updating bage
       updateBagde(e, curentListUI);
@@ -920,7 +933,12 @@ console.info(memberId);
       // tempDiv.style.height = '150px';
       // tempDiv.style.width = '50px'
 
+
       e.currentTarget.closest('.ulForCards ').insertBefore(tempDiv, e.target.closest('.card'))
+      const lastLichild = e.target.closest('.ulForCards li:last-child');
+
+     
+
 
       //here i have to add an if - if the Li is only child then insert after by push
       // console.info(e.target.closest('.ulForCards').querySelectorAll('li').length);
