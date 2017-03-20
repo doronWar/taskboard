@@ -416,8 +416,8 @@ function addEventListeners(basicTemplete) {
 
 
   basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropHandlerDropZone);
-  // basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragEnterToDropZone);
-  // basicTemplete.querySelector('.ulForCards').addEventListener('dragleave', dragOutOfDropZone);
+  basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragEnterToDropZone);
+  basicTemplete.querySelector('.ulForCards').addEventListener('dragleave', dragOutOfDropZone);
   // basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropUi);
 
 
@@ -555,6 +555,7 @@ function cardCreation(text) {
   newCard.setAttribute("draggable", "true");
   newCard.setAttribute("id", `card${CardIdCounter++}`);
 
+
   newCard.appendChild(cardsText);
   newCard.addEventListener('dragstart', dragHandler)
 
@@ -576,6 +577,10 @@ function cardCreation(text) {
 
 
   // newCard.addEventListener('dragenter', dragEnterToDropZone);
+  // const divWrapper = document.createElement('div')
+  // divWrapper.appendChild(newCard)
+  // divWrapper.classList.add('wraper')
+// console.info(divWrapper);
   return newCard
 }
 
@@ -585,26 +590,34 @@ function dropUi(e) {
 
 function dragOutOfDropZone(e) {
   // e.preventDefault();
-  // e.dataTransfer.dropEffect = "move";
-  if(e.target.closest('.card')) {
-    e.target.closest('.card').style.borderTop = '0 solid white';
+  if(e.target === e.currentTarget){
+    dragActionsRemovetempDivForSpaces()
   }
 
-  // const cards = e.target.closest('.ulForCards ').querySelectorAll('.card');
-  // for (let card of cards) {
-  //   card.style.marginTop = ''
-  // }
-  //
 }
 
+function dragActionsRemovetempDivForSpaces() {
+  const tempDivs = document.querySelectorAll('.spacing-ul');
+  Array.prototype.forEach.call(tempDivs, (div)=>{
+    div.remove();
+    // console.info(div);
+  })
+}
 
 function dragEnterToDropZone(e) {
   // e.preventDefault();
   // e.dataTransfer.dropEffect = "move";
 
   if(e.target.closest('.card')) {
-    console.info(e.target.closest('.card'));
-    e.target.closest('.card').style.borderTop = '150px solid white'
+   const tempDiv = document.createElement('div')
+    tempDiv.classList.add('spacing-ul');
+    tempDiv.style.height = '150px';
+    tempDiv.style.width ='50px'
+
+    e.currentTarget.closest('.ulForCards ').insertBefore(tempDiv,e.target.closest('.card'))
+
+    // console.info(e.target.closest('.card'));
+    // e.target.closest('.card').style.borderTop = '150px solid white'
   }
 }
 
@@ -759,6 +772,8 @@ function dropHandlerDropZone(e) {
     deleteCardFromAppData(listInAppData, cardDataId);
     // SaveAppDataToLocalStorage()
   }
+
+  dragActionsRemovetempDivForSpaces()
 }
 
 //                                       JSON uploading         //
