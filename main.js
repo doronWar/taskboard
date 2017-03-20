@@ -771,9 +771,17 @@ function dragEnterToDropZone(e) {
     tempDiv.style.width ='50px'
 
     e.currentTarget.closest('.ulForCards ').insertBefore(tempDiv,e.target.closest('.card'))
+    //here i have to add an if - if the Li is only child then insert after by push
+    // console.info(e.target.closest('.ulForCards').querySelectorAll('li').length);
 
-    // console.info(e.target.closest('.card'));
-    // e.target.closest('.card').style.borderTop = '150px solid white'
+
+    // if(e.target.closest('.ulForCards').querySelectorAll('li').length===1){
+    //   e.currentTarget.closest('.ulForCards ').push(tempDiv);
+    // }
+    // else{
+    //
+    // }
+    
   }
 }
 
