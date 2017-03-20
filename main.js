@@ -291,7 +291,7 @@ console.info(memberId);
       changMemberButtonsClasses(e);
     }
   }
-  
+
   function uppdatMemberInAppData(e, memberId){
     //
     // const originalName =e.target.closest('.member-in-list').querySelector('.memebr-name').textContent;
