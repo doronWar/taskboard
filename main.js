@@ -410,15 +410,14 @@ function addEventListeners(basicTemplete) {
 
   basicTemplete.querySelector('.listOption').addEventListener('click', deleteList);
 
+  //dealing with drag & droop
   basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragOverDropZone);
-  // basicTemplete.querySelector('.ulForCards').addEventListener('draend', dragOutOfDropZone);
-
-
-
   basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropHandlerDropZone);
+
+  //dealling with UI for drag and drop
   basicTemplete.querySelector('.ulForCards').addEventListener('dragover', dragEnterToDropZone);
   basicTemplete.querySelector('.ulForCards').addEventListener('dragleave', dragOutOfDropZone);
-  // basicTemplete.querySelector('.ulForCards').addEventListener('drop', dropUi);
+
 
 
 
@@ -576,50 +575,12 @@ function cardCreation(text) {
   // newCard.addEventListener('dragleave', dragOutOfDropZone);
 
 
-  // newCard.addEventListener('dragenter', dragEnterToDropZone);
-  // const divWrapper = document.createElement('div')
-  // divWrapper.appendChild(newCard)
-  // divWrapper.classList.add('wraper')
-// console.info(divWrapper);
   return newCard
 }
 
-function dropUi(e) {
-  e.target.closest('.card').style.borderTop = '1px solid #7cdaf9';
-}
-
-function dragOutOfDropZone(e) {
-  // e.preventDefault();
-  if(e.target === e.currentTarget){
-    dragActionsRemovetempDivForSpaces()
-  }
-
-}
-
-function dragActionsRemovetempDivForSpaces() {
-  const tempDivs = document.querySelectorAll('.spacing-ul');
-  Array.prototype.forEach.call(tempDivs, (div)=>{
-    div.remove();
-    // console.info(div);
-  })
-}
-
-function dragEnterToDropZone(e) {
-  // e.preventDefault();
-  // e.dataTransfer.dropEffect = "move";
-
-  if(e.target.closest('.card')) {
-   const tempDiv = document.createElement('div')
-    tempDiv.classList.add('spacing-ul');
-    tempDiv.style.height = '150px';
-    tempDiv.style.width ='50px'
-
-    e.currentTarget.closest('.ulForCards ').insertBefore(tempDiv,e.target.closest('.card'))
-
-    // console.info(e.target.closest('.card'));
-    // e.target.closest('.card').style.borderTop = '150px solid white'
-  }
-}
+// function dropUi(e) {
+//   e.target.closest('.card').style.borderTop = '1px solid #7cdaf9';
+// }
 
 //function to create a card on board
 function createCardByclick(e) {
@@ -773,8 +734,51 @@ function dropHandlerDropZone(e) {
     // SaveAppDataToLocalStorage()
   }
 
+  //erasing all empty Div's in the list
   dragActionsRemovetempDivForSpaces()
 }
+
+
+//all functions dealling with UI controlls for space between tasks while drag & drop
+
+//erasing empty spaces only when leaving task holder
+function dragOutOfDropZone(e) {
+  // e.preventDefault();
+  if(e.target === e.currentTarget){
+    dragActionsRemovetempDivForSpaces()
+  }
+
+}
+
+//code for erasing empty DIvs
+function dragActionsRemovetempDivForSpaces() {
+  const tempDivs = document.querySelectorAll('.spacing-ul');
+  Array.prototype.forEach.call(tempDivs, (div)=>{
+    div.remove();
+    // console.info(div);
+  })
+}
+
+//creating empty Div when entering dropZone
+function dragEnterToDropZone(e) {
+  // e.preventDefault();
+  // e.dataTransfer.dropEffect = "move";
+
+  if(e.target.closest('.card')) {
+    const tempDiv = document.createElement('div')
+    tempDiv.classList.add('spacing-ul');
+    tempDiv.style.height = '150px';
+    tempDiv.style.width ='50px'
+
+    e.currentTarget.closest('.ulForCards ').insertBefore(tempDiv,e.target.closest('.card'))
+
+    // console.info(e.target.closest('.card'));
+    // e.target.closest('.card').style.borderTop = '150px solid white'
+  }
+}
+
+
+
 
 //                                       JSON uploading         //
 
