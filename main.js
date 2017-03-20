@@ -213,7 +213,7 @@ function editMemberName(e) {
 
   memberName.classList.toggle('displayState')
   inputFiled.classList.toggle('displayState')
-
+  console.info(memberId);
 
   if (e.currentTarget.id === 'check') {
     inputFiled.value = memberName.textContent
@@ -232,8 +232,10 @@ function editMemberName(e) {
   }
   if(e.currentTarget.id === 'delete-btn') {
     const deleteCheck = confirm(`Are you sure?`);
+
     if(deleteCheck){
-      deleteMemberFromAppData(e, memberId);
+
+      deleteMemberFromAppData(memberId);
       e.target.closest('.member-in-list').remove();
     }
     else{
@@ -260,6 +262,8 @@ function editMemberNameKeyBoard(e) {
     changMemberButtonsClasses(e);
   }
 }
+
+
 
 
 
@@ -894,9 +898,13 @@ function buildingListFromObj() {
       addtoBudge(badge, parentNode);
 
       //adding members
+
       for (let member of obj.members) {
-        const anitinals = anitialsCreator(member)
-        addNewMember(anitinals, member, newCard);
+
+        if(returnMemberById(member)) {
+          const anitinals = anitialsCreator(member)
+          addNewMember(anitinals, member, newCard);
+        }
       }
     }
   }

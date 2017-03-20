@@ -21,7 +21,6 @@
 //   })
 //
 // }
-
 function uppdatMemberInAppData(e, memberId){
   //
   // const originalName =e.target.closest('.member-in-list').querySelector('.memebr-name').textContent;
@@ -32,6 +31,7 @@ function uppdatMemberInAppData(e, memberId){
   const members = returnAllMemebers();
   members.forEach((member)=>{
     if(member.id===memberId){
+      console.info(member);
       member.name=newList.name;
     }
   })
@@ -48,21 +48,26 @@ function addMemberToAppData(e){
     labelColor: addColor()
   };
   const members =  returnAllMemebers();
+
     members.push(newList);
   SaveAppDataToLocalStorage()
 }
 
 //deleting member from appData
-function deleteMemberFromAppData(e, memberId) {
+function deleteMemberFromAppData(memberId) {
 
   let indexinAppData =0;
   const members= returnAllMemebers()
+  
   members.forEach((member, index)=> {
+
     if(member.id === memberId){
+
       indexinAppData = index;
     }
   })
   members.splice(indexinAppData,1);
+
   SaveAppDataToLocalStorage()
 }
 
