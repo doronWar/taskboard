@@ -19,7 +19,7 @@ function addMemberToAppData(newList){
 
     members.push(newList);
 
-  SaveAppDataToLocalStorage()
+  saveAppDataToLocalStorage()
 }
 
 //deleting member from appData
@@ -34,7 +34,7 @@ function deleteMemberFromAppData(memberId) {
     }
   })
   members.splice(indexinAppData,1);
-  SaveAppDataToLocalStorage()
+  saveAppDataToLocalStorage()
 }
 
 
@@ -43,7 +43,7 @@ function deleteMemberFromAppData(memberId) {
 function changeListNameInAppData(listInAppData, newTitle) {
 
   listInAppData.title = newTitle
-  SaveAppDataToLocalStorage()
+  saveAppDataToLocalStorage()
 
 }
 
@@ -59,7 +59,7 @@ function deleteListToAppData(listId){
     if (list.id === listInAppData.id) {
       indexOfList = index;
       AlllistsInAppData.splice(indexOfList, 1)
-      SaveAppDataToLocalStorage()
+      saveAppDataToLocalStorage()
     }
   });
 
@@ -75,7 +75,7 @@ function addCardAppData(listInAppData, cardId) {
     id:cardId,
   }
   listInAppData.tasks.push(cardOfAppData)
-  SaveAppDataToLocalStorage()
+  saveAppDataToLocalStorage()
 }
 
 
@@ -101,7 +101,7 @@ function deleteCardFromAppData(currentLocation,cardId) {
   [].forEach.call(currentLocation.tasks, (task, index)=>{
     if (task.id===cardId){
       Array.prototype.splice.call(currentLocation.tasks , index, 1)
-      SaveAppDataToLocalStorage()
+      saveAppDataToLocalStorage()
     }
   })
 }
@@ -165,11 +165,11 @@ function addListsFromJason(JsonList) {
   appData.lists = JsonList;
 }
 
-function SaveAppDataToLocalStorage() {
+function saveAppDataToLocalStorage() {
   localStorage.setItem("appData", JSON.stringify(appData))
 }
 
-function GetAppDataFromLocalStroage() {
+function getAppDataFromLocalStroage() {
   appData= JSON.parse(localStorage.getItem('appData'));
 }
 
@@ -198,7 +198,7 @@ function GetAppDataFromLocalStroage() {
     returnAllMemebers ,
     addMembersFromJason ,
     addListsFromJason,
-    SaveAppDataToLocalStorage ,
-    GetAppDataFromLocalStroage,
+    saveAppDataToLocalStorage ,
+    getAppDataFromLocalStroage,
   }
 })();

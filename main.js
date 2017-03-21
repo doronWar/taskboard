@@ -184,7 +184,7 @@
     allListsAppData.push(newList)
 
     addMoveToOptions(newList, newList.id);
-    MODEL.SaveAppDataToLocalStorage()
+    MODEL.saveAppDataToLocalStorage()
 
   }
 
@@ -306,7 +306,7 @@ console.info(memberId);
         // console.info(member.name);
       }
     })
-    MODEL.SaveAppDataToLocalStorage()
+    MODEL.saveAppDataToLocalStorage()
   }
 
 //                           edit card modal            ///
@@ -398,7 +398,7 @@ console.info(memberId);
     if(deleteCheck){
      MODEL.deleteCardFromAppData(currentLocation, cardId);
       closeEditModal();
-      MODEL.SaveAppDataToLocalStorage()
+      MODEL.saveAppDataToLocalStorage()
     }
   }
 
@@ -475,7 +475,7 @@ console.info(memberId);
 
     //closing the modal and reloading the page
     closeEditModal();
-    MODEL.SaveAppDataToLocalStorage()
+    MODEL.saveAppDataToLocalStorage()
 
   }
 
@@ -894,7 +894,7 @@ console.info(memberId);
       MODEL.DropHandlerMoveCardInAppData(e.currentTarget.closest('.oneLists'), movedToList, cardReference);
       // movedToList.tasks.push(cardReference);
       MODEL.deleteCardFromAppData(listInAppData, cardDataId);
-      // MODEL.SaveAppDataToLocalStorage()
+      // MODEL.saveAppDataToLocalStorage()
     }
 
     //erasing all empty Div's in the list
@@ -937,7 +937,7 @@ console.info(memberId);
       e.currentTarget.closest('.ulForCards ').insertBefore(tempDiv, e.target.closest('.card'))
       const lastLichild = e.target.closest('.ulForCards li:last-child');
 
-     
+
 
 
       //here i have to add an if - if the Li is only child then insert after by push
@@ -960,13 +960,14 @@ console.info(memberId);
 
 
 //                                       JSON uploading         //
+//                                       JSON uploading         //
 
 
   function checkIfCanLoadPage() {
     //checking only two since i have only 2 AJAX calls
     //can work also with checking length.
     if (jsonsState[0] && jsonsState[1]) {
-      MODEL.SaveAppDataToLocalStorage()
+      MODEL.saveAppDataToLocalStorage()
       firstLoad();
     }
   }
@@ -1151,7 +1152,7 @@ console.info(memberId);
   creatingBlamckBoard();
 
   if (localStorage.getItem("appData")) {
-    MODEL.GetAppDataFromLocalStroage()
+    MODEL.getAppDataFromLocalStroage()
 
     loadpage()
   }
