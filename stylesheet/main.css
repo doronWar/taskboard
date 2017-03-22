@@ -79,6 +79,10 @@ main{
   /*top: -5%;*/
 }
 
+.PopUpMenuHide{
+  /*height:0;*/
+  width:0;
+}
 .member-list{
   display: flex;
   flex-direction: column;
@@ -486,6 +490,7 @@ main{
   font-weight: 600;
   margin-right:40px;
   border: 2px solid white;
+
 
 
 }

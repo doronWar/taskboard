@@ -430,6 +430,7 @@ console.info(memberId);
 
   function closeEditModal() {
     const menuState = document.querySelector('.PopUpMenuHide').style;
+
     menuState.display = 'none'
     firstLoad();
   }
@@ -642,9 +643,13 @@ console.info(memberId);
       closingListMenu()
     }
     else {
-      listIAmIn.remove();
-      const listId = event.target.closest('.oneLists').getAttribute('data-id');
-      MODEL.deleteListToAppData(listId)
+
+      $(listIAmIn).fadeOut(1000, function () {
+        listIAmIn.remove();
+        const listId = event.target.closest('.oneLists').getAttribute('data-id');
+        MODEL.deleteListToAppData(listId)
+      })
+
     }
   }
 
@@ -762,7 +767,13 @@ console.info(memberId);
   function toggleEditPanle(e, id, listId) {
     const menuState = document.querySelector('.PopUpMenuHide').style;
     if (menuState.display === 'none' || !menuState.display) {
+
+      // console.info(menuState);
       menuState.display = 'block'
+      $('.PopUpMenuHide').animate({
+        width: '100%'
+      },1000)
+
 
       //geting card info
       gettingCardInfoForModal(e);
@@ -780,8 +791,15 @@ console.info(memberId);
       })
     }
     else {
-      menuState.display = 'none'
-      firstLoad();
+      menuState.display = 'block'
+      $('.PopUpMenuHide').animate({
+        width: '0'
+      },1000, ()=>{
+        menuState.display = 'none'
+        firstLoad();
+      })
+
+
     }
 
   }
